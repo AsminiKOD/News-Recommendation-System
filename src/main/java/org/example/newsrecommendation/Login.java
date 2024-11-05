@@ -17,6 +17,16 @@ public class Login {
     private Button button_login;
 
     @FXML
+    private void Login_Login_button() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+        Parent signUpRoot = loader.load();
+
+        Stage stage = (Stage) button_login.getScene().getWindow();
+        stage.setScene(new Scene(signUpRoot));
+        stage.show();
+    }
+
+    @FXML
     private void Login_SignUp_button() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUp.fxml"));
         Parent signUpRoot = loader.load();
@@ -25,5 +35,4 @@ public class Login {
         stage.setScene(new Scene(signUpRoot));
         stage.show();
     }
-
 }

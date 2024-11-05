@@ -11,7 +11,7 @@ public class RunApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(RunApplication.class.getResource("Login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("NewsRecommendations");
         stage.setScene(scene);
         stage.show();
