@@ -31,7 +31,6 @@ public class Main {
     @FXML
     private Pane Main_ProfilePage;
 
-
     @FXML
     public void userPaneNav(ActionEvent actionEvent){
         if (actionEvent.getSource() == Main_button_Home){

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -9,47 +10,80 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="353.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.SignUp">
+<AnchorPane prefHeight="505.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.SignUp">
    <children>
-      <StackPane prefHeight="459.0" prefWidth="600.0">
+      <StackPane prefHeight="505.0" prefWidth="600.0">
          <children>
-            <Pane prefHeight="369.0" prefWidth="600.0" style="-fx-background-color: white;">
+            <Pane fx:id="Sign_Pane_Thank" prefHeight="369.0" prefWidth="600.0" style="-fx-background-color: white;">
                <children>
                   <Label layoutX="200.0" layoutY="109.0" text="Thank You for Connecting with Us!" />
                   <Button fx:id="Sign_Con_Close" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" text="Close" />
                   <Button fx:id="Sign_Con_Home" layoutX="254.0" layoutY="217.0" mnemonicParsing="false" onAction="#SignUp_Home_button" text="Home" />
                </children>
             </Pane>
-            <Pane prefHeight="449.0" prefWidth="600.0" style="-fx-background-color: white;">
+            <Pane fx:id="Sign_pane_Admin" prefHeight="520.0" prefWidth="600.0" style="-fx-background-color: white;">
                <children>
-                  <Label layoutX="247.0" layoutY="73.0" prefHeight="17.0" prefWidth="38.0" text="Name" />
-                  <Label layoutX="247.0" layoutY="113.0" prefHeight="17.0" prefWidth="38.0" text="Email" />
-                  <Label layoutX="247.0" layoutY="152.0" prefHeight="17.0" prefWidth="68.0" text="Age" />
-                  <Label layoutX="247.0" layoutY="219.0" prefHeight="17.0" prefWidth="68.0" text="Gender" />
-                  <Label layoutX="247.0" layoutY="184.0" prefHeight="17.0" prefWidth="68.0" text="Preferance" />
-                  <TextField fx:id="Sign_name" layoutX="315.0" layoutY="69.0" prefHeight="25.0" prefWidth="226.0" />
-                  <TextField fx:id="Sign_email" layoutX="315.0" layoutY="109.0" prefHeight="25.0" prefWidth="226.0" />
-                  <TextField fx:id="Sign_age" layoutX="315.0" layoutY="148.0" prefHeight="25.0" prefWidth="38.0" />
-                  <ChoiceBox fx:id="Sign_pre" layoutX="315.0" layoutY="180.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="Sign_gen" layoutX="315.0" layoutY="215.0" prefHeight="25.0" prefWidth="96.0" />
-                  <Button fx:id="Signup_back" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#SignUp_Back_button" text="Back" />
-                  <Label layoutX="363.0" layoutY="13.0" prefHeight="27.0" prefWidth="76.0" text="Signup">
+                  <Label layoutX="68.0" layoutY="117.0" prefHeight="17.0" prefWidth="38.0" text="Name" />
+                  <Label layoutX="68.0" layoutY="158.0" prefHeight="17.0" prefWidth="38.0" text="Email" />
+                  <Label layoutX="68.0" layoutY="193.0" prefHeight="17.0" prefWidth="25.0" text="Age" />
+                  <Label layoutX="291.0" layoutY="193.0" prefHeight="17.0" prefWidth="68.0" text="Gender" />
+                  <Label layoutX="65.0" layoutY="236.0" prefHeight="17.0" prefWidth="68.0" />
+                  <TextField fx:id="Sign_name1" layoutX="153.0" layoutY="113.0" prefHeight="25.0" prefWidth="226.0" promptText="Full Name" />
+                  <TextField fx:id="Sign_email1" layoutX="153.0" layoutY="154.0" prefHeight="25.0" prefWidth="226.0" promptText="Email" />
+                  <TextField fx:id="Sign_age1" layoutX="153.0" layoutY="189.0" prefHeight="25.0" prefWidth="38.0" promptText="Age" />
+                  <ChoiceBox fx:id="Sign_gen1" layoutX="362.0" layoutY="189.0" prefHeight="25.0" prefWidth="96.0" />
+                  <Button fx:id="Signup__Admin_back" layoutX="25.0" layoutY="14.0" mnemonicParsing="false" onAction="#SignUp_Back_button" text="Back" />
+                  <Label layoutX="203.0" layoutY="39.0" prefHeight="35.0" prefWidth="207.0" text="Signup as Admin">
                      <font>
-                        <Font name="System Bold" size="18.0" />
+                        <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Pane layoutY="253.0" prefHeight="212.0" prefWidth="600.0" style="-fx-background-color: pink;">
-                     <children>
-                        <Label layoutX="113.0" layoutY="30.0" prefHeight="17.0" prefWidth="68.0" text="Username" />
-                        <Label layoutX="113.0" layoutY="61.0" prefHeight="17.0" prefWidth="68.0" text="Password" />
-                        <Label layoutX="113.0" layoutY="95.0" prefHeight="17.0" prefWidth="108.0" text="Confirm Password" />
-                        <TextField fx:id="Sign_User" layoutX="221.0" layoutY="26.0" prefHeight="25.0" prefWidth="226.0" />
-                        <TextField fx:id="Sign_pwd" layoutX="221.0" layoutY="57.0" prefHeight="25.0" prefWidth="226.0" />
-                        <TextField fx:id="Sign_con_pwd" layoutX="221.0" layoutY="91.0" prefHeight="25.0" prefWidth="226.0" />
-                        <Button fx:id="button_signup" layoutX="457.0" layoutY="131.0" mnemonicParsing="false" text="Signup" />
-                     </children>
-                  </Pane>
+                  <Button fx:id="button_signup_close1" layoutX="541.0" layoutY="14.0" mnemonicParsing="false" text="Close" />
+                  <Label layoutX="149.0" layoutY="283.0" prefHeight="17.0" prefWidth="68.0" text="Username" />
+                  <TextField fx:id="Sign_User1" layoutX="265.0" layoutY="279.0" prefHeight="25.0" prefWidth="226.0" promptText="Username" />
+                  <TextField fx:id="Sign_pwd1" layoutX="266.0" layoutY="313.0" prefHeight="25.0" prefWidth="226.0" promptText="Password" />
+                  <TextField fx:id="Sign_con_pwd1" layoutX="265.0" layoutY="348.0" prefHeight="25.0" prefWidth="226.0" promptText="Confirm Password" />
+                  <Label layoutX="149.0" layoutY="317.0" prefHeight="17.0" prefWidth="68.0" text="Password" />
+                  <Label layoutX="149.0" layoutY="352.0" prefHeight="17.0" prefWidth="108.0" text="Confirm Password" />
+                  <Button fx:id="button_signup_Admin_act" layoutX="272.0" layoutY="408.0" mnemonicParsing="false" text="Signup as Admin" />
+                  <Label layoutX="68.0" layoutY="228.0" prefHeight="17.0" prefWidth="59.0" text="Admin ID" />
+                  <TextField fx:id="Sign_Admin_ID" layoutX="153.0" layoutY="224.0" prefHeight="25.0" prefWidth="68.0" promptText="Admin ID" />
+               </children>
+            </Pane>
+            <Pane fx:id="Sign_pane_user" prefHeight="520.0" prefWidth="600.0" style="-fx-background-color: white;">
+               <children>
+                  <Label layoutX="68.0" layoutY="117.0" prefHeight="17.0" prefWidth="38.0" text="Name" />
+                  <Label layoutX="68.0" layoutY="158.0" prefHeight="17.0" prefWidth="38.0" text="Email" />
+                  <Label layoutX="68.0" layoutY="193.0" prefHeight="17.0" prefWidth="25.0" text="Age" />
+                  <Label layoutX="291.0" layoutY="193.0" prefHeight="17.0" prefWidth="68.0" text="Gender" />
+                  <Label layoutX="65.0" layoutY="236.0" prefHeight="17.0" prefWidth="68.0" text="Preferance" />
+                  <TextField fx:id="Sign_name" layoutX="153.0" layoutY="113.0" prefHeight="25.0" prefWidth="226.0" promptText="Full Name" />
+                  <TextField fx:id="Sign_email" layoutX="153.0" layoutY="154.0" prefHeight="25.0" prefWidth="226.0" promptText="Email" />
+                  <TextField fx:id="Sign_age" layoutX="153.0" layoutY="189.0" prefHeight="25.0" prefWidth="38.0" promptText="Age" />
+                  <ChoiceBox fx:id="Sign_gen" layoutX="362.0" layoutY="189.0" prefHeight="25.0" prefWidth="96.0" />
+                  <Button fx:id="Signup_back" layoutX="25.0" layoutY="14.0" mnemonicParsing="false" onAction="#SignUp_Back_button" text="Back" />
+                  <Label layoutX="262.0" layoutY="39.0" prefHeight="35.0" prefWidth="84.0" text="Signup">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
                   <Button fx:id="button_signup_close" layoutX="541.0" layoutY="14.0" mnemonicParsing="false" text="Close" />
+                  <CheckBox fx:id="SignUp_Pre_Enter" layoutX="161.0" layoutY="236.0" mnemonicParsing="false" text="Entertainment" />
+                  <CheckBox fx:id="SignUp_Pre_World" layoutX="380.0" layoutY="236.0" mnemonicParsing="false" text="Worlds" />
+                  <CheckBox fx:id="SignUp_Pre_Politics" layoutX="289.0" layoutY="236.0" mnemonicParsing="false" text="Politics" />
+                  <CheckBox fx:id="SignUp_Pre_Sport" layoutX="291.0" layoutY="264.0" mnemonicParsing="false" text="Sports" />
+                  <CheckBox fx:id="SignUp_Pre_Tech" layoutX="161.0" layoutY="264.0" mnemonicParsing="false" text="Technology" />
+                  <CheckBox fx:id="SignUp_Pre_Health" layoutX="380.0" layoutY="264.0" mnemonicParsing="false" text="Healthcare" />
+                  <CheckBox fx:id="SignUp_Pre_Science" layoutX="476.0" layoutY="236.0" mnemonicParsing="false" text="Science" />
+                  <Label layoutX="149.0" layoutY="304.0" prefHeight="17.0" prefWidth="68.0" text="Username" />
+                  <TextField fx:id="Sign_User" layoutX="266.0" layoutY="300.0" prefHeight="25.0" prefWidth="226.0" promptText="Username" />
+                  <TextField fx:id="Sign_pwd" layoutX="269.0" layoutY="335.0" prefHeight="25.0" prefWidth="226.0" promptText="Password" />
+                  <TextField fx:id="Sign_con_pwd" layoutX="269.0" layoutY="372.0" prefHeight="25.0" prefWidth="226.0" promptText="Confirm Password" />
+                  <Button fx:id="button_signup" layoutX="299.0" layoutY="409.0" mnemonicParsing="false" onAction="#signPaneNav" text="Signup" />
+                  <Label layoutX="149.0" layoutY="339.0" prefHeight="17.0" prefWidth="68.0" text="Password" />
+                  <Label layoutX="149.0" layoutY="376.0" prefHeight="17.0" prefWidth="108.0" text="Confirm Password" />
+                  <Label layoutX="319.0" layoutY="434.0" text="or" />
+                  <Button fx:id="button_signup_Admin" layoutX="272.0" layoutY="451.0" mnemonicParsing="false" onAction="#signPaneNav" text="Signup as Admin" />
                </children>
             </Pane>
          </children>

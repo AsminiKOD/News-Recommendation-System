@@ -4,15 +4,53 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="352.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.Login">
    <children>
-      <Label layoutX="316.0" layoutY="99.0" prefHeight="17.0" prefWidth="62.0" text="Username" />
-      <Label layoutX="316.0" layoutY="145.0" prefHeight="17.0" prefWidth="62.0" text="Password" />
-      <TextField fx:id="Login_user" layoutX="388.0" layoutY="95.0" />
-      <TextField fx:id="Login_pwd" layoutX="388.0" layoutY="141.0" />
-      <Button fx:id="button_login" layoutX="430.0" layoutY="191.0" mnemonicParsing="false" onAction="#Login_Login_button" text="Login" />
-      <Label layoutX="316.0" layoutY="264.0" prefHeight="17.0" prefWidth="184.0" text="Don't you have an account yet?" />
-      <Button fx:id="Login_button_sign" layoutX="500.0" layoutY="260.0" mnemonicParsing="false" onAction="#Login_SignUp_button" text="Sign-in" />
+      <StackPane prefHeight="352.0" prefWidth="600.0">
+         <children>
+            <Pane fx:id="Login_Pane_Admin" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+               <children>
+                  <Button fx:id="Login_button_LogAd1" layoutX="375.0" layoutY="219.0" mnemonicParsing="false" onAction="#Login_Admin_button" text="Login as Admin" />
+                  <Label layoutX="352.0" layoutY="20.0" text="Login as Admin">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="Login_button_sign_admin" layoutX="500.0" layoutY="266.0" mnemonicParsing="false" onAction="#Login_AdminSignUp_button" text="Sign-in" />
+                  <Label layoutX="307.0" layoutY="270.0" prefHeight="17.0" prefWidth="184.0" text="Don't you have an account yet?" />
+                  <TextField fx:id="Login_pwd1" layoutX="375.0" layoutY="174.0" promptText="Password" />
+                  <TextField fx:id="Login_user_Admin" layoutX="375.0" layoutY="140.0" promptText="Username" />
+                  <Label layoutX="290.0" layoutY="178.0" prefHeight="17.0" prefWidth="62.0" text="Password" />
+                  <Label layoutX="290.0" layoutY="144.0" prefHeight="17.0" prefWidth="62.0" text="Username" />
+                  <Pane prefHeight="352.0" prefWidth="247.0" style="-fx-background-color: grey;" />
+                  <Label layoutX="290.0" layoutY="108.0" prefHeight="17.0" prefWidth="62.0" text="Admin ID" />
+                  <TextField fx:id="Login_Admin_Id" layoutX="375.0" layoutY="104.0" promptText="Admin ID" />
+               </children>
+            </Pane>
+            <Pane fx:id="Login_pane_User" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+               <children>
+                  <Button fx:id="Login_button_LogAd" layoutX="379.0" layoutY="239.0" mnemonicParsing="false" onAction="#logPaneNav" text="Login as Admin" />
+                  <Label layoutX="421.0" layoutY="222.0" prefWidth="11.0" text="or" />
+                  <Label layoutX="394.0" layoutY="20.0" text="Login">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="Login_button_sign" layoutX="502.0" layoutY="287.0" mnemonicParsing="false" onAction="#Login_SignUp_button" text="Sign-in" />
+                  <Label layoutX="310.0" layoutY="289.0" prefHeight="17.0" prefWidth="184.0" text="Don't you have an account yet?" />
+                  <Button fx:id="button_login" layoutX="405.0" layoutY="197.0" mnemonicParsing="false" onAction="#Login_Login_button" text="Login" />
+                  <TextField fx:id="Login_pwd" layoutX="375.0" layoutY="129.0" promptText="Password" />
+                  <TextField fx:id="Login_user" layoutX="375.0" layoutY="95.0" promptText="Username" />
+                  <Label layoutX="290.0" layoutY="146.0" prefHeight="17.0" prefWidth="62.0" text="Password" />
+                  <Label layoutX="290.0" layoutY="99.0" prefHeight="17.0" prefWidth="62.0" text="Username" />
+                  <Pane prefHeight="352.0" prefWidth="247.0" style="-fx-background-color: grey;" />
+               </children>
+            </Pane>
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>
