@@ -1,0 +1,92 @@
+/* CSS for AnchorPane and StackPane background */
+AnchorPane, StackPane {
+    -fx-background-color: #f0f0f0;
+}
+
+/* Pane for Admin Login and User Login */
+#Login_Pane_Admin, #Login_pane_User {
+    -fx-background-color: linear-gradient(to bottom left, #b9daeb, #74c2d3, #4098b1, #04494f);
+    -fx-border-color: #02496e;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.2, 2, 2);
+}
+#Log_image {
+    -fx-background-image: url("LogUser.jpg");
+    -fx-background-size: 300px auto; /* Width is 300px, height adjusts automatically */
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-border-color: #02496e;
+    -fx-opacity: 80%;
+}
+#Login_admi_image {
+    -fx-background-image: url("LogAd.jpg");
+    -fx-background-size: 300px auto; /* Width is 300px, height adjusts automatically */
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-border-color: #02496e;
+    -fx-opacity: 80%;
+}
+
+/* Header Labels */
+Label {
+    -fx-text-fill: #333333;
+    -fx-font-family: "Berlin Sans FB";
+}
+
+#Login_Pane_Admin Label[layoutX="352.0"], #Login_pane_User Label[layoutX="400.0"] {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* Input Labels */
+#Login_Pane_Admin .Label, #Login_pane_User .Label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #666666;
+}
+
+/* TextFields for Username and Password */
+TextField {
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #d3d3d3;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 12px;
+}
+
+/* Buttons */
+Button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-font-family: "Berlin Sans FB";
+    -fx-font-size: 14px;
+}
+
+#Login_button_backlog, #Login_button_LogAd {
+    -fx-background-color: #316fad;
+}
+
+#Login_button_sign {
+    -fx-background-color: #ba2116;
+}
+
+Button:hover {
+    -fx-background-color: #27ba7f;
+}
+
+#Login_button_backlog:hover, #Login_button_LogAd:hover {
+    -fx-background-color: #3b8bdb;
+}
+
+#Login_button_sign:hover {
+    -fx-background-color: #FB8C00;
+}
+
+/* Grey Side Pane */
+#Login_button_back, .Pane {
+    -fx-background-color: #e0e0e0;
+}

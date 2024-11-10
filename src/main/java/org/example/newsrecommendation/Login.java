@@ -29,7 +29,7 @@ public class Login implements Initializable {
     @FXML
     private Button Login_button_LogAd;
     @FXML
-    private Button Login_button_LogAd1;
+    private Button login_button_admin_logLog;
     @FXML
     private Button Login_button_backlog;
 
@@ -130,16 +130,16 @@ public class Login implements Initializable {
         stage.setScene(new Scene(signUpRoot));
         stage.show();
     }
-
     @FXML
-    private void Login_Admin_button() throws IOException {
+    private void Login_AdminLogin_button() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Adminstraitor.fxml"));
         Parent signUpRoot = loader.load();
 
-        Stage stage = (Stage) Login_button_LogAd1.getScene().getWindow();
+        Stage stage = (Stage) login_button_admin_logLog.getScene().getWindow();
         stage.setScene(new Scene(signUpRoot));
         stage.show();
     }
+
 
     @FXML
     public void logPaneNav(ActionEvent actionEvent){
