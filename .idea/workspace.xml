@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d69130ca-d560-41c0-857d-8ef2f1671203" name="Changes" comment="GUI">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Admin.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/SignUp.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Login.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/Login.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Login.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/SignUp.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/SignUp.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,27 +44,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.HelloApplication.executor": "Run",
-    "Application.RunApplication.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "D:/Java/NewsRecommendation/src/main/java/org/example/newsrecommendation",
-    "last_opened_file_path": "D:/Java/2330899",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "vcs.Git",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.RunApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;D:/Java/NewsRecommendation/src/main/java/org/example/newsrecommendation&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Java/2330899&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Java\NewsRecommendation\src\main\resources\org\example\newsrecommendation\CSS" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -84,7 +89,8 @@
       <workItem from="1730820624845" duration="19572000" />
       <workItem from="1730962000703" duration="1899000" />
       <workItem from="1730967358323" duration="1567000" />
-      <workItem from="1731221491540" duration="5403000" />
+      <workItem from="1731221491540" duration="7132000" />
+      <workItem from="1731246584283" duration="3346000" />
     </task>
     <task id="LOCAL-00001" summary="new">
       <option name="closed" value="true" />
@@ -134,7 +140,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730967311927</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="GUI">
+      <option name="closed" value="true" />
+      <created>1731227439014</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1731227439014</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

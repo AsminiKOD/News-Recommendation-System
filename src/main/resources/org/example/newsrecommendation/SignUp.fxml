@@ -8,51 +8,80 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="505.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.SignUp">
+<AnchorPane prefHeight="505.0" prefWidth="600.0" stylesheets="@CSS/SignUp.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.SignUp">
    <children>
       <StackPane prefHeight="505.0" prefWidth="600.0">
          <children>
-            <Pane fx:id="Sign_Pane_Thank" prefHeight="369.0" prefWidth="600.0" style="-fx-background-color: white;">
+            <Pane fx:id="Sign_Pane_Thank" prefHeight="369.0" prefWidth="600.0">
                <children>
-                  <Label layoutX="200.0" layoutY="109.0" text="Thank You for Connecting with Us!" />
-                  <Button fx:id="Sign_Con_Close" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" text="Close" />
-                  <Button fx:id="Sign_Con_Home" layoutX="254.0" layoutY="217.0" mnemonicParsing="false" onAction="#SignUp_Home_button" text="Home" />
+                  <Pane fx:id="SignThankPane" layoutX="156.0" layoutY="129.0" prefHeight="220.0" prefWidth="289.0" style="-fx-background-color: white;">
+                     <children>
+                        <Button fx:id="Sign_Con_Home" layoutX="116.0" layoutY="103.0" mnemonicParsing="false" onAction="#SignUp_Home_button" text="Home" />
+                        <Label layoutX="51.0" layoutY="69.0" text="Thank You for Connecting with Us!" />
+                     </children>
+                  </Pane>
+                  <Button fx:id="Sign_Con_Close" layoutX="519.0" layoutY="22.0" mnemonicParsing="false" text="Close" />
                </children>
             </Pane>
-            <Pane fx:id="Sign_pane_user" prefHeight="520.0" prefWidth="600.0" style="-fx-background-color: white;">
+            <Pane fx:id="Sign_pane_user" prefHeight="520.0" prefWidth="600.0">
                <children>
-                  <Label layoutX="68.0" layoutY="117.0" prefHeight="17.0" prefWidth="38.0" text="Name" />
-                  <Label layoutX="68.0" layoutY="158.0" prefHeight="17.0" prefWidth="38.0" text="Email" />
-                  <Label layoutX="68.0" layoutY="193.0" prefHeight="17.0" prefWidth="25.0" text="Age" />
-                  <Label layoutX="291.0" layoutY="193.0" prefHeight="17.0" prefWidth="68.0" text="Gender" />
-                  <Label layoutX="65.0" layoutY="236.0" prefHeight="17.0" prefWidth="68.0" text="Preferance" />
-                  <TextField fx:id="Sign_name" layoutX="153.0" layoutY="113.0" prefHeight="25.0" prefWidth="226.0" promptText="Full Name" />
-                  <TextField fx:id="Sign_email" layoutX="153.0" layoutY="154.0" prefHeight="25.0" prefWidth="226.0" promptText="Email" />
-                  <TextField fx:id="Sign_age" layoutX="153.0" layoutY="189.0" prefHeight="25.0" prefWidth="38.0" promptText="Age" />
-                  <ChoiceBox fx:id="Sign_gen" layoutX="362.0" layoutY="189.0" prefHeight="25.0" prefWidth="96.0" />
-                  <Button fx:id="Signup_back" layoutX="25.0" layoutY="14.0" mnemonicParsing="false" onAction="#SignUp_Back_button" text="Back" />
-                  <Label layoutX="262.0" layoutY="39.0" prefHeight="35.0" prefWidth="84.0" text="Signup">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <CheckBox fx:id="SignUp_Pre_Enter" layoutX="161.0" layoutY="236.0" mnemonicParsing="false" text="Entertainment" />
-                  <CheckBox fx:id="SignUp_Pre_World" layoutX="380.0" layoutY="236.0" mnemonicParsing="false" text="Worlds" />
-                  <CheckBox fx:id="SignUp_Pre_Politics" layoutX="289.0" layoutY="236.0" mnemonicParsing="false" text="Politics" />
-                  <CheckBox fx:id="SignUp_Pre_Sport" layoutX="291.0" layoutY="264.0" mnemonicParsing="false" text="Sports" />
-                  <CheckBox fx:id="SignUp_Pre_Tech" layoutX="161.0" layoutY="264.0" mnemonicParsing="false" text="AI &amp; Technology" />
-                  <CheckBox fx:id="SignUp_Pre_Health" layoutX="380.0" layoutY="264.0" mnemonicParsing="false" text="Healthcare" />
-                  <CheckBox fx:id="SignUp_Pre_Science" layoutX="476.0" layoutY="236.0" mnemonicParsing="false" text="Science" />
-                  <Label layoutX="149.0" layoutY="304.0" prefHeight="17.0" prefWidth="68.0" text="Username" />
-                  <TextField fx:id="Sign_User" layoutX="266.0" layoutY="300.0" prefHeight="25.0" prefWidth="226.0" promptText="Username" />
-                  <TextField fx:id="Sign_pwd" layoutX="269.0" layoutY="335.0" prefHeight="25.0" prefWidth="226.0" promptText="Password" />
-                  <TextField fx:id="Sign_con_pwd" layoutX="269.0" layoutY="372.0" prefHeight="25.0" prefWidth="226.0" promptText="Confirm Password" />
-                  <Button fx:id="button_signup" layoutX="299.0" layoutY="420.0" mnemonicParsing="false" onAction="#signPaneNav" text="Signup" />
-                  <Label layoutX="149.0" layoutY="339.0" prefHeight="17.0" prefWidth="68.0" text="Password" />
-                  <Label layoutX="149.0" layoutY="376.0" prefHeight="17.0" prefWidth="108.0" text="Confirm Password" />
-                  <CheckBox fx:id="SignUp_Pre_Finan" layoutX="476.0" layoutY="264.0" mnemonicParsing="false" text="Finance" />
+                  <Pane fx:id="Sign_2Pane" layoutX="41.0" layoutY="30.0" prefHeight="445.0" prefWidth="526.0" style="-fx-background-color: white;">
+                     <children>
+                        <Label fx:id="SignUpHeader" layoutX="228.0" layoutY="21.0" prefHeight="35.0" prefWidth="84.0" text="Signup">
+                           <font>
+                              <Font name="Berlin Sans FB Bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="68.0" layoutY="86.0" prefHeight="23.0" prefWidth="48.0" text="Name">
+                           <font>
+                              <Font name="Berlin Sans FB" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="68.0" layoutY="124.0" prefHeight="23.0" prefWidth="56.0" text="Email">
+                           <font>
+                              <Font name="Berlin Sans FB" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="68.0" layoutY="166.0" prefHeight="23.0" prefWidth="48.0" text="Age" />
+                        <Label layoutX="66.0" layoutY="211.0" prefHeight="23.0" prefWidth="87.0" text="Preferance" />
+                        <Button fx:id="Signup_back" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#SignUp_Back_button" text="Back" />
+                        <TextField fx:id="Sign_name" layoutX="149.0" layoutY="84.0" prefHeight="25.0" prefWidth="226.0" promptText="Full Name">
+                           <font>
+                              <Font name="Berlin Sans FB" size="12.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="Sign_email" layoutX="149.0" layoutY="121.0" prefHeight="25.0" prefWidth="226.0" promptText="Email" />
+                        <TextField fx:id="Sign_age" layoutX="153.0" layoutY="163.0" prefHeight="25.0" prefWidth="38.0" promptText="Age" />
+                        <Label layoutX="270.0" layoutY="169.0" prefHeight="17.0" prefWidth="68.0" text="Gender" />
+                        <ChoiceBox fx:id="Sign_gen" layoutX="338.0" layoutY="160.0" prefHeight="35.0" prefWidth="108.0" />
+                        <CheckBox fx:id="SignUp_Pre_World" layoutX="426.0" layoutY="235.0" mnemonicParsing="false" text="World" />
+                        <CheckBox fx:id="SignUp_Pre_Health" layoutX="270.0" layoutY="216.0" mnemonicParsing="false" text="Healthcare" />
+                        <CheckBox fx:id="SignUp_Pre_Science" layoutX="270.0" layoutY="235.0" mnemonicParsing="false" text="Science" />
+                        <CheckBox fx:id="SignUp_Pre_Finan" layoutX="424.0" layoutY="216.0" mnemonicParsing="false" text="Finance" />
+                        <CheckBox fx:id="SignUp_Pre_Politics" layoutX="354.0" layoutY="216.0" mnemonicParsing="false" text="Politics" />
+                        <CheckBox fx:id="SignUp_Pre_Sport" layoutX="355.0" layoutY="235.0" mnemonicParsing="false" text="Sports" />
+                        <CheckBox fx:id="SignUp_Pre_Enter" layoutX="160.0" layoutY="216.0" mnemonicParsing="false" text="Entertainment" />
+                        <CheckBox fx:id="SignUp_Pre_Tech" layoutX="160.0" layoutY="235.0" mnemonicParsing="false" text="AI &amp; Technology" />
+                        <TextField fx:id="Sign_User" layoutX="223.0" layoutY="271.0" prefHeight="25.0" prefWidth="226.0" promptText="Username" />
+                        <Label layoutX="75.0" layoutY="277.0" prefHeight="17.0" prefWidth="68.0" text="Username" />
+                        <TextField fx:id="Sign_pwd" layoutX="222.0" layoutY="309.0" prefHeight="25.0" prefWidth="226.0" promptText="Password">
+                           <font>
+                              <Font name="Berlin Sans FB" size="12.0" />
+                           </font>
+                        </TextField>
+                        <Label layoutX="75.0" layoutY="314.0" prefHeight="17.0" prefWidth="68.0" text="Password" />
+                        <TextField fx:id="Sign_con_pwd" layoutX="222.0" layoutY="344.0" prefHeight="25.0" prefWidth="226.0" promptText="Confirm Password" />
+                        <Button fx:id="button_signup" layoutX="239.0" layoutY="393.0" mnemonicParsing="false" onAction="#signPaneNav" text="Signup" />
+                        <Label layoutX="76.0" layoutY="350.0" prefHeight="17.0" prefWidth="108.0" text="Confirm Password" />
+                        <Line endX="357.0" layoutX="142.0" layoutY="262.0" startX="-88.00000762939453" startY="1.0" stroke="#178a07" strokeWidth="2.0" />
+                        <Circle fill="#041728" layoutX="48.0" layoutY="263.0" radius="6.0" stroke="#178a07" strokeType="INSIDE" />
+                        <Circle fill="#04182b" layoutX="500.0" layoutY="263.0" radius="6.0" stroke="#178a07" strokeMiterLimit="8.0" strokeType="INSIDE" />
+                     </children>
+                  </Pane>
                </children>
             </Pane>
          </children>

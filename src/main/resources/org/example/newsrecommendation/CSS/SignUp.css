@@ -1,0 +1,130 @@
+/* Background for AnchorPane and StackPane */
+AnchorPane, StackPane {
+    -fx-background-color: #f0f0f0;
+}
+
+/* Pane Styles for Signup and Thank You Screens */
+#Sign_Pane_Thank, #Sign_pane_user {
+    -fx-background-image: url("signBack.jpg");
+    -fx-border-color: #02496e;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 12, 0.3, 3, 3),
+    dropshadow(gaussian, rgba(0, 0, 0, 0.15), 8, 0.1, -2, -2);
+}
+#Sign_2Pane {
+    -fx-opacity: 85%;
+    -fx-border-color: #cfcdc8;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 20, 0.8, 5, 5);
+}
+#SignThankPane {
+    -fx-opacity: 85%;
+    -fx-border-color: #cfcdc8;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 20, 0.8, 5, 5);
+    -fx-alignment: center;
+}
+
+/* Image Styles */
+#Sign_Con_Close, #Sign_Con_Home {
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-border-color: transparent; /* Removed border */
+    -fx-opacity: 0.8;
+}
+
+/* Label Styles */
+.label {
+    -fx-text-fill: #333333;
+    -fx-font-family: "Berlin Sans FB";
+}
+
+#Sign_pane_user .label, #Sign_Pane_Thank .label {
+    -fx-font-size: 13px;
+    -fx-text-fill: black;
+}
+
+/* Input Label Text Styling */
+#Sign_pane_user .label {
+    -fx-font-size: 13px;
+    -fx-text-fill: black;
+}
+
+.label#SignUpHeader {
+    -fx-font-size: 24px;
+    -fx-text-fill: Black;
+    -fx-font-weight: bold;
+}
+
+/* TextFields */
+.text-field {
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #d3d3d3;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 12px;
+}
+
+/* ChoiceBox Styling */
+.choice-box {
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #d3d3d3;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 12px;
+}
+
+/* Button Styles */
+.button {
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-font-family: "Berlin Sans FB";
+    -fx-font-size: 14px;
+}
+
+#Sign_Con_Home {
+    -fx-background-color: #239c1a;
+}
+
+#Signup_back, #Sign_Con_Close {
+    -fx-background-color: #09226e;
+}
+
+#button_signup {
+    -fx-background-color: #ab0d02;
+}
+
+/* Hover Effects */
+#Sign_Con_Home:hover {
+    -fx-background-color: #27ba7f;
+}
+
+#Signup_back:hover, #Sign_Con_Close:hover {
+    -fx-background-color: #3b8bdb;
+}
+
+#button_signup:hover {
+    -fx-background-color: red;
+}
+
+/* Checkbox Styles */
+.check-box {
+    -fx-text-fill: #555555;
+    -fx-font-family: Arial, sans-serif;
+    -fx-font-size: 10px;
+    -fx-mark-color: #4CAF50;
+}
+
+/* Grey Side Pane */
+.Pane {
+    -fx-background-color: #e0e0e0;
+}
