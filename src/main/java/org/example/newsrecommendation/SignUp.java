@@ -6,10 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -21,6 +18,8 @@ import com.mongodb.client.*;
 import com.mongodb.client.MongoClient;
 import com.mongodb.ConnectionString;
 import org.bson.Document;
+import com.mongodb.client.MongoCursor;
+
 
 public class SignUp {
     @FXML
@@ -94,18 +93,62 @@ public class SignUp {
         stage.setScene(new Scene(signUpRoot));
         stage.show();
     }
-
     @FXML
     public void saveUserToDatabase() {
-        // Retrieve input values from TextFields
-        String name = Sign_name.getText();
+        String name = Sign_name.getText().trim();
         String email = Sign_email.getText();
-        int age = Integer.parseInt(Sign_age.getText());
+        String ageText = Sign_age.getText();
         String username = Sign_User.getText();
         String password = Sign_pwd.getText();
+        String confirmPassword = Sign_con_pwd.getText();
         String gender = (String) Sign_gen.getValue();
 
-        // Gather selected preferences from CheckBoxes
+        List<String> errorMessages = new ArrayList<>();
+
+        // Name validation and formatting
+        if (name.isEmpty()) {
+            errorMessages.add("Name is required.");
+        } else {
+            // Capitalize first and last names
+            String[] nameParts = name.split(" ");
+            for (int i = 0; i < nameParts.length; i++) {
+                nameParts[i] = nameParts[i].substring(0, 1).toUpperCase() + nameParts[i].substring(1).toLowerCase();
+            }
+            name = String.join(" ", nameParts);
+        }
+
+        // Email validation
+        if (!email.matches("^[\\w.-]+@[\\w.-]+\\.\\w+$")) {
+            errorMessages.add("Please enter a valid email address.");
+        }
+
+        // Age validation
+        int age = 0;
+        try {
+            age = Integer.parseInt(ageText);
+            if (age <= 0 || age > 120) {
+                errorMessages.add("Please enter a valid age.");
+            }
+        } catch (NumberFormatException e) {
+            errorMessages.add("Age must be a valid number.");
+        }
+
+        // Username validation (check for duplicates in the database)
+        if (username.isEmpty() || username.length() < 3) {
+            errorMessages.add("Username must be at least 3 characters long.");
+        } else if (isUsernameTaken(username)) {
+            errorMessages.add("Username is already taken. Please choose a different one.");
+        }
+
+        // Password validation
+        if (password.isEmpty() || password.length() < 6) {
+            errorMessages.add("Password must be at least 6 characters long.");
+        }
+        if (!password.equals(confirmPassword)) {
+            errorMessages.add("Passwords do not match.");
+        }
+
+        // Preference validation
         List<String> preferences = new ArrayList<>();
         if (SignUp_Pre_Enter.isSelected()) preferences.add("Entertainment");
         if (SignUp_Pre_Health.isSelected()) preferences.add("Healthcare");
@@ -116,7 +159,22 @@ public class SignUp {
         if (SignUp_Pre_Sport.isSelected()) preferences.add("Sports");
         if (SignUp_Pre_World.isSelected()) preferences.add("World");
 
-        // Create a MongoDB Document
+        if (preferences.isEmpty()) {
+            errorMessages.add("Please select at least one preference.");
+        }
+
+        // Gender validation
+        if (gender == null || gender.isEmpty()) {
+            errorMessages.add("Please select a gender.");
+        }
+
+        // If there are any errors, show them in a single alert
+        if (!errorMessages.isEmpty()) {
+            showAlert("Error", String.join("\n", errorMessages));
+            return;
+        }
+
+        // Save the user to the database if all validations pass
         try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
             MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
             MongoCollection<Document> collection = database.getCollection("User");
@@ -131,12 +189,39 @@ public class SignUp {
 
             collection.insertOne(userDoc);
             Sign_Pane_Thank.toFront();
+            resetFields();
         } catch (Exception e) {
-            System.out.println("Error connecting to MongoDB: " + e.getMessage());
+            showAlert("Error", "Error connecting to MongoDB: " + e.getMessage());
         }
     }
 
-        // Method to reset the form fields after saving the user
+    // Method to check if the username is already taken
+    private boolean isUsernameTaken(String username) {
+        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+            MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
+            MongoCollection<Document> collection = database.getCollection("User");
+
+            Document query = new Document("username", username);
+            MongoCursor<Document> cursor = collection.find(query).iterator();
+
+            if (cursor.hasNext()) {
+                return true; // Username already exists
+            }
+        } catch (Exception e) {
+            showAlert("Error", "Error checking username availability: " + e.getMessage());
+        }
+        return false;
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    // Method to reset the form fields after saving the user
     private void resetFields() {
         Sign_name.clear();
         Sign_email.clear();
@@ -153,8 +238,19 @@ public class SignUp {
         SignUp_Pre_World.setSelected(false);
     }
 
-    // Make sure to close MongoClient when it's no longer needed
     public void close() {
         mongoClient.close();
+    }
+
+    @FXML
+    private void initialize() {
+        SignUp_Pre_Enter.setOnAction(event -> System.out.println("Entertainment checkbox clicked"));
+        SignUp_Pre_Health.setOnAction(event -> System.out.println("Health checkbox clicked"));
+        SignUp_Pre_Finan.setOnAction(event -> System.out.println("Finance checkbox clicked"));
+        SignUp_Pre_Politics.setOnAction(event -> System.out.println("Politics checkbox clicked"));
+        SignUp_Pre_Sport.setOnAction(event -> System.out.println("Sport checkbox clicked"));
+        SignUp_Pre_Science.setOnAction(event -> System.out.println("Science checkbox clicked"));
+        SignUp_Pre_Tech.setOnAction(event -> System.out.println("Technology checkbox clicked"));
+        SignUp_Pre_World.setOnAction(event -> System.out.println("World checkbox clicked"));
     }
 }

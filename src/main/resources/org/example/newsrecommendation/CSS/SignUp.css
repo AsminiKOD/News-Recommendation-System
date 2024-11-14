@@ -122,7 +122,9 @@ AnchorPane, StackPane {
     -fx-font-family: "Berlin Sans FB";
     -fx-font-size: 12px;
     -fx-mark-color: #3b8bdb;
-    -fx-font-weight: regular;
+}
+.check-box .mark {
+    -fx-mark-color: #FF5733; /* Example color (a reddish orange) */
 }
 
 /* Grey Side Pane */
