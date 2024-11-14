@@ -119,12 +119,17 @@ AnchorPane, StackPane {
 /* Checkbox Styles */
 .check-box {
     -fx-text-fill: #555555;
-    -fx-font-family: Arial, sans-serif;
-    -fx-font-size: 10px;
-    -fx-mark-color: #4CAF50;
+    -fx-font-family: "Berlin Sans FB";
+    -fx-font-size: 12px;
+    -fx-mark-color: #3b8bdb;
+    -fx-font-weight: regular;
 }
 
 /* Grey Side Pane */
 .Pane {
     -fx-background-color: #e0e0e0;
+}
+.text-field{
+    -fx-font-family: "Berlin Sans FB";
+    -fx-font-size: 12px;
 }

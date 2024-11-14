@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.Adminstraitor">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.Administrator">
    <children>
       <StackPane layoutY="78.0" prefHeight="323.0" prefWidth="600.0">
          <children>
@@ -38,6 +38,7 @@
                   </Label>
                </children>
             </Pane>
+            <Pane fx:id="Front_Pane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" />
          </children>
       </StackPane>
       <Button fx:id="Admin_button_Add" layoutX="131.0" layoutY="55.0" mnemonicParsing="false" onAction="#adminPaneNav" prefHeight="25.0" prefWidth="131.0" text="Add Content" />

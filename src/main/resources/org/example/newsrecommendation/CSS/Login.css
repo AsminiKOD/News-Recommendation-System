@@ -8,8 +8,6 @@ AnchorPane, StackPane {
     -fx-background-color: linear-gradient(to bottom left, #b9daeb, #74c2d3, #4098b1, #04494f);
     -fx-border-color: #02496e;
     -fx-border-width: 2px;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.2, 2, 2);
 }
 #Log_image {

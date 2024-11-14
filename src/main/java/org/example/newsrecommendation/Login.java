@@ -19,6 +19,7 @@ import org.bson.Document;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Login implements Initializable {
@@ -132,12 +133,11 @@ public class Login implements Initializable {
     }
     @FXML
     private void Login_AdminLogin_button() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Adminstraitor.fxml"));
-        Parent signUpRoot = loader.load();
-
+        Parent mainRoot = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Administrator.fxml")));
         Stage stage = (Stage) login_button_admin_logLog.getScene().getWindow();
-        stage.setScene(new Scene(signUpRoot));
-        stage.show();
+        Scene scene = stage.getScene();
+        scene.setRoot(mainRoot);
+        stage.sizeToScene();
     }
 
 

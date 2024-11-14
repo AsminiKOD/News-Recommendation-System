@@ -1,0 +1,95 @@
+/* Background styling for AnchorPane and StackPane */
+AnchorPane, StackPane {
+    -fx-background-color: #f0f0f0;
+}
+
+/* Header Label styling */
+.label {
+    -fx-text-fill: #333333;
+    -fx-font-family: "Berlin Sans FB";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* Pane styling for different sections */
+#Main_AboutPage, #Main_HomePage, #Main_RecommendPage, #Main_SavePage, #Main_ProfilePage {
+    -fx-background-color: linear-gradient(to bottom right, #d3e0ea, #b4c6dc);
+    -fx-border-color: #02496e;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.2, 2, 2);
+}
+
+/* Specific colors for each main page pane */
+#Main_AboutPage {
+    -fx-background-color: linear-gradient(to bottom left, #fce5cd, #f5b7b1);
+}
+#Main_HomePage {
+    -fx-background-color: linear-gradient(to bottom left, #c9daf8, #a2c4c9);
+}
+#Main_RecommendPage {
+    -fx-background-color: linear-gradient(to bottom left, #d9ead3, #a8d08d);
+}
+#Main_SavePage {
+    -fx-background-color: linear-gradient(to bottom left, #cfe2f3, #9cc2e5);
+}
+#Main_ProfilePage {
+    -fx-background-color: linear-gradient(to bottom left, #d5a6bd, #b26d8f);
+}
+
+/* Button styling for navigation buttons */
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-font-family: "Berlin Sans FB";
+    -fx-font-size: 14px;
+}
+
+#Main_button_close {
+    -fx-background-color: #ba2116;
+}
+
+#Main_button_Home {
+    -fx-background-color: #5a9bd4;
+}
+
+#Main_button_Recomm {
+    -fx-background-color: #4a86e8;
+}
+
+#Main_button_Saved {
+    -fx-background-color: #76a5af;
+}
+
+#Main_button_profile {
+    -fx-background-color: #6aa84f;
+}
+
+#Main_button_About {
+    -fx-background-color: #e69138;
+}
+
+/* Hover effects for buttons */
+.button:hover {
+    -fx-background-color: #27ba7f;
+}
+
+#Main_button_close:hover {
+    -fx-background-color: #FB8C00;
+}
+
+#Main_button_Home:hover, #Main_button_Recomm:hover, #Main_button_Saved:hover, #Main_button_profile:hover, #Main_button_About:hover {
+    -fx-background-color: #3b8bdb;
+}
+
+/* Styling for TextField */
+.text-field {
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #d3d3d3;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 12px;
+}

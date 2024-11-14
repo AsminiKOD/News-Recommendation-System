@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="429.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.Main">
+<AnchorPane prefHeight="429.0" prefWidth="600.0" stylesheets="@CSS/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.Main">
    <children>
       <Label layoutX="221.0" layoutY="14.0" prefHeight="29.0" prefWidth="187.0" text="News Recommendation System">
          <font>
@@ -17,11 +17,12 @@
       <Button fx:id="Main_button_close" layoutX="554.0" layoutY="1.0" mnemonicParsing="false" text="Close" />
       <StackPane layoutX="-1.0" layoutY="99.0" prefHeight="331.0" prefWidth="600.0">
          <children>
+            <Pane fx:id="home_pane" prefHeight="200.0" prefWidth="200.0" />
             <Pane fx:id="Main_AboutPage" prefHeight="200.0" prefWidth="200.0" />
             <Pane fx:id="Main_HomePage" prefHeight="200.0" prefWidth="200.0" />
             <Pane fx:id="Main_RecommendPage" prefHeight="200.0" prefWidth="200.0" />
             <Pane fx:id="Main_SavePage" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: cyan;" />
-            <Pane fx:id="Main_ProfilePage" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: green;" />
+            <Pane fx:id="Main_ProfilePage" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" />
          </children>
       </StackPane>
       <Button fx:id="Main_button_Home" layoutX="-1.0" layoutY="74.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="25.0" prefWidth="111.0" text="Home" />
