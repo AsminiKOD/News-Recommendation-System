@@ -53,7 +53,9 @@ public class Login implements Initializable {
     private MongoClient mongoClient;
     private MongoDatabase database;
     private MongoCollection<Document> userDetailsCollection;
+    private MongoCollection<Document> adminDetailsCollection;
     private MongoCollection<Document> userLoginDetailsCollection;
+    private MongoCollection<Document> adminLoginDetailsCollection;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -62,7 +64,9 @@ public class Login implements Initializable {
             mongoClient = MongoClients.create("mongodb://localhost:27017");
             database = mongoClient.getDatabase("NewsRecommendations");
             userDetailsCollection = database.getCollection("User");
+            adminDetailsCollection = database.getCollection("Admin");
             userLoginDetailsCollection = database.getCollection("User_Login");
+            adminLoginDetailsCollection = database.getCollection("Admin_Login");
         } catch (Exception e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Database Connection Error", "Could not connect to MongoDB.");
@@ -88,6 +92,17 @@ public class Login implements Initializable {
             Document loginRecord = new Document("username", username)
                     .append("login_time", LocalDateTime.now().toString());
             userLoginDetailsCollection.insertOne(loginRecord);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Could not save login details.");
+        }
+    }
+
+    private void saveLoginDetailsAdmin(String username) {
+        try {
+            Document loginRecord = new Document("username", username)
+                    .append("login_time", LocalDateTime.now().toString());
+            adminLoginDetailsCollection.insertOne(loginRecord);
         } catch (Exception e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Database Error", "Could not save login details.");
@@ -123,6 +138,40 @@ public class Login implements Initializable {
     }
 
     @FXML
+    private void Login_AdminLogin_button() throws IOException {
+        String username = Login_user_Admin.getText();
+        String password = Login_pwd_ad.getText();
+        String adminID = Login_Admin_Id.getText();
+
+        if (checkCredentialsAdmin(username, password, adminID)) {
+            saveLoginDetails(username);
+            showAlert(Alert.AlertType.INFORMATION, "Login", "Welcome " + username);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Administrator.fxml"));
+            Parent signUpRoot = loader.load();
+
+            Stage stage = (Stage) button_login.getScene().getWindow();
+            stage.setScene(new Scene(signUpRoot));
+            stage.show();
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Login", "Incorrect username or password");
+        }
+    }
+
+    private boolean checkCredentialsAdmin(String username, String password, String adminID) {
+        try {
+            // Find user with matching username and password
+            Document user = adminDetailsCollection.find(new Document("username", username)
+                    .append("password", password).append("adminId", adminID)).first();
+            return user != null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Login Error", "An error occurred while checking credentials.");
+        }
+        return false;
+    }
+
+    @FXML
     private void Login_SignUp_button() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUp.fxml"));
         Parent signUpRoot = loader.load();
@@ -130,14 +179,6 @@ public class Login implements Initializable {
         Stage stage = (Stage) Login_button_sign.getScene().getWindow();
         stage.setScene(new Scene(signUpRoot));
         stage.show();
-    }
-    @FXML
-    private void Login_AdminLogin_button() throws IOException {
-        Parent mainRoot = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Administrator.fxml")));
-        Stage stage = (Stage) login_button_admin_logLog.getScene().getWindow();
-        Scene scene = stage.getScene();
-        scene.setRoot(mainRoot);
-        stage.sizeToScene();
     }
 
 
