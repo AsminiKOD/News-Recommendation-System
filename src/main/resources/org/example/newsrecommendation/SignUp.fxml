@@ -48,7 +48,7 @@
                               <Font name="Berlin Sans FB" size="13.0" />
                            </font>
                         </Label>
-                        <Label layoutX="68.0" layoutY="166.0" prefHeight="23.0" prefWidth="48.0" text="Age" />
+                        <Label layoutX="68.0" layoutY="162.0" prefHeight="23.0" prefWidth="48.0" text="Age" />
                         <Label layoutX="66.0" layoutY="211.0" prefHeight="23.0" prefWidth="87.0" text="Preferance" />
                         <Button fx:id="Signup_back" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#SignUp_Back_button" text="Back" />
                         <TextField fx:id="Sign_name" layoutX="149.0" layoutY="84.0" prefHeight="25.0" prefWidth="226.0" promptText="Full Name">
@@ -57,9 +57,9 @@
                            </font>
                         </TextField>
                         <TextField fx:id="Sign_email" layoutX="149.0" layoutY="121.0" prefHeight="25.0" prefWidth="226.0" promptText="Email" />
-                        <TextField fx:id="Sign_age" layoutX="153.0" layoutY="163.0" prefHeight="25.0" prefWidth="38.0" promptText="Age" />
-                        <Label layoutX="270.0" layoutY="169.0" prefHeight="17.0" prefWidth="68.0" text="Gender" />
-                        <ChoiceBox fx:id="Sign_gen" layoutX="328.0" layoutY="160.0" maxHeight="70.0" prefHeight="4.0" prefWidth="95.0">
+                        <TextField fx:id="Sign_age" layoutX="149.0" layoutY="160.0" prefHeight="25.0" prefWidth="38.0" promptText="Age" />
+                        <Label layoutX="270.0" layoutY="165.0" prefHeight="17.0" prefWidth="68.0" text="Gender" />
+                        <ChoiceBox fx:id="Sign_gen" layoutX="328.0" layoutY="156.0" maxHeight="70.0" prefHeight="4.0" prefWidth="95.0">
                            <items>
                               <FXCollections fx:factory="observableArrayList">
                                  <String fx:value="Gender" />
@@ -71,15 +71,15 @@
                         </ChoiceBox>
                         <Label layoutX="397.0" layoutY="169.0" style="-fx-text-fill: #333333; -fx-padding: 0 8 0 0;" text="▼" StackPane.alignment="CENTER_RIGHT" />
 
-                        <CheckBox fx:id="SignUp_Pre_World" layoutX="426.0" layoutY="235.0" mnemonicParsing="false" text="World" />
+                        <CheckBox fx:id="SignUp_Pre_World" layoutX="425.0" layoutY="235.0" mnemonicParsing="false" text="World" />
                         <CheckBox fx:id="SignUp_Pre_Health" layoutX="270.0" layoutY="216.0" mnemonicParsing="false" text="Healthcare" />
                         <CheckBox fx:id="SignUp_Pre_Science" layoutX="270.0" layoutY="235.0" mnemonicParsing="false" text="Science" />
                         <CheckBox fx:id="SignUp_Pre_Finan" layoutX="424.0" layoutY="216.0" mnemonicParsing="false" text="Finance" />
                         <CheckBox fx:id="SignUp_Pre_Politics" layoutX="354.0" layoutY="216.0" mnemonicParsing="false" text="Politics" />
-                        <CheckBox fx:id="SignUp_Pre_Sport" layoutX="355.0" layoutY="235.0" mnemonicParsing="false" text="Sports" />
+                        <CheckBox fx:id="SignUp_Pre_Sport" layoutX="354.0" layoutY="235.0" mnemonicParsing="false" text="Sports" />
                         <CheckBox fx:id="SignUp_Pre_Enter" layoutX="160.0" layoutY="216.0" mnemonicParsing="false" text="Entertainment" />
                         <CheckBox fx:id="SignUp_Pre_Tech" layoutX="160.0" layoutY="235.0" mnemonicParsing="false" text="AI &amp; Technology" />
-                        <TextField fx:id="Sign_User" layoutX="223.0" layoutY="271.0" prefHeight="25.0" prefWidth="226.0" promptText="Username" />
+                        <TextField fx:id="Sign_User" layoutX="222.0" layoutY="271.0" prefHeight="25.0" prefWidth="226.0" promptText="Username" />
                         <Label layoutX="75.0" layoutY="277.0" prefHeight="17.0" prefWidth="68.0" text="Username" />
                         <TextField fx:id="Sign_pwd" layoutX="222.0" layoutY="309.0" prefHeight="25.0" prefWidth="226.0" promptText="Password">
                            <font>
@@ -87,9 +87,9 @@
                            </font>
                         </TextField>
                         <Label layoutX="75.0" layoutY="314.0" prefHeight="17.0" prefWidth="68.0" text="Password" />
-                        <TextField fx:id="Sign_con_pwd" layoutX="222.0" layoutY="344.0" prefHeight="25.0" prefWidth="226.0" promptText="Confirm Password" />
+                        <TextField fx:id="Sign_con_pwd" layoutX="221.0" layoutY="344.0" prefHeight="25.0" prefWidth="226.0" promptText="Confirm Password" />
                         <Button fx:id="button_signup" layoutX="239.0" layoutY="393.0" mnemonicParsing="false" onAction="#saveUserToDatabase" text="Signup" />
-                        <Label layoutX="76.0" layoutY="350.0" prefHeight="17.0" prefWidth="108.0" text="Confirm Password" />
+                        <Label layoutX="75.0" layoutY="350.0" prefHeight="17.0" prefWidth="108.0" text="Confirm Password" />
                         <Line endX="357.0" layoutX="142.0" layoutY="262.0" startX="-88.00000762939453" startY="1.0" stroke="#178a07" strokeWidth="2.0" />
                         <Circle fill="#041728" layoutX="48.0" layoutY="263.0" radius="6.0" stroke="#178a07" strokeType="INSIDE" />
                         <Circle fill="#04182b" layoutX="500.0" layoutY="263.0" radius="6.0" stroke="#178a07" strokeMiterLimit="8.0" strokeType="INSIDE" />

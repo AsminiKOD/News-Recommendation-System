@@ -1,42 +1,166 @@
 package org.example.newsrecommendation;
 
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import org.bson.Document;
 
-public class Main {
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class Main implements Initializable {
     @FXML
-    private Button Main_button_Home;
-    @FXML
-    private Button Main_button_Recomm;
-    @FXML
-    private Button Main_button_Saved;
-    @FXML
-    private Button Main_button_About;
-    @FXML
-    private Button Main_button_profile;
-    @FXML
-    private Button Main_button_close;
+    private Pane Main_AboutPage;
 
     @FXML
     private Pane Main_HomePage;
-    @FXML
-    private Pane Main_RecommendPage;
-    @FXML
-    private Pane Main_SavePage;
-    @FXML
-    private Pane Main_AboutPage;
+
     @FXML
     private Pane Main_ProfilePage;
 
     @FXML
-    public void userPaneNav(ActionEvent actionEvent){
-        if (actionEvent.getSource() == Main_button_Home){
+    private Label Main_Profile_label_Age;
+
+    @FXML
+    private Label Main_Profile_label_Email;
+
+    @FXML
+    private Label Main_Profile_label_Name;
+
+    @FXML
+    private Label Main_Profile_label_gender;
+
+    @FXML
+    private Label Main_Profile_label_prefere;
+
+    @FXML
+    private Pane Main_RecommendPage;
+
+    @FXML
+    private Pane Main_SavePage;
+
+    @FXML
+    private Button Main_button_About;
+
+    @FXML
+    private Button Main_button_Home;
+
+    @FXML
+    private Button Main_button_Recomm;
+
+    @FXML
+    private Button Main_button_Saved;
+
+    @FXML
+    private Button Main_button_profile;
+
+    @FXML
+    private Pane Pane_change_pwd;
+
+    @FXML
+    private Pane Pane_edit_profil;
+
+    @FXML
+    private Pane Pane_enter_pwd;
+
+    @FXML
+    private TableView<LoginHistory> Profile_login_histroy;
+    @FXML
+    private TableColumn<LoginHistory, String> Profile_login_date;
+    @FXML
+    private TableColumn<LoginHistory, String> Profile_login_time;
+
+    @FXML
+    private TextField Text_edit_age;
+
+    @FXML
+    private TextField Text_edit_email;
+
+    @FXML
+    private TextField Text_edit_name;
+
+    @FXML
+    private Button button_adit_confirm;
+
+    @FXML
+    private Button button_confirm_pwd;
+
+    @FXML
+    private Button button_change_pwd;
+
+    @FXML
+    private Button button_edit;
+
+    @FXML
+    private Button button_edit_back;
+
+    @FXML
+    private CheckBox check_edit_finance;
+
+    @FXML
+    private CheckBox check_edit_health;
+
+    @FXML
+    private CheckBox check_edit_politics;
+
+    @FXML
+    private CheckBox check_edit_prefer;
+
+    @FXML
+    private CheckBox check_edit_science;
+
+    @FXML
+    private CheckBox check_edit_sport;
+
+    @FXML
+    private CheckBox check_edit_tech;
+
+    @FXML
+    private CheckBox check_edit_world;
+
+    @FXML
+    private Pane home_pane;
+
+    @FXML
+    private TextField Text_new_pwd;
+
+    @FXML
+    private TextField Text_new_confirm_pwd;
+
+    private static String loggedInUsername;
+
+    public static void setLoggedInUsername(String username) {
+        loggedInUsername = username;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // Initialize the TableView columns
+        Profile_login_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        Profile_login_time.setCellValueFactory(new PropertyValueFactory<>("time"));
+
+        // Clear TableView data on initialization
+        Profile_login_histroy.setItems(FXCollections.observableArrayList());
+    }
+
+    @FXML
+    public void userPaneNav(ActionEvent actionEvent) {
+        if (actionEvent.getSource() == Main_button_Home) {
             Main_HomePage.toFront();
         }
-        if (actionEvent.getSource() == Main_button_Recomm){
+        if (actionEvent.getSource() == Main_button_Recomm) {
             Main_RecommendPage.toFront();
         }
         if (actionEvent.getSource() == Main_button_Saved) {
@@ -46,7 +170,219 @@ public class Main {
             Main_AboutPage.toFront();
         }
         if (actionEvent.getSource() == Main_button_profile) {
+            showUserProfile();
             Main_ProfilePage.toFront();
         }
+        if (actionEvent.getSource() == button_edit) {
+            Pane_edit_profil.toFront();
+        }
+        if (actionEvent.getSource() == button_change_pwd) {
+            Pane_change_pwd.toFront();
+        }
+        if (actionEvent.getSource() == button_edit_back) {
+            Main_ProfilePage.toFront();
+        }
+
+    }
+
+    private void showUserProfile() {
+        if (loggedInUsername != null) {
+            try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+                MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
+                MongoCollection<Document> userCollection = database.getCollection("User");
+                MongoCollection<Document> loginHistoryCollection = database.getCollection("User_Login");
+
+                Document userDoc = userCollection.find(new Document("username", loggedInUsername)).first();
+                if (userDoc != null) {
+                    User user = new User(
+                            userDoc.getString("name"),
+                            userDoc.getString("email"),
+                            userDoc.getInteger("age"),
+                            userDoc.getString("gender"),
+                            userDoc.getString("password"),
+                            userDoc.getList("preferences", String.class)
+                    );
+
+                    Main_Profile_label_Name.setText(user.getName());
+                    Main_Profile_label_Email.setText(user.getEmail());
+                    Main_Profile_label_Age.setText(String.valueOf(user.getAge()));
+                    Main_Profile_label_gender.setText(user.getGender());
+                    Main_Profile_label_prefere.setText(user.getPreference() != null ? String.join(", ", user.getPreference()) : "No preferences set");
+
+                    // Fetch login history
+                    List<LoginHistory> loginHistory = new ArrayList<>();
+                    FindIterable<Document> historyDocs = loginHistoryCollection.find(new Document("username", loggedInUsername));
+                    for (Document doc : historyDocs) {
+                        String loginTime = doc.getString("login_time");
+
+                        // Parse login_time into date and time
+                        String date = loginTime.split("T")[0]; // Extract date
+                        String time = loginTime.split("T")[1].split("\\.")[0]; // Extract time
+
+                        loginHistory.add(new LoginHistory(date, time));
+                    }
+
+                    // Populate login history in table
+                    ObservableList<LoginHistory> historyData = FXCollections.observableArrayList(loginHistory);
+                    Profile_login_histroy.setItems(historyData);
+                } else {
+                    showAlert("User Not Found", "No user found with the username: " + loggedInUsername);
+                    clearUserProfile();
+                }
+            } catch (Exception e) {
+                showAlert("Database Error", "Failed to fetch user details: " + e.getMessage());
+                clearUserProfile();
+            }
+        }
+    }
+
+    private void clearUserProfile() {
+        Main_Profile_label_Name.setText("");
+        Main_Profile_label_Email.setText("");
+        Main_Profile_label_Age.setText("");
+        Main_Profile_label_gender.setText("");
+        Main_Profile_label_prefere.setText("");
+        Profile_login_histroy.setItems(FXCollections.observableArrayList());
+    }
+
+    // This method handles navigation to edit profile page and pre-filling user data.
+    @FXML
+    public void handleEditProfile(ActionEvent actionEvent) {
+        if (loggedInUsername != null) {
+            try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+                MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
+                MongoCollection<Document> userCollection = database.getCollection("User");
+
+                Document userDoc = userCollection.find(new Document("username", loggedInUsername)).first();
+                if (userDoc != null) {
+                    // Populate the edit fields with current user details
+                    Text_edit_name.setText(userDoc.getString("name"));
+                    Text_edit_email.setText(userDoc.getString("email"));
+                    Text_edit_age.setText(String.valueOf(userDoc.getInteger("age")));
+                    // Check the preferences checkboxes based on user data
+                    List<String> preferences = userDoc.getList("preferences", String.class);
+                    check_edit_tech.setSelected(preferences.contains("AI and Technology"));
+                    check_edit_prefer.setSelected(preferences.contains("Entertainment"));
+                    check_edit_finance.setSelected(preferences.contains("Finance"));
+                    check_edit_health.setSelected(preferences.contains("Healthcare"));
+                    check_edit_politics.setSelected(preferences.contains("Politics"));
+                    check_edit_world.setSelected(preferences.contains("World"));
+                    check_edit_sport.setSelected(preferences.contains("Sport"));
+                    check_edit_science.setSelected(preferences.contains("Science"));
+                }
+            } catch (Exception e) {
+                showAlert("Database Error", "Failed to fetch user details: " + e.getMessage());
+            }
+        }
+        // Show the edit profile page
+        Pane_edit_profil.toFront();
+    }
+
+    // This method handles the "Confirm" button click, saving the changes to the database.
+    @FXML
+    public void handleEditConfirm(ActionEvent actionEvent) {
+        // Get the updated user details from the form
+        String newName = Text_edit_name.getText();
+        String newEmail = Text_edit_email.getText();
+        int newAge = Integer.parseInt(Text_edit_age.getText());
+
+        List<String> updatedPreferences = new ArrayList<>();
+        if (check_edit_tech.isSelected()) updatedPreferences.add("AI and Technology");
+        if (check_edit_prefer.isSelected()) updatedPreferences.add("Entertainment");
+        if (check_edit_finance.isSelected()) updatedPreferences.add("Finance");
+        if (check_edit_health.isSelected()) updatedPreferences.add("Healthcare");
+        if (check_edit_politics.isSelected()) updatedPreferences.add("Politics");
+        if (check_edit_world.isSelected()) updatedPreferences.add("World");
+        if (check_edit_sport.isSelected()) updatedPreferences.add("Sport");
+        if (check_edit_science.isSelected()) updatedPreferences.add("Science");
+
+        // Update the user document in MongoDB
+        if (loggedInUsername != null) {
+            try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+                MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
+                MongoCollection<Document> userCollection = database.getCollection("User");
+
+                Document updatedUser = new Document("name", newName)
+                        .append("email", newEmail)
+                        .append("age", newAge)
+                        .append("preferences", updatedPreferences);
+
+                // Update the document in the database
+                userCollection.updateOne(new Document("username", loggedInUsername),
+                        new Document("$set", updatedUser));
+
+                // Reflect the changes in the profile page
+                Main_Profile_label_Name.setText(newName);
+                Main_Profile_label_Email.setText(newEmail);
+                Main_Profile_label_Age.setText(String.valueOf(newAge));
+                Main_Profile_label_prefere.setText(String.join(", ", updatedPreferences));
+
+                // Show success message
+                showAlerts();
+            } catch (Exception e) {
+                showAlert("Database Error", "Failed to update user details: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    public void handleChangePassword(ActionEvent actionEvent) {
+        Pane_change_pwd.toFront();
+    }
+
+    @FXML
+    public void handlePasswordChangeConfirm(ActionEvent actionEvent) {
+        // Get the new password and confirm password from the input fields
+        String newPassword = Text_new_pwd.getText();
+        String confirmPassword = Text_new_confirm_pwd.getText();
+
+        // Validate that the passwords match
+        if (!newPassword.equals(confirmPassword)) {
+            showAlert("Password Mismatch", "The new password and confirm password do not match.");
+            return;
+        }
+        if (newPassword.length() < 6) {
+            showAlert("Password Mismatch","Password must be at least 6 characters long.");
+            return;
+        }
+
+        // If valid, update the password in the database
+        if (loggedInUsername != null) {
+            try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+                MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
+                MongoCollection<Document> userCollection = database.getCollection("User");
+
+                // Update the password field in the database
+                Document updatedUser = new Document("password", newPassword);
+                userCollection.updateOne(new Document("username", loggedInUsername),
+                        new Document("$set", updatedUser));
+
+                // Show success message
+                showAlerts();
+
+                // Optionally, reset the fields or navigate back to profile page
+                Text_new_pwd.clear();
+                Text_new_confirm_pwd.clear();
+                Main_ProfilePage.toFront();  // Navigate back to Profile Page (Optional)
+            } catch (Exception e) {
+                showAlert("Database Error", "Failed to update password: " + e.getMessage());
+            }
+        }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showAlerts() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("Profile updated successfully.");
+        alert.showAndWait();
     }
 }

@@ -126,6 +126,7 @@ public class Login implements Initializable {
             saveLoginDetails(username);
             showAlert(Alert.AlertType.INFORMATION, "Login", "Welcome " + username);
 
+            Main.setLoggedInUsername(username);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
             Parent signUpRoot = loader.load();
 

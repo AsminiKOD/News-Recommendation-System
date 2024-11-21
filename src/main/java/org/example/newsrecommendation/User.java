@@ -1,17 +1,24 @@
 package org.example.newsrecommendation;
 
-import java.util.Collections;
 import java.util.List;
 
 public class User extends Common {
-    private List<String>preference;
+    private List<String> preference;
 
-    public User(String name,String email,int age,String gender,String password,List<String>preference){
+    public User(String name, String email, int age, String gender, String password, List<String> preference) {
         super(name, email, age, gender, password);
         this.preference = preference;
     }
-    public void setPreference(String preference){
-        this.preference = Collections.singletonList(preference);
+
+    public List<String> getPreference() {
+        return preference;
     }
 
+    public void setPreference(List<String> preference) {
+        this.preference = preference;
+    }
+
+    public void setPreference(String preference) {
+        this.preference = List.of(preference);
+    }
 }
