@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d69130ca-d560-41c0-857d-8ef2f1671203" name="Changes" comment="GUI">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/LoginHistory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Login.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/SignUp.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/SignUp.fxml" afterDir="false" />
-    </list>
+    <list default="true" id="d69130ca-d560-41c0-857d-8ef2f1671203" name="Changes" comment="GUI" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -98,7 +88,7 @@
       <workItem from="1731382011733" duration="7193000" />
       <workItem from="1731579514477" duration="11486000" />
       <workItem from="1732074990893" duration="2035000" />
-      <workItem from="1732157384882" duration="12412000" />
+      <workItem from="1732157384882" duration="13003000" />
     </task>
     <task id="LOCAL-00001" summary="new">
       <option name="closed" value="true" />
@@ -196,7 +186,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732091966282</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="GUI">
+      <option name="closed" value="true" />
+      <created>1732179468152</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1732179468152</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
