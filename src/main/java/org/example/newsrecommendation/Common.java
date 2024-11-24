@@ -2,10 +2,20 @@ package org.example.newsrecommendation;
 
 public class Common {
     private String name;
+    private String username;
     private String email;
     private int age;
     private String gender;
     private String password;
+
+    public Common(String name, String username, String email, int age, String gender, String password) {
+        this.name = name;
+        this.username =username;
+        this.email = email;
+        this.age = age;
+        this.gender = gender;
+        this.password = password;
+    }
 
     public Common(String name, String email, int age, String gender, String password) {
         this.name = name;
@@ -41,6 +51,14 @@ public class Common {
 
     public String getGender() {
         return gender;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setGender(String gender) {

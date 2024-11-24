@@ -98,9 +98,9 @@ public class Login implements Initializable {
         }
     }
 
-    private void saveLoginDetailsAdmin(String username) {
+    private void saveLoginDetailsAdmin(String adminID) {
         try {
-            Document loginRecord = new Document("username", username)
+            Document loginRecord = new Document("adminId", adminID)
                     .append("login_time", LocalDateTime.now().toString());
             adminLoginDetailsCollection.insertOne(loginRecord);
         } catch (Exception e) {
@@ -145,9 +145,10 @@ public class Login implements Initializable {
         String adminID = Login_Admin_Id.getText();
 
         if (checkCredentialsAdmin(username, password, adminID)) {
-            saveLoginDetails(username);
+            saveLoginDetailsAdmin(adminID);
             showAlert(Alert.AlertType.INFORMATION, "Login", "Welcome " + username);
 
+            Administrator.setLoggedInAdminID(adminID);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Administrator.fxml"));
             Parent signUpRoot = loader.load();
 

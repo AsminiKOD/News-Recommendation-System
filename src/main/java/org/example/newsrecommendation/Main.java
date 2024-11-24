@@ -77,8 +77,10 @@ public class Main implements Initializable {
 
     @FXML
     private TableView<LoginHistory> Profile_login_histroy;
+
     @FXML
     private TableColumn<LoginHistory, String> Profile_login_date;
+
     @FXML
     private TableColumn<LoginHistory, String> Profile_login_time;
 
@@ -180,6 +182,9 @@ public class Main implements Initializable {
             Pane_change_pwd.toFront();
         }
         if (actionEvent.getSource() == button_edit_back) {
+            Main_ProfilePage.toFront();
+        }
+        if (actionEvent.getSource() == Main_ProfilePage) {
             Main_ProfilePage.toFront();
         }
 

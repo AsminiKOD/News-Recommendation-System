@@ -83,11 +83,12 @@
                         <Label layoutX="14.0" layoutY="42.0" text="Enter New Password" />
                         <Label layoutX="15.0" layoutY="83.0" text="Confirm Password" />
                         <TextField fx:id="Text_new_pwd" layoutX="141.0" layoutY="38.0" promptText="Password" />
-                        <TextField fx:id="Text_new_confirm_pwd" layoutX="141.0" layoutY="79.0" promptText="Confirm Password" />
+                        <TextField fx:id="Text_new_confirm_pwd" layoutX="140.0" layoutY="79.0" promptText="Confirm Password" />
                         <Button fx:id="button_confirm_pwd" layoutX="122.0" layoutY="114.0" mnemonicParsing="false" onAction="#handlePasswordChangeConfirm" text="Confirm" />
                      </children>
                   </Pane>
                   <Label layoutX="253.0" layoutY="23.0" text="Change Password" />
+                  <Button fx:id="button_change_back" layoutX="14.0" layoutY="19.0" mnemonicParsing="false" onAction="#userPaneNav" text="Back" />
                </children>
             </Pane>
          </children>
