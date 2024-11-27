@@ -5,7 +5,7 @@ AnchorPane, StackPane {
 
 /* Pane Styles for Signup and Thank You Screens */
 #Sign_Pane_Thank, #Sign_pane_user {
-    -fx-background-image: url("signBack.jpg");
+    -fx-background-image: url("../Images/signBack.jpg");
     -fx-border-color: #02496e;
     -fx-border-width: 2px;
     -fx-border-radius: 10px;

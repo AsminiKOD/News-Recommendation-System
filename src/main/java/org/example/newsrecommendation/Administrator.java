@@ -1,7 +1,7 @@
 package org.example.newsrecommendation;
 
 import com.mongodb.client.*;
-import javafx.beans.property.SimpleStringProperty;
+import com.mongodb.client.model.Sorts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,10 +11,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import org.bson.Document;
+import org.example.newsrecommendation.NewsArticlesController.ArticleCategorizer;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Administrator implements Initializable {
@@ -37,9 +39,6 @@ public class Administrator implements Initializable {
     private Button Admin_button_delete;
 
     @FXML
-    private Button Admin_button_log;
-
-    @FXML
     private Pane Admin_pane_Delete;
 
     @FXML
@@ -47,9 +46,6 @@ public class Administrator implements Initializable {
 
     @FXML
     private Button Button_add_edit;
-
-    @FXML
-    private Pane Front_Pane;
 
     @FXML
     private Pane Pane_user_show_details;
@@ -151,7 +147,19 @@ public class Administrator implements Initializable {
     private TableColumn<User, String> tabCol_user;
 
     @FXML
+    private TableColumn<Article, String>tabCol_heading;
+
+    @FXML
+    private TableColumn<Article, String>tabCol_delete_date;
+
+    @FXML
+    private TableColumn<Article, String>tabCol_delete_cate;
+
+    @FXML
     private TableView<LoginHistory> tabView_LogHis;
+
+    @FXML
+    private TableView<Article> table_delete;
 
     @FXML
     private TextField text_add_new_pwd;
@@ -171,6 +179,39 @@ public class Administrator implements Initializable {
     @FXML
     private TextField text_adm_name;
 
+    @FXML
+    private TextField text_adm_AddHeading;
+
+    @FXML
+    private TextArea textArea_adm_AddContent;
+
+    @FXML
+    private DatePicker DatePicker_adm_date;
+
+    @FXML
+    private CheckBox Admin_Cat_Enter;
+
+    @FXML
+    private CheckBox Admin_Cat_Politics;
+
+    @FXML
+    private CheckBox Admin_Cat_Science;
+
+    @FXML
+    private CheckBox Admin_Cat_finance;
+
+    @FXML
+    private CheckBox Admin_Cat_health;
+
+    @FXML
+    private CheckBox Admin_Cat_sport;
+
+    @FXML
+    private CheckBox Admin_Cat_tech;
+
+    @FXML
+    private CheckBox Admin_Cat_world;
+
     private static String loggedInAdminID;
 
     public static void setLoggedInAdminID(String username) {
@@ -187,6 +228,7 @@ public class Administrator implements Initializable {
             Admin_Pane_User_records.toFront();
         }
         if (actionEvent.getSource() == Admin_button_delete) {
+            loadArticles();
             Admin_pane_Delete.toFront();
         }
         if (actionEvent.getSource() == Button_add_edit) {
@@ -248,13 +290,19 @@ public class Administrator implements Initializable {
         // Clear TableView data on initialization
         tabView_LogHis.setItems(FXCollections.observableArrayList());
 
-        // Initialize the TableView columns
-        tabCol_user.setCellValueFactory(new PropertyValueFactory<>("username")); // Display username
-        tabCol_name.setCellValueFactory(new PropertyValueFactory<>("name")); // Display name
-        tabCol_email.setCellValueFactory(new PropertyValueFactory<>("email")); // Display email
+        // Initialize the TableView  of user details columns
+        tabCol_user.setCellValueFactory(new PropertyValueFactory<>("username"));
+        tabCol_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tabCol_email.setCellValueFactory(new PropertyValueFactory<>("email"));
 
         // Clear TableView data on initialization
         Admin_table.setItems(FXCollections.observableArrayList());
+
+        // Initialize the TableView of delete columns
+        tabCol_heading.setCellValueFactory(new PropertyValueFactory<>("heading"));
+        tabCol_delete_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        tabCol_delete_cate.setCellValueFactory(new PropertyValueFactory<>("category"));
+
 
     }
 
@@ -391,7 +439,7 @@ public class Administrator implements Initializable {
                 label_add_age.setText(String.valueOf(newAge));
 
                 // Show success message
-                showAlerts();
+                showAlerts("Success", "Profile updated successfully.");
             } catch (Exception e) {
                 showAlert("Database Error", "Failed to update user details: " + e.getMessage());
             }
@@ -427,7 +475,7 @@ public class Administrator implements Initializable {
                         new Document("$set", updatedUser));
 
                 // Show success message
-                showAlerts();
+                showAlerts("Success", "Password changed successfully.");
 
                 // Optionally, reset the fields or navigate back to profile page
                 text_add_new_pwd.clear();
@@ -484,7 +532,6 @@ public class Administrator implements Initializable {
         }
         return true;
     }
-
 
     private boolean searchUserByUsername(String username) {
         try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
@@ -571,6 +618,178 @@ public class Administrator implements Initializable {
         }
     }
 
+    @FXML
+    void addArticle(ActionEvent event) {
+        String heading = text_adm_AddHeading.getText();
+        String date = DatePicker_adm_date.getValue() != null ? DatePicker_adm_date.getValue().toString() : "";
+        String content = textArea_adm_AddContent.getText();
+
+        if (heading.isEmpty() || date.isEmpty() || content.isEmpty()) {
+            showAlert("Input Error", "All fields must be filled out!");
+            return;
+        }
+
+        // Categorize the article
+        String category = ArticleCategorizer.categorizeArticle(content);
+
+        // Insert into MongoDB
+        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+            MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
+            MongoCollection<Document> collection = database.getCollection("Article");
+
+            Document article = new Document("heading", heading)
+                    .append("date", date)
+                    .append("content", content)
+                    .append("category", category);
+
+            collection.insertOne(article);
+
+            showAlerts("Success", "Article added successfully!");
+        } catch (Exception e) {
+            showAlert("Database Error", "Failed to add article to the database!");
+            e.printStackTrace();
+        }
+
+        // Clear fields after adding
+        text_adm_AddHeading.clear();
+        DatePicker_adm_date.setValue(null);
+        textArea_adm_AddContent.clear();
+    }
+
+    @FXML
+    private void loadArticles() {
+        ObservableList<Article> articleData = FXCollections.observableArrayList();
+
+        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+            MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
+            MongoCollection<Document> articleCollection = database.getCollection("Article");
+
+            // Fetch all articles from the database
+            FindIterable<Document> articles = articleCollection.find();
+
+            for (Document articleDoc : articles) {
+                String heading = articleDoc.getString("heading");
+                String date = articleDoc.getString("date");
+                String category = articleDoc.getString("category");
+
+                // Create an Article object (you can define the Article class with appropriate fields)
+                Article article = new Article(heading, date, category);
+                articleData.add(article);
+            }
+        } catch (Exception e) {
+            showAlert("Database Error", "Failed to fetch articles: " + e.getMessage());
+        }
+
+        // Set the data into the TableView
+        tabCol_heading.setCellValueFactory(new PropertyValueFactory<>("heading"));
+        tabCol_delete_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        tabCol_delete_cate.setCellValueFactory(new PropertyValueFactory<>("category"));
+
+        // Populate the TableView
+        table_delete.setItems(articleData);
+    }
+
+    // Method to handle the sort button click
+    @FXML
+    public void handleSortButton(ActionEvent event) {
+        // Get selected categories
+        List<String> selectedCategories = new ArrayList<>();
+        if (Admin_Cat_Enter.isSelected()) selectedCategories.add("Entertainment");
+        if (Admin_Cat_finance.isSelected()) selectedCategories.add("Finance");
+        if (Admin_Cat_Politics.isSelected()) selectedCategories.add("Politics");
+        if (Admin_Cat_health.isSelected()) selectedCategories.add("Healthcare");
+        if (Admin_Cat_tech.isSelected()) selectedCategories.add("AI and Technology");
+        if (Admin_Cat_Science.isSelected()) selectedCategories.add("Science");
+        if (Admin_Cat_sport.isSelected()) selectedCategories.add("Sport");
+        if (Admin_Cat_world.isSelected()) selectedCategories.add("World");
+
+        // Fetch filtered data from MongoDB based on selected categories
+        ObservableList<Article> filteredArticles = fetchArticlesFromDatabase(selectedCategories);
+
+        // Display the filtered articles in the table
+        table_delete.setItems(filteredArticles);
+    }
+
+    private ObservableList<Article> fetchArticlesFromDatabase(List<String> categories) {
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
+        MongoCollection<Document> collection = database.getCollection("Article");
+
+        // Build MongoDB query
+        Document query = new Document();
+
+        // If categories are selected, add to the query
+        if (!categories.isEmpty()) {
+            query.append("category", new Document("$in", categories));
+        }
+
+        // Fetch articles from MongoDB
+        List<Article> articles = new ArrayList<>();
+        for (Document doc : collection.find(query).sort(Sorts.ascending("date"))) {
+            String heading = doc.getString("heading");
+            String date = doc.getString("date"); // MongoDB stores date as a String in "MM/dd/yyyy" format
+            String category = doc.getString("category");
+
+            // Create Article object and add to the list
+            articles.add(new Article(heading, date, category));
+        }
+
+        mongoClient.close();
+
+        // Return as ObservableList for TableView
+        return FXCollections.observableArrayList(articles);
+    }
+
+    @FXML
+    public void handleDeleteButton(ActionEvent event) {
+        // Get the selected article from the table
+        Article selectedArticle = table_delete.getSelectionModel().getSelectedItem();
+
+        if (selectedArticle == null) {
+            showAlert("Error", "Please select an article to delete.");
+            return;
+        }
+
+        // Confirm deletion
+        Alert confirmDeleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmDeleteAlert.setTitle("Confirm Deletion");
+        confirmDeleteAlert.setHeaderText(null);
+        confirmDeleteAlert.setContentText("Are you sure you want to delete the article: " + selectedArticle.getHeading() + "?");
+
+        Optional<ButtonType> result = confirmDeleteAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // If confirmed, delete the article from the database
+            if (deleteArticleFromDatabase(selectedArticle)) {
+                showAlerts("Success", "Article deleted successfully.");
+
+                // Reload the articles in the table after deletion
+                loadArticles();
+            } else {
+                showAlert("Error", "Failed to delete the article.");
+            }
+        }
+    }
+
+    private boolean deleteArticleFromDatabase(Article article) {
+        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+            MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
+            MongoCollection<Document> articleCollection = database.getCollection("Article");
+
+            // Delete the article from the collection using the heading as the identifier
+            Document result = articleCollection.findOneAndDelete(new Document("heading", article.getHeading()));
+
+            if (result != null) {
+                return true;  // Article successfully deleted
+            } else {
+                showAlert("Error", "No article found with heading: " + article.getHeading());
+                return false;  // Article not found
+            }
+        } catch (Exception e) {
+            showAlert("Database Error", "Failed to delete article: " + e.getMessage());
+            return false;
+        }
+    }
+
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -579,11 +798,11 @@ public class Administrator implements Initializable {
         alert.showAndWait();
     }
 
-    private void showAlerts() {
+    private void showAlerts(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
+        alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText("Profile updated successfully.");
+        alert.setContentText(message);
         alert.showAndWait();
     }
 }

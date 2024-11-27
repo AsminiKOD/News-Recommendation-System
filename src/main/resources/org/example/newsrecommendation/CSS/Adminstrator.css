@@ -1,0 +1,177 @@
+#daily{
+    -fx-font-family: "Brush Script MT";
+    -fx-font-size: 26px;
+    -fx-font-weight: Italic;
+    -fx-text-fill: black;
+}
+
+#news{
+    -fx-font-family: Centaur;
+    -fx-font-size: 10px;
+    -fx-font-weight: Regular;
+    -fx-text-fill: black;
+}
+
+#head{
+    -fx-font-family: "Berlin Sans FB";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2b446b;
+}
+
+/* StackPane Styling */
+.stack-pane {
+    -fx-background-color: #ffffff;
+}
+
+/* Label Styles */
+.label {
+    -fx-font-family: "Berlin Sans FB";
+    -fx-font-size: 13px;
+    -fx-text-fill: black;
+}
+
+/* Button Styles */
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-family: "Berlin Sans FB";
+    -fx-font-size: 13px;
+}
+
+.button:hover {
+    -fx-background-color: #45a049;
+}
+
+.button:pressed {
+    -fx-background-color: #2e8b57;
+}
+
+/* TextField Styles */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused {
+    -fx-border-color: #4CAF50;
+}
+
+/* TextArea Styles */
+.text-area {
+    -fx-background-color: #f7f7f7;
+    -fx-border-color: #2b446b;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-font-size: 13px;
+    -fx-text-fill: black;
+    -fx-font-family: Colonna MT;
+}
+
+/* TableView Styles */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+}
+
+/* TableColumn Header Styles */
+.table-view .column-header {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* TableCell Styles */
+.table-view .table-cell {
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+}
+
+/* CheckBox Styles */
+.check-box {
+    -fx-font-size: 14px;
+}
+
+.check-box:selected {
+    -fx-text-fill: #4CAF50;
+}
+
+/* Pane Styles */
+.pane {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+}
+
+/* Specific Pane Styles */
+#Pane_admin_profile {
+    -fx-background-color: #f1f1f1;
+}
+
+#Pane_adm_edit {
+    -fx-background-color: #ffcccc;
+}
+
+#Pane_adm_view_details {
+    -fx-background-color: #ffcccc;
+}
+
+#Pane_change_pwd {
+    -fx-background-color: #f0f8ff;
+}
+
+#Admin_Pane_User_records {
+    -fx-background-color: #f8f9fa;
+}
+
+#Admin_Pane_Add {
+    -fx-background-color: #d9f7d6;
+}
+
+#Admin_pane_Delete {
+    -fx-background-color: #fff5f5;
+}
+
+#Front_Pane {
+    -fx-background-color: #f0f9ff;
+}
+
+/* Line Styling */
+.line {
+    -fx-stroke: #ccc;
+    -fx-stroke-width: 2px;
+}
+
+/* Styling for the Welcome TextArea */
+.text-area {
+    -fx-font-size: 12px;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #2b446b;
+    -fx-padding: 10px;
+}
+
+/* Custom Styling for Buttons in Specific Panes */
+#button_add_change_pwd, #button_add_confirm_edit, #button_add_back_edit {
+    -fx-background-color: #f1a7b1;
+}
+
+#button_add_change_back, #button_add_edit, #button_view {
+    -fx-background-color: #b3e5fc;
+}
+
+#button_adm_delete {
+    -fx-background-color: #ff6666;
+}
+
+#button_admin_sort, #button_add {
+    -fx-background-color: #81c784;
+}
+
+#button_removeUser {
+    -fx-background-color: #ff7043;
+}

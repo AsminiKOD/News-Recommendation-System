@@ -4,18 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d69130ca-d560-41c0-857d-8ef2f1671203" name="Changes" comment="GUI">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Admin.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/NewsArticlesController/ArticleCategorizer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/NewsArticlesController/ArticleFetcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Datasets/Articles.csv" afterDir="false" />
+    <list default="true" id="d69130ca-d560-41c0-857d-8ef2f1671203" name="Changes" comment="Articles">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Article.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/Adminstrator.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Administrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Administrator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Common.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Common.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/NewsArticlesController/ArticleCategorizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/NewsArticlesController/ArticleCategorizer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/NewsArticlesController/ArticleFetcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/NewsArticlesController/ArticleFetcher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Administrator.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Administrator.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/LogAd.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Images/LogAd.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/LogUser.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Images/LogUser.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/Login.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/Login.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/SignUp.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/SignUp.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/signBack.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Images/signBack.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Main.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,8 +31,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="FxmlFile" />
-        <option value="CSS File" />
         <option value="Class" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -51,32 +55,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.HelloApplication.executor": "Run",
-    "Application.RunApplication.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "D:/Java/NewsRecommendation/src/main/java/org/example/newsrecommendation",
-    "last_opened_file_path": "D:/Java/NewsRecommendation/src/main/resources/org/example/newsrecommendation/Datasets",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "vcs.Git",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.ArticleFetcher.executor&quot;: &quot;Run&quot;,
+    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.RunApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;D:/Java/NewsRecommendation/src/main/java/org/example/newsrecommendation&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Java/NewsRecommendation/src/main/resources/org/example/newsrecommendation/Datasets&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Java\NewsRecommendation\src\main\resources\org\example\newsrecommendation\Datasets" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Java\NewsRecommendation\src\main\resources\org\example\newsrecommendation\Images" />
       <recent name="D:\Java\NewsRecommendation\src\main\resources\org\example\newsrecommendation\CSS" />
     </key>
   </component>
@@ -104,7 +110,9 @@
       <workItem from="1731382011733" duration="7193000" />
       <workItem from="1731579514477" duration="11486000" />
       <workItem from="1732074990893" duration="2035000" />
-      <workItem from="1732157384882" duration="31764000" />
+      <workItem from="1732157384882" duration="32578000" />
+      <workItem from="1732598608292" duration="4915000" />
+      <workItem from="1732698969214" duration="11776000" />
     </task>
     <task id="LOCAL-00001" summary="new">
       <option name="closed" value="true" />
@@ -218,7 +226,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732370293357</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Articles">
+      <option name="closed" value="true" />
+      <created>1732446555503</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1732446555503</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,6 +254,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="new" />
     <MESSAGE value="GUI" />
-    <option name="LAST_COMMIT_MESSAGE" value="GUI" />
+    <MESSAGE value="Articles" />
+    <option name="LAST_COMMIT_MESSAGE" value="Articles" />
   </component>
 </project>

@@ -4,6 +4,7 @@ module org.example.newsrecommendation {
     requires org.mongodb.driver.core;
     requires org.mongodb.driver.sync.client;
     requires org.mongodb.bson;
+    requires commons.csv;
 
 
     opens org.example.newsrecommendation to javafx.fxml;

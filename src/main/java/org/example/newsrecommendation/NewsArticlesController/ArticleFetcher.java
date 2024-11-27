@@ -1,62 +1,75 @@
 package org.example.newsrecommendation.NewsArticlesController;
 
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-
-import java.io.BufferedReader;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 public class ArticleFetcher {
 
-    private static final String CSV_FILE_PATH = "src/main/resources/org/example/newsrecommendation/Datasets/Articles.csv"; // Replace with the actual path of your CSV file
+    private static final String CSV_FILE_PATH = "src/main/resources/org/example/newsrecommendation/Datasets/Articles.csv";
+    private static final String DATABASE_URL = "mongodb://localhost:27017";
+    private static final String DATABASE_NAME = "NewsRecommendations";
+    private static final String COLLECTION_NAME = "Article";
 
     public static void main(String[] args) {
-        fetchAndCategorizeArticles();
-    }
+        try {
+            // Step 1: Read articles from CSV
+            List<CSVRecord> records = readCSV(CSV_FILE_PATH);
 
-    // Method to fetch articles from the CSV file, categorize them, and store them in MongoDB
-    public static void fetchAndCategorizeArticles() {
-        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] columns = line.split(",");  // Assuming CSV has columns: heading, date, content
-                if (columns.length >= 3) {
-                    String heading = columns[0].trim();
-                    String date = columns[1].trim();
-                    String content = columns[2].trim();
+            // Step 2: Categorize and store articles
+            categorizeAndStoreArticles(records);
 
-                    // Categorize the article using ArticleCategorizer
-                    String category = ArticleCategorizer.categorizeArticle(content);
-
-                    // Store the article in MongoDB
-                    storeArticleInDatabase(heading, date, content, category);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Method to store the article in MongoDB
-    private static void storeArticleInDatabase(String heading, String date, String content, String category) {
-        try (var mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-            MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-            MongoCollection<Document> articleCollection = database.getCollection("Article");
-
-            // Create a document for the article
-            Document articleDocument = new Document("heading", heading)
-                    .append("date", date)
-                    .append("content", content)
-                    .append("category", category);
-
-            // Insert the article into the MongoDB collection
-            articleCollection.insertOne(articleDocument);
-            System.out.println("Article stored successfully: " + heading);
+            System.out.println("Articles fetched and stored successfully!");
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // Method to read articles from CSV file
+    private static List<CSVRecord> readCSV(String filePath) throws IOException {
+        FileReader fileReader = new FileReader(filePath);
+        CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader("Article", "Date", "Heading").withIgnoreHeaderCase().withTrim());
+        return csvParser.getRecords();
+    }
+
+    // Method to categorize and store articles in MongoDB
+    private static void categorizeAndStoreArticles(List<CSVRecord> records) {
+        MongoClient mongoClient = MongoClients.create(DATABASE_URL);
+        MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
+        MongoCollection<Document> collection = database.getCollection(COLLECTION_NAME);
+
+        // Initialize the categorizer
+        ArticleCategorizer categorizer = new ArticleCategorizer();
+
+        for (CSVRecord record : records) {
+            String heading = record.get("Heading");
+            String article = record.get("Article");
+            String date = record.get("Date");
+
+
+            // Categorize the article
+            String category = categorizer.categorizeArticle(article);
+
+            // Only store the article if it has a valid category (not Uncategorized)
+            if (!category.equals("Uncategorized")) {
+                // Create a document to store in MongoDB
+                Document document = new Document("heading", heading)
+                        .append("article", article)
+                        .append("category", category)
+                        .append("date", date);
+
+                collection.insertOne(document);
+            }
+        }
+
+        mongoClient.close();
     }
 }

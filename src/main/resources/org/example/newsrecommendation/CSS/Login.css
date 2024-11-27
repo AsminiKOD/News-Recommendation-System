@@ -11,7 +11,7 @@ AnchorPane, StackPane {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.2, 2, 2);
 }
 #Log_image {
-    -fx-background-image: url("LogUser.jpg");
+    -fx-background-image: url("../Images/LogUser.jpg");
     -fx-background-size: 300px auto; /* Width is 300px, height adjusts automatically */
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
@@ -19,7 +19,7 @@ AnchorPane, StackPane {
     -fx-opacity: 80%;
 }
 #Login_admi_image {
-    -fx-background-image: url("LogAd.jpg");
+    -fx-background-image: url("../Images/LogAd.jpg");
     -fx-background-size: 300px auto; /* Width is 300px, height adjusts automatically */
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;

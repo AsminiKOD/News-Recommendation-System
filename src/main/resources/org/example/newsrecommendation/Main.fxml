@@ -13,9 +13,9 @@
 
 <AnchorPane prefHeight="429.0" prefWidth="600.0" stylesheets="@CSS/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.Main">
    <children>
-      <Label layoutX="221.0" layoutY="14.0" prefHeight="29.0" prefWidth="187.0" text="News Recommendation System">
+      <Label layoutX="305.0" layoutY="41.0" prefHeight="29.0" prefWidth="176.0" text="(News Recommendation System)">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font size="11.0" />
          </font>
       </Label>
       <StackPane layoutX="-1.0" layoutY="99.0" prefHeight="331.0" prefWidth="600.0">
@@ -98,5 +98,10 @@
       <Button fx:id="Main_button_Saved" layoutX="221.0" layoutY="72.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="29.0" prefWidth="111.0" text="Saved" />
       <Button fx:id="Main_button_profile" layoutX="487.0" layoutY="72.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="29.0" prefWidth="111.0" text="Profile" />
       <Button fx:id="Main_button_About" layoutX="332.0" layoutY="72.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="29.0" prefWidth="111.0" text="About Us" />
+      <Label layoutX="221.0" prefHeight="60.0" prefWidth="206.0" text="DailyDive">
+         <font>
+            <Font name="Brush Script MT Italic" size="45.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
