@@ -8,12 +8,4 @@ public class LoginHistory {
         this.date = date;
         this.time = time;
     }
-
-    public String getDate() {
-        return date;
-    }
-
-    public String getTime() {
-        return time;
-    }
 }

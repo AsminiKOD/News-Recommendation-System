@@ -19,11 +19,4 @@ public class User extends Common {
         return preference;
     }
 
-    public void setPreference(List<String> preference) {
-        this.preference = preference;
-    }
-
-    public void setPreference(String preference) {
-        this.preference = List.of(preference);
-    }
 }

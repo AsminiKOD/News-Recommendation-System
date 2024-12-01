@@ -5,20 +5,24 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import org.bson.Document;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class Main implements Initializable {
     @FXML
@@ -141,6 +145,12 @@ public class Main implements Initializable {
     @FXML
     private TextField Text_new_confirm_pwd;
 
+    @FXML
+    private ScrollPane scrol_pane_main_rec;
+
+    @FXML
+    private GridPane main_rec_grid;
+
     private static String loggedInUsername;
 
     public static void setLoggedInUsername(String username) {
@@ -155,6 +165,7 @@ public class Main implements Initializable {
 
         // Clear TableView data on initialization
         Profile_login_histroy.setItems(FXCollections.observableArrayList());
+        loadAndDisplayArticles(loggedInUsername);
     }
 
     @FXML
@@ -372,6 +383,126 @@ public class Main implements Initializable {
             } catch (Exception e) {
                 showAlert("Database Error", "Failed to update password: " + e.getMessage());
             }
+        }
+    }
+
+    public List<Article> fetchArticlesBasedOnPoints(String username) {
+        List<Article> articles = new ArrayList<>();
+        try {
+            // Connect to MongoDB
+            MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+            MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
+            MongoCollection<Document> articlesCollection = database.getCollection("Article");
+            MongoCollection<Document> userPointsCollection = database.getCollection("Preferences");
+
+            // Retrieve the user's points document
+            Document userPointsDoc = userPointsCollection.find(Filters.eq("username", username)).first();
+            if (userPointsDoc == null) {
+                System.out.println("No points found for user: " + username);
+                return articles; // Return an empty list if no points are found
+            }
+
+            // Calculate the total points across all categories
+            Map<String, Integer> categoryPoints = new HashMap<>();
+            int totalPoints = 0;
+
+            for (String key : userPointsDoc.keySet()) {
+                if (!key.equals("_id") && !key.equals("username")) {
+                    int points = userPointsDoc.getInteger(key, 0);
+                    categoryPoints.put(key, points);
+                    totalPoints += points;
+                }
+            }
+
+            // If total points are zero, return empty list
+            if (totalPoints == 0) {
+                System.out.println("No points assigned to any category for user: " + username);
+                return articles;
+            }
+
+            // Calculate the proportional distribution of articles per category
+            Map<String, Integer> categoryArticleQuota = new HashMap<>();
+            int totalQuota = 40; // Total number of articles to display (you want 20, adjust accordingly)
+            for (Map.Entry<String, Integer> entry : categoryPoints.entrySet()) {
+                int quota = Math.round((float) entry.getValue() / totalPoints * totalQuota);
+                categoryArticleQuota.put(entry.getKey(), quota);
+            }
+
+            // Retrieve and shuffle articles for each category
+            for (Map.Entry<String, Integer> entry : categoryArticleQuota.entrySet()) {
+                String category = entry.getKey();
+                int quota = entry.getValue();
+
+                if (quota > 0) {
+                    List<Document> categoryArticles = articlesCollection.find(Filters.eq("category", category))
+                            .into(new ArrayList<>());
+
+                    // Shuffle and limit the articles to the quota
+                    Collections.shuffle(categoryArticles);
+                    for (int i = 0; i < Math.min(quota, categoryArticles.size()); i++) {
+                        Document doc = categoryArticles.get(i);
+                        String heading = doc.getString("heading");
+                        String date = doc.getString("date");
+                        Article article = new Article(heading, date, category, categoryPoints.get(category));
+                        articles.add(article);
+                    }
+                }
+            }
+
+            // Shuffle the final list to mix categories
+            Collections.shuffle(articles);
+
+            // Limit the final list to 20 articles
+            if (articles.size() > 20) {
+                articles = articles.subList(0, 20);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return articles;
+    }
+
+
+
+    public void loadAndDisplayArticles(String username) {
+        List<Article> articles = fetchArticlesBasedOnPoints(username); // Fetch articles based on user points
+        displayArticles(articles); // Populate the GridPane
+    }
+
+    public void displayArticles(List<Article> articles) {
+        main_rec_grid.getChildren().clear(); // Clear existing articles
+
+        int columns = 2; // Set the number of articles per row
+        int row = 0, col = 1;
+
+        try {
+            for (Article article : articles) {
+                // Load the article pane
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Recommended.fxml"));
+                AnchorPane articlePane = loader.load();
+
+                // Set the article data using the controller
+                Recommended controller = loader.getController();
+                controller.setArticleData(article.getHeading(), article.getDate(), article.getCategory());
+
+                // Add the article pane to the GridPane at the correct column and row
+                main_rec_grid.add(articlePane, col, row);
+
+                // Move to the next column
+                col++;
+
+                // If 5 articles are added in a row, move to the next row
+                if (col == columns) {
+                    col = 1; // Reset column to 1
+                    row++;   // Increment the row
+                }
+
+                // Optionally add margins for better spacing
+                GridPane.setMargin(articlePane, new Insets(40));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

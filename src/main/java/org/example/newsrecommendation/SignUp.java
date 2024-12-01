@@ -1,7 +1,6 @@
 package org.example.newsrecommendation;
 
 import com.mongodb.client.MongoClient;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,8 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mongodb.client.*;
-import com.mongodb.client.MongoClient;
-import com.mongodb.ConnectionString;
 import org.bson.Document;
 import com.mongodb.client.MongoCursor;
 
@@ -24,55 +21,57 @@ import com.mongodb.client.MongoCursor;
 public class SignUp {
     @FXML
     private Button Sign_Con_Home;
-    @FXML
-    private Button Sign_Con_Close;
-    @FXML
-    private Button button_signup;
-    @FXML
-    private Button button_signup_close;
+
     @FXML
     private Button Signup_back;
 
-    @FXML
-    private Pane Sign_pane_user;
     @FXML
     private Pane Sign_Pane_Thank;
 
     @FXML
     private TextField Sign_name;
+
     @FXML
     private TextField Sign_email;
+
     @FXML
     private TextField Sign_age;
+
     @FXML
     private TextField Sign_User;
+
     @FXML
     private TextField Sign_pwd;
+
     @FXML
     private TextField Sign_con_pwd;
 
     @FXML
     private CheckBox SignUp_Pre_Enter;
+
     @FXML
     private CheckBox SignUp_Pre_Health;
+
     @FXML
     private CheckBox SignUp_Pre_Politics;
+
     @FXML
     private CheckBox SignUp_Pre_Finan;
+
     @FXML
     private CheckBox SignUp_Pre_Tech;
+
     @FXML
     private CheckBox SignUp_Pre_Science;
+
     @FXML
     private CheckBox SignUp_Pre_Sport;
+
     @FXML
     private CheckBox SignUp_Pre_World;
 
     @FXML
     private ChoiceBox Sign_gen;
-
-    private MongoClient mongoClient;
-    private MongoDatabase database;
 
     @FXML
     private void SignUp_Home_button() throws IOException {
@@ -105,11 +104,9 @@ public class SignUp {
 
         List<String> errorMessages = new ArrayList<>();
 
-        // Name validation and formatting
         if (name.isEmpty()) {
             errorMessages.add("Name is required.");
         } else {
-            // Capitalize first and last names
             String[] nameParts = name.split(" ");
             for (int i = 0; i < nameParts.length; i++) {
                 nameParts[i] = nameParts[i].substring(0, 1).toUpperCase() + nameParts[i].substring(1).toLowerCase();
@@ -117,12 +114,10 @@ public class SignUp {
             name = String.join(" ", nameParts);
         }
 
-        // Email validation
         if (!email.matches("^[\\w.-]+@[\\w.-]+\\.\\w+$")) {
             errorMessages.add("Please enter a valid email address.");
         }
 
-        // Age validation
         int age = 0;
         try {
             age = Integer.parseInt(ageText);
@@ -133,14 +128,12 @@ public class SignUp {
             errorMessages.add("Age must be a valid number.");
         }
 
-        // Username validation (check for duplicates in the database)
         if (username.isEmpty() || username.length() < 3) {
             errorMessages.add("Username must be at least 3 characters long.");
         } else if (isUsernameTaken(username)) {
             errorMessages.add("Username is already taken. Please choose a different one.");
         }
 
-        // Password validation
         if (password.isEmpty() || password.length() < 6) {
             errorMessages.add("Password must be at least 6 characters long.");
         }
@@ -148,7 +141,6 @@ public class SignUp {
             errorMessages.add("Passwords do not match.");
         }
 
-        // Preference validation
         List<String> preferences = new ArrayList<>();
         if (SignUp_Pre_Enter.isSelected()) preferences.add("Entertainment");
         if (SignUp_Pre_Health.isSelected()) preferences.add("Healthcare");
@@ -163,21 +155,18 @@ public class SignUp {
             errorMessages.add("Please select at least one preference.");
         }
 
-        // Gender validation
         if (gender == null || gender.isEmpty()) {
             errorMessages.add("Please select a gender.");
         }
 
-        // If there are any errors, show them in a single alert
         if (!errorMessages.isEmpty()) {
             showAlert("Error", String.join("\n", errorMessages));
             return;
         }
 
-        // Save the user to the database if all validations pass
         try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
             MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-            MongoCollection<Document> collection = database.getCollection("User");
+            MongoCollection<Document> userCollection = database.getCollection("User");
 
             Document userDoc = new Document("name", name)
                     .append("email", email)
@@ -187,7 +176,22 @@ public class SignUp {
                     .append("username", username)
                     .append("password", password);
 
-            collection.insertOne(userDoc);
+            userCollection.insertOne(userDoc);
+
+            MongoCollection<Document> preferenceCollection = database.getCollection("Preferences");
+
+            Document preferenceDoc = new Document("username", username)
+                    .append("Entertainment", preferences.contains("Entertainment") ? 5 : 0)
+                    .append("Healthcare", preferences.contains("Healthcare") ? 5 : 0)
+                    .append("Politics", preferences.contains("Politics") ? 5 : 0)
+                    .append("Finance", preferences.contains("Finance") ? 5 : 0)
+                    .append("Technology", preferences.contains("Technology") ? 5 : 0)
+                    .append("Science", preferences.contains("Science") ? 5 : 0)
+                    .append("Sports", preferences.contains("Sports") ? 5 : 0)
+                    .append("World", preferences.contains("World") ? 5 : 0);
+
+            preferenceCollection.insertOne(preferenceDoc);
+
             Sign_Pane_Thank.toFront();
             resetFields();
         } catch (Exception e) {
@@ -236,10 +240,6 @@ public class SignUp {
         SignUp_Pre_Science.setSelected(false);
         SignUp_Pre_Sport.setSelected(false);
         SignUp_Pre_World.setSelected(false);
-    }
-
-    public void close() {
-        mongoClient.close();
     }
 
     @FXML

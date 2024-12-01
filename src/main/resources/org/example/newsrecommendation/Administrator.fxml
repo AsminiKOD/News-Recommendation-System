@@ -14,13 +14,61 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@CSS/Adminstrator.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.Administrator">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #A6AEBF, #C5D3E8, #D0E8C5, #FFF8DE);" stylesheets="@CSS/Adminstrator.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.Administrator">
    <children>
+      <Button fx:id="Admin_button_Add" layoutX="131.0" layoutY="49.0" mnemonicParsing="false" onAction="#adminPaneNav" prefHeight="25.0" prefWidth="131.0" text="Add Content">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></Button>
+      <Button fx:id="Admin_button_View" layoutY="49.0" mnemonicParsing="false" onAction="#adminPaneNav" prefHeight="25.0" prefWidth="131.0" text="View User Records">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></Button>
+      <Button fx:id="Admin_button_delete" layoutX="262.0" layoutY="50.0" mnemonicParsing="false" onAction="#adminPaneNav" prefHeight="25.0" prefWidth="131.0" text="Delete Content">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></Button>
+      <Button fx:id="Admin_button_Your_profile" layoutX="468.0" layoutY="50.0" mnemonicParsing="false" onAction="#adminPaneNav" prefHeight="25.0" prefWidth="131.0" text="Your Profile">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></Button>
+      <Label fx:id="daily" layoutX="14.0" layoutY="5.0" text="DailyDive">
+         <font>
+            <Font name="Brush Script MT Italic" size="26.0" />
+         </font>
+      </Label>
+      <Label fx:id="news" layoutX="59.0" layoutY="34.0" text="(News Recommendation System)">
+         <font>
+            <Font name="Centaur" size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="head" layoutX="240.0" layoutY="11.0" stylesheets="@CSS/Adminstrator.css" text="Admin Login" textFill="#2b446b">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="24.0" />
+         </font>
+      </Label>
       <StackPane layoutY="78.0" prefHeight="323.0" prefWidth="600.0">
          <children>
+            <Pane fx:id="Admin_Pane_User_records" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+               <children>
+                  <Label fx:id="lab_Uses" layoutX="251.0" layoutY="20.0" text="User Records">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="Admin_table" layoutX="147.0" layoutY="62.0" prefHeight="200.0" prefWidth="305.0">
+                    <columns>
+                      <TableColumn fx:id="tabCol_user" prefWidth="75.0" text="Username" />
+                      <TableColumn fx:id="tabCol_name" prefWidth="107.99993896484375" text="Name" />
+                        <TableColumn fx:id="tabCol_email" prefWidth="121.3333740234375" text="Email" />
+                    </columns>
+                  </TableView>
+                  <Button fx:id="button_view" layoutX="510.0" layoutY="262.0" mnemonicParsing="false" onAction="#adminPaneNav" text="View details" />
+               </children>
+            </Pane>
             <Pane fx:id="Pane_admin_profile" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
                <children>
-                  <Label layoutX="272.0" layoutY="22.0" text="Admin Profile" />
+                  <Label fx:id="lab_adm" layoutX="272.0" layoutY="22.0" text="Admin Profile" />
                   <TableView fx:id="tabView_LogHis" layoutX="365.0" layoutY="99.0" prefHeight="136.0" prefWidth="210.0">
                     <columns>
                       <TableColumn fx:id="tabCol_date" prefWidth="106.66668701171875" text="Date" />
@@ -35,7 +83,7 @@
                   <Button fx:id="button_add_change_pwd" layoutX="463.0" layoutY="267.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Change Password" />
                   <StackPane layoutX="26.0" layoutY="81.0" prefHeight="174.0" prefWidth="318.0">
                      <children>
-                        <Pane fx:id="Pane_adm_edit" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: pink;">
+                        <Pane fx:id="Pane_adm_edit" prefHeight="200.0" prefWidth="200.0">
                            <children>
                               <Label layoutX="42.0" layoutY="44.0" text="Name" />
                               <Label layoutX="44.0" layoutY="78.0" text="Email" />
@@ -43,11 +91,11 @@
                               <TextField fx:id="text_adm_name" layoutX="119.0" layoutY="40.0" promptText="Name" />
                               <TextField fx:id="text_adm_email" layoutX="119.0" layoutY="74.0" promptText="Email" />
                               <TextField fx:id="text_adm_age" layoutX="119.0" layoutY="108.0" promptText="Age" />
-                              <Button fx:id="button_add_confirm_edit" layoutX="253.0" layoutY="146.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Confirm" />
+                              <Button fx:id="button_add_confirm_edit" layoutX="247.0" layoutY="141.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Confirm" />
                               <Button fx:id="button_add_back_edit" layoutX="5.0" layoutY="3.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Back" />
                            </children>
                         </Pane>
-                        <Pane fx:id="Pane_adm_view_details" prefHeight="157.0" prefWidth="318.0" style="-fx-background-color: pink;">
+                        <Pane fx:id="Pane_adm_view_details" prefHeight="157.0" prefWidth="318.0">
                            <children>
                               <Label layoutX="18.0" layoutY="45.0" text="Name" />
                               <Label layoutX="17.0" layoutY="71.0" text="Email" />
@@ -66,41 +114,43 @@
                   </StackPane>
                </children>
             </Pane>
-            <Pane fx:id="Pane_change_pwd" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+            <Pane fx:id="Pane_user_person" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
                <children>
-                  <Pane layoutX="151.0" layoutY="79.0" prefHeight="136.0" prefWidth="318.0" style="-fx-background-color: cyan;">
+                  <Button fx:id="button_back_view" layoutX="34.0" layoutY="20.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Back" />
+                  <StackPane layoutX="126.0" layoutY="48.0" prefHeight="227.0" prefWidth="365.0">
                      <children>
-                        <Label layoutX="18.0" layoutY="35.0" text="Enter new password" />
-                        <Label layoutX="19.0" layoutY="69.0" text="Confirm password" />
-                        <TextField fx:id="text_add_new_pwd" layoutX="154.0" layoutY="31.0" />
-                        <TextField fx:id="text_adm_cofirm_pwd" layoutX="154.0" layoutY="65.0" />
-                        <Button fx:id="button_add_change_confirm" layoutX="125.0" layoutY="97.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Confirm" />
+                        <Pane fx:id="Pane_user_show_details" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="94.0" layoutY="52.0" text="Name" />
+                              <Label layoutX="93.0" layoutY="24.0" text="Username" />
+                              <Label layoutX="95.0" layoutY="78.0" text="Email" />
+                              <Label layoutX="97.0" layoutY="103.0" text="Age" />
+                              <Label layoutX="95.0" layoutY="128.0" text="Gender" />
+                              <Label layoutX="94.0" layoutY="154.0" text="Preferences" />
+                              <Label fx:id="label_user_username" layoutX="180.0" layoutY="24.0" prefWidth="32.0" text="Label" />
+                              <Label fx:id="label_user_name" layoutX="180.0" layoutY="52.0" text="Label" />
+                              <Label fx:id="label_user_email" layoutX="180.0" layoutY="78.0" text="Label" />
+                              <Label fx:id="label_user_age" layoutX="180.0" layoutY="102.0" text="Label" />
+                              <Label fx:id="label_user_gender" layoutX="180.0" layoutY="128.0" text="Label" />
+                              <Label fx:id="label_user_preference" layoutX="180.0" layoutY="154.0" text="Label" />
+                              <Button fx:id="button_removeUser" layoutX="257.0" layoutY="188.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Remove User" />
+                              <Button fx:id="button_user_back_search" layoutX="8.0" layoutY="12.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Back" />
+                           </children>
+                        </Pane>
+                        <Pane fx:id="Pane_user_search" prefHeight="200.0" prefWidth="322.0">
+                           <children>
+                              <Label layoutX="143.0" layoutY="66.0" text="Enter the username" />
+                              <TextField fx:id="text_ad_search_username" layoutX="122.0" layoutY="89.0" promptText="Username" />
+                              <Button fx:id="button_user_enter" layoutX="172.0" layoutY="136.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Enter" />
+                           </children>
+                        </Pane>
                      </children>
-                  </Pane>
-                  <Label layoutX="253.0" layoutY="41.0" text="Change Password" />
-                  <Button fx:id="button_add_change_back" layoutX="22.0" layoutY="14.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Back" />
-               </children>
-            </Pane>
-            <Pane fx:id="Admin_Pane_User_records" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
-               <children>
-                  <Label layoutX="251.0" layoutY="20.0" text="User Records">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <TableView fx:id="Admin_table" layoutX="147.0" layoutY="62.0" prefHeight="200.0" prefWidth="305.0">
-                    <columns>
-                      <TableColumn fx:id="tabCol_user" prefWidth="75.0" text="Username" />
-                      <TableColumn fx:id="tabCol_name" prefWidth="107.99993896484375" text="Name" />
-                        <TableColumn fx:id="tabCol_email" prefWidth="121.3333740234375" text="Email" />
-                    </columns>
-                  </TableView>
-                  <Button fx:id="button_view" layoutX="510.0" layoutY="262.0" mnemonicParsing="false" onAction="#adminPaneNav" text="View details" />
+                  </StackPane>
                </children>
             </Pane>
             <Pane fx:id="Admin_Pane_Add" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
                <children>
-                  <Label layoutX="259.0" layoutY="14.0" text="Add Resources">
+                  <Label fx:id="lab_add" layoutX="259.0" layoutY="14.0" text="Add Resources">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -114,43 +164,24 @@
                   <Button fx:id="button_add" layoutX="545.0" layoutY="280.0" mnemonicParsing="false" onAction="#addArticle" text="Add" />
                </children>
             </Pane>
-            <Pane fx:id="Pane_user_person" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+            <Pane fx:id="Pane_change_pwd" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
                <children>
-                  <Button fx:id="button_back_view" layoutX="34.0" layoutY="20.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Back" />
-                  <StackPane layoutX="126.0" layoutY="48.0" prefHeight="227.0" prefWidth="365.0">
+                  <Pane fx:id="change" layoutX="151.0" layoutY="79.0" prefHeight="136.0" prefWidth="318.0">
                      <children>
-                        <Pane fx:id="Pane_user_show_details" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: orange;">
-                           <children>
-                              <Label layoutX="64.0" layoutY="52.0" text="Name" />
-                              <Label layoutX="63.0" layoutY="24.0" text="Username" />
-                              <Label layoutX="65.0" layoutY="78.0" text="Email" />
-                              <Label layoutX="67.0" layoutY="103.0" text="Age" />
-                              <Label layoutX="65.0" layoutY="128.0" text="Gender" />
-                              <Label layoutX="64.0" layoutY="154.0" text="Preferences" />
-                              <Label fx:id="label_user_username" layoutX="150.0" layoutY="24.0" prefWidth="32.0" text="Label" />
-                              <Label fx:id="label_user_name" layoutX="150.0" layoutY="52.0" text="Label" />
-                              <Label fx:id="label_user_email" layoutX="150.0" layoutY="78.0" text="Label" />
-                              <Label fx:id="label_user_age" layoutX="150.0" layoutY="102.0" text="Label" />
-                              <Label fx:id="label_user_gender" layoutX="150.0" layoutY="128.0" text="Label" />
-                              <Label fx:id="label_user_preference" layoutX="150.0" layoutY="154.0" text="Label" />
-                              <Button fx:id="button_removeUser" layoutX="257.0" layoutY="188.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Remove User" />
-                              <Button fx:id="button_user_back_search" layoutX="8.0" layoutY="12.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Back" />
-                           </children>
-                        </Pane>
-                        <Pane fx:id="Pane_user_search" prefHeight="200.0" prefWidth="322.0" style="-fx-background-color: orange;">
-                           <children>
-                              <Label layoutX="143.0" layoutY="66.0" text="Enter the username" />
-                              <TextField fx:id="text_ad_search_username" layoutX="119.0" layoutY="89.0" promptText="Username" />
-                              <Button fx:id="button_user_enter" layoutX="172.0" layoutY="136.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Enter" />
-                           </children>
-                        </Pane>
+                        <Label layoutX="18.0" layoutY="35.0" text="Enter new password" />
+                        <Label layoutX="19.0" layoutY="69.0" text="Confirm password" />
+                        <TextField fx:id="text_add_new_pwd" layoutX="154.0" layoutY="31.0" />
+                        <TextField fx:id="text_adm_cofirm_pwd" layoutX="154.0" layoutY="65.0" />
+                        <Button fx:id="button_add_change_confirm" layoutX="125.0" layoutY="97.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Confirm" />
                      </children>
-                  </StackPane>
+                  </Pane>
+                  <Label layoutX="253.0" layoutY="41.0" text="Change Password" />
+                  <Button fx:id="button_add_change_back" layoutX="22.0" layoutY="14.0" mnemonicParsing="false" onAction="#adminPaneNav" text="Back" />
                </children>
             </Pane>
             <Pane fx:id="Admin_pane_Delete" prefHeight="296.0" prefWidth="600.0" style="-fx-background-color: white;">
                <children>
-                  <Label layoutX="244.0" layoutY="14.0" text="Delete Resources">
+                  <Label fx:id="lab_del" layoutX="244.0" layoutY="14.0" text="Delete Resources">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -177,58 +208,18 @@
                   <Line endX="7.33331298828125" endY="79.0" layoutX="572.0" layoutY="41.0" startX="7.33331298828125" startY="13.0" strokeWidth="2.0" />
                </children>
             </Pane>
-            <Pane fx:id="Front_Pane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+            <Pane fx:id="Front_Pane" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Pane fx:id="Pane_welocme" layoutX="93.0" layoutY="39.0" prefHeight="245.0" prefWidth="422.0" style="-fx-background-color: cyan;">
+                  <Pane fx:id="Pane_welocme" layoutX="93.0" layoutY="39.0" prefHeight="245.0" prefWidth="422.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #61677A, #D8D9DA, #FFF6E0);;">
                      <children>
-                        <Label layoutX="106.0" layoutY="15.0" text=",">
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="14.0" layoutY="15.0" text="Welcome" />
-                        <Label fx:id="label_welcome_name" layoutX="69.0" layoutY="15.0" text="Label" />
-                        <TextArea layoutX="189.0" layoutY="23.0" prefHeight="200.0" prefWidth="210.0" promptText="Your leadership and dedication are the driving forces behind our success. Your efforts make a real difference, and we're excited to have you at the helm. Keep up the great work as you continue to inspire and guide us toward even greater achievements.Have Good Day ! " style="-fx-background-color: #2b446b;" text="Your leadership and dedication &#10;are the driving forces behind our &#10;success. Your efforts make a real &#10;difference, and we're excited to &#10;have you at the helm. &#10;&#10;Keep up the great work as you &#10;continue to inspire and guide us &#10;toward even greater achievements.&#10;&#10;Have Good Day ! " wrapText="true">
-                           <font>
-                              <Font name="Colonna MT" size="12.0" />
-                           </font>
-                        </TextArea>
-                        <Pane fx:id="Pane_welcome_image" layoutX="45.0" layoutY="55.0" prefHeight="136.0" prefWidth="121.0" />
+                        <Label fx:id="wel3" layoutX="14.0" layoutY="14.0" prefHeight="15.0" prefWidth="131.0" text="Welcome Admin ," />
+                        <Label fx:id="wel" layoutX="192.0" layoutY="14.0" prefHeight="106.0" prefWidth="207.0" text="Your leadership and dedication are the driving forces behind our success. Your efforts make a real difference, and we're excited to have you at the helm." textAlignment="JUSTIFY" wrapText="true" />
+                        <Label fx:id="wel" layoutX="189.0" layoutY="116.0" prefHeight="93.0" prefWidth="222.0" text=" Keep up the great work as you continue to inspire and guide us toward even greater achievements." wrapText="true" />
+                        <Label fx:id="wel" layoutX="193.0" layoutY="215.0" text="Have Good Day ! 😀" />
                      </children>
                   </Pane>
                </children></Pane>
          </children>
       </StackPane>
-      <Button fx:id="Admin_button_Add" layoutX="131.0" layoutY="52.0" mnemonicParsing="false" onAction="#adminPaneNav" prefHeight="25.0" prefWidth="131.0" text="Add Content">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font></Button>
-      <Button fx:id="Admin_button_View" layoutY="52.0" mnemonicParsing="false" onAction="#adminPaneNav" prefHeight="25.0" prefWidth="131.0" text="View User Records">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font></Button>
-      <Button fx:id="Admin_button_delete" layoutX="262.0" layoutY="52.0" mnemonicParsing="false" onAction="#adminPaneNav" prefHeight="25.0" prefWidth="131.0" text="Delete Content">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font></Button>
-      <Button fx:id="Admin_button_Your_profile" layoutX="468.0" layoutY="53.0" mnemonicParsing="false" onAction="#adminPaneNav" prefHeight="25.0" prefWidth="131.0" text="Your Profile">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font></Button>
-      <Label fx:id="daily" layoutX="14.0" layoutY="10.0" text="DailyDive">
-         <font>
-            <Font name="Brush Script MT Italic" size="26.0" />
-         </font>
-      </Label>
-      <Label fx:id="news" layoutX="63.0" layoutY="37.0" text="(News Recommendation System)">
-         <font>
-            <Font name="Centaur" size="10.0" />
-         </font>
-      </Label>
-      <Label fx:id="head" layoutX="239.0" layoutY="14.0" stylesheets="@CSS/Adminstrator.css" text="Admin Login" textFill="#2b446b">
-         <font>
-            <Font name="Berlin Sans FB Bold" size="24.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>

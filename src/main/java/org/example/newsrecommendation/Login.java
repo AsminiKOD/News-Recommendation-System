@@ -30,8 +30,6 @@ public class Login implements Initializable {
     @FXML
     private Button Login_button_LogAd;
     @FXML
-    private Button login_button_admin_logLog;
-    @FXML
     private Button Login_button_backlog;
 
     @FXML
