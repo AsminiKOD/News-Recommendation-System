@@ -1,4 +1,4 @@
-package org.example.newsrecommendation;
+package org.example.newsrecommendation.App;
 
 import com.mongodb.client.*;
 import com.mongodb.client.model.Sorts;
@@ -11,7 +11,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import org.bson.Document;
-import org.example.newsrecommendation.NewsArticlesController.ArticleCategorizer;
+import org.example.newsrecommendation.Admin;
+import org.example.newsrecommendation.Article;
+import org.example.newsrecommendation.DataBase.DatabaseHandler;
+import org.example.newsrecommendation.LoginHistory;
+import org.example.newsrecommendation.Service.ArticleCategorizer;
+import org.example.newsrecommendation.Service.MainLogics;
+import org.example.newsrecommendation.User;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -247,6 +253,12 @@ public class Administrator implements Initializable {
         if (actionEvent.getSource() == Admin_button_Your_profile) {
             showUserProfile();
             Pane_admin_profile.toFront();
+            Pane_adm_view_details.toFront();
+            text_adm_name.clear();
+            text_adm_email.clear();
+            text_adm_age.clear();
+            text_add_new_pwd.clear();
+            text_adm_cofirm_pwd.clear();
         }
         if (actionEvent.getSource() == button_add_change_pwd) {
             Pane_change_pwd.toFront();
@@ -370,9 +382,8 @@ public class Administrator implements Initializable {
     @FXML
     public void handleEditProfile() {
         if (loggedInAdminID != null) {
-            try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-                MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-                MongoCollection<Document> userCollection = database.getCollection("Admin");
+            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+                MongoCollection<Document> userCollection = dbHandler.getDatabase().getCollection("Admin");
 
                 Document adminDoc = userCollection.find(new Document("adminId", loggedInAdminID)).first();
                 if (adminDoc != null) {
@@ -390,7 +401,6 @@ public class Administrator implements Initializable {
     // This method handles the "Confirm" button click, saving the changes to the database.
     @FXML
     public boolean handleEditConfirm() {
-        // Get the updated user details from the form
         String newName = text_adm_name.getText();
         String newEmail = text_adm_email.getText();
         int newAge = Integer.parseInt(text_adm_age.getText());
@@ -399,7 +409,6 @@ public class Administrator implements Initializable {
             showAlert("Error","Name is required.");
             return false;
         } else {
-            // Capitalize first and last names
             String[] nameParts = newName.split(" ");
             for (int i = 0; i < nameParts.length; i++) {
                 nameParts[i] = nameParts[i].substring(0, 1).toUpperCase() + nameParts[i].substring(1).toLowerCase();
@@ -407,38 +416,29 @@ public class Administrator implements Initializable {
             newName = String.join(" ", nameParts);
         }
 
-        // Email validation
         if (!newEmail.matches("^[\\w.-]+@[\\w.-]+\\.\\w+$")) {
             showAlert("Error","Please enter a valid email address.");
             return false;
         }
 
-        // Age validation
-        if (newAge>120 || newAge<0){
+        if (newAge > 120 || newAge < 0) {
             showAlert("Error","Please enter a valid age.");
             return false;
         }
 
-        // Update the user document in MongoDB
         if (loggedInAdminID != null) {
-            try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-                MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-                MongoCollection<Document> userCollection = database.getCollection("Admin");
-
+            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
                 Document updatedUser = new Document("name", newName)
                         .append("email", newEmail)
                         .append("age", newAge);
 
-                // Update the document in the database
-                userCollection.updateOne(new Document("adminId", loggedInAdminID),
-                        new Document("$set", updatedUser));
+                Document query = new Document("adminId", loggedInAdminID);
+                dbHandler.updateDocument("Admin", query, new Document("$set", updatedUser));
 
-                // Reflect the changes in the profile page
                 label_add_name.setText(newName);
                 label_add_email.setText(newEmail);
                 label_add_age.setText(String.valueOf(newAge));
 
-                // Show success message
                 showAlerts("Success", "Profile updated successfully.");
             } catch (Exception e) {
                 showAlert("Database Error", "Failed to update user details: " + e.getMessage());
@@ -449,11 +449,9 @@ public class Administrator implements Initializable {
 
     @FXML
     public boolean handlePasswordChangeConfirm() {
-        // Get the new password and confirm password from the input fields
         String newPassword = text_add_new_pwd.getText();
         String confirmPassword = text_adm_cofirm_pwd.getText();
 
-        // Validate that the passwords match
         if (!newPassword.equals(confirmPassword)) {
             showAlert("Password Mismatch", "The new password and confirm password do not match.");
             return false;
@@ -463,21 +461,14 @@ public class Administrator implements Initializable {
             return false;
         }
 
-        // If valid, update the password in the database
         if (loggedInAdminID != null) {
-            try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-                MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-                MongoCollection<Document> userCollection = database.getCollection("Admin");
-
-                // Update the password field in the database
+            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
                 Document updatedUser = new Document("password", newPassword);
-                userCollection.updateOne(new Document("adminId", loggedInAdminID),
-                        new Document("$set", updatedUser));
+                Document query = new Document("adminId", loggedInAdminID);
+                dbHandler.updateDocument("Admin", query, new Document("$set", updatedUser));
 
-                // Show success message
                 showAlerts("Success", "Password changed successfully.");
 
-                // Optionally, reset the fields or navigate back to profile page
                 text_add_new_pwd.clear();
                 text_adm_cofirm_pwd.clear();
                 return true;
@@ -491,11 +482,9 @@ public class Administrator implements Initializable {
     private void loadUserDetails() {
         ObservableList<User> userData = FXCollections.observableArrayList();
 
-        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-            MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-            MongoCollection<Document> userCollection = database.getCollection("User");
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            List<Document> users = dbHandler.findDocuments("User", new Document());
 
-            FindIterable<Document> users = userCollection.find();
             for (Document userDoc : users) {
                 String name = userDoc.getString("name");
                 String username = userDoc.getString("username");
@@ -512,9 +501,9 @@ public class Administrator implements Initializable {
             showAlert("Database Error", "Failed to fetch user details: " + e.getMessage());
         }
 
-        // Set data into TableView
         Admin_table.setItems(userData);
     }
+
 
     @FXML
     public boolean handleUserSearch() {
@@ -534,15 +523,11 @@ public class Administrator implements Initializable {
     }
 
     private boolean searchUserByUsername(String username) {
-        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-            MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-            MongoCollection<Document> userCollection = database.getCollection("User");
-
-            // Search for the user by username in the User collection
-            Document userDoc = userCollection.find(new Document("username", username)).first();
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            Document query = new Document("username", username);
+            Document userDoc = dbHandler.findDocument("User", query);
 
             if (userDoc != null) {
-                // Populate the labels with the user data
                 label_user_name.setText(userDoc.getString("name"));
                 label_user_email.setText(userDoc.getString("email"));
                 label_user_age.setText(String.valueOf(userDoc.getInteger("age", 0)));
@@ -559,15 +544,14 @@ public class Administrator implements Initializable {
                 return true;
             } else {
                 clearUserLabels();
-                return false;  // User not found, return false
+                return false;
             }
         } catch (Exception e) {
             showAlert("Database Error", "Failed to fetch user details: " + e.getMessage());
             clearUserLabels();
-            return false;  // Database error, return false
+            return false;
         }
     }
-
 
     private void clearUserLabels() {
         label_user_name.setText("");
@@ -599,9 +583,8 @@ public class Administrator implements Initializable {
     }
 
     private boolean removeUserFromDatabase(String username) {
-        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-            MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-            MongoCollection<Document> userCollection = database.getCollection("User");
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            MongoCollection<Document> userCollection = dbHandler.getDatabase().getCollection("User");
 
             // Find and delete the user by username
             Document result = userCollection.findOneAndDelete(new Document("username", username));
@@ -618,6 +601,7 @@ public class Administrator implements Initializable {
         }
     }
 
+
     @FXML
     void addArticle(ActionEvent event) {
         String heading = text_adm_AddHeading.getText();
@@ -632,18 +616,15 @@ public class Administrator implements Initializable {
         // Categorize the article
         String category = ArticleCategorizer.categorizeArticle(content);
 
+        // Create the article document
+        Document article = new Document("heading", heading)
+                .append("date", date)
+                .append("content", content)
+                .append("category", category);
+
         // Insert into MongoDB
-        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-            MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-            MongoCollection<Document> collection = database.getCollection("Article");
-
-            Document article = new Document("heading", heading)
-                    .append("date", date)
-                    .append("content", content)
-                    .append("category", category);
-
-            collection.insertOne(article);
-
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            dbHandler.insertDocument("Article", article);
             showAlerts("Success", "Article added successfully!");
         } catch (Exception e) {
             showAlert("Database Error", "Failed to add article to the database!");
@@ -660,12 +641,9 @@ public class Administrator implements Initializable {
     private void loadArticles() {
         ObservableList<Article> articleData = FXCollections.observableArrayList();
 
-        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-            MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-            MongoCollection<Document> articleCollection = database.getCollection("Article");
-
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
             // Fetch all articles from the database
-            FindIterable<Document> articles = articleCollection.find();
+            List<Document> articles = dbHandler.findDocuments("Article", new Document());
 
             for (Document articleDoc : articles) {
                 String heading = articleDoc.getString("heading");
@@ -711,33 +689,34 @@ public class Administrator implements Initializable {
     }
 
     private ObservableList<Article> fetchArticlesFromDatabase(List<String> categories) {
-        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
-        MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-        MongoCollection<Document> collection = database.getCollection("Article");
+        ObservableList<Article> articleData = FXCollections.observableArrayList();
 
-        // Build MongoDB query
-        Document query = new Document();
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            // Build MongoDB query
+            Document query = new Document();
 
-        // If categories are selected, add to the query
-        if (!categories.isEmpty()) {
-            query.append("category", new Document("$in", categories));
+            // If categories are selected, add to the query
+            if (!categories.isEmpty()) {
+                query.append("category", new Document("$in", categories));
+            }
+
+            // Fetch articles from MongoDB
+            List<Document> articles = dbHandler.findDocuments("Article", query);
+
+            for (Document doc : articles) {
+                String heading = doc.getString("heading");
+                String date = doc.getString("date"); // MongoDB stores date as a String in "MM/dd/yyyy" format
+                String category = doc.getString("category");
+
+                // Create Article object and add to the list
+                articleData.add(new Article(heading, date, category));
+            }
+        } catch (Exception e) {
+            showAlert("Database Error", "Failed to fetch articles: " + e.getMessage());
         }
-
-        // Fetch articles from MongoDB
-        List<Article> articles = new ArrayList<>();
-        for (Document doc : collection.find(query).sort(Sorts.ascending("date"))) {
-            String heading = doc.getString("heading");
-            String date = doc.getString("date"); // MongoDB stores date as a String in "MM/dd/yyyy" format
-            String category = doc.getString("category");
-
-            // Create Article object and add to the list
-            articles.add(new Article(heading, date, category));
-        }
-
-        mongoClient.close();
 
         // Return as ObservableList for TableView
-        return FXCollections.observableArrayList(articles);
+        return articleData;
     }
 
     @FXML
@@ -771,14 +750,15 @@ public class Administrator implements Initializable {
     }
 
     private boolean deleteArticleFromDatabase(Article article) {
-        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-            MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-            MongoCollection<Document> articleCollection = database.getCollection("Article");
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            // Create query to match the article by heading
+            Document query = new Document("heading", article.getHeading());
 
-            // Delete the article from the collection using the heading as the identifier
-            Document result = articleCollection.findOneAndDelete(new Document("heading", article.getHeading()));
+            // Delete the article from the collection
+            Document result = dbHandler.findDocument("Article", query);
 
             if (result != null) {
+                dbHandler.getDatabase().getCollection("Article").deleteOne(query); // Delete the article
                 return true;  // Article successfully deleted
             } else {
                 showAlert("Error", "No article found with heading: " + article.getHeading());

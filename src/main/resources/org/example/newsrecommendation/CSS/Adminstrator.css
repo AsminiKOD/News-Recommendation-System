@@ -140,7 +140,7 @@
 
 /* TableView Styling */
 .table-view {
-    -fx-background-color: #F6F5F2;
+    -fx-background-color: white;
     -fx-border-color: #222831;
     -fx-border-radius: 5px;
 }
@@ -157,7 +157,7 @@
 
 /* Table Rows Styling */
 .table-view .table-row-cell {
-    -fx-background-color: #f5f5f5;
+    -fx-background-color: white;
 }
 
 .table-view .table-row-cell:odd {
@@ -181,4 +181,5 @@
     -fx-border-radius: 5px;
     -fx-effect: dropshadow(gaussian, #5F6F94, 3, 0.5, 0, 0);
 }
+
 

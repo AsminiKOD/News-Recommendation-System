@@ -1,0 +1,43 @@
+/* Root Pane Styling */
+.root {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #A6AEBF, #C5D3E8, #D0E8C5, #FFF8DE);
+}
+
+/* Button Styling */
+.button {
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #0F0F0F, #232D3F, #363062, #50727B);
+    -fx-border-color: white;
+    -fx-border-radius: 5px;
+    -fx-padding: 4px 8px;
+    -fx-text-fill: white;
+    -fx-font-family: "Berlin Sans FB";
+    -fx-font-size: 13px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 3, 0.3, 1, 2);
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #C6E7FF, #C6E7FF, #FBFBFB, #FFDDAE);
+    -fx-border-color: #FFAF4F;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(gaussian, rgba(255, 175, 79, 0.8), 5, 0.4, 0, 0);
+}
+
+/* Label Styling */
+.label {
+    -fx-font-family: "Berlin Sans FB";
+    -fx-font-size: 14px;
+    -fx-text-fill: #0F0F0F;
+}
+
+/* TextField Styling */
+.text-field {
+    -fx-border-color: #5F6F94;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.text-field:focused {
+    -fx-border-color: #0078d7;
+    -fx-effect: dropshadow(gaussian, rgba(0, 120, 215, 0.5), 5, 0.3, 0, 0);
+}

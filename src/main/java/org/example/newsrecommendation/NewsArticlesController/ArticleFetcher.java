@@ -8,6 +8,8 @@ import org.bson.Document;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.example.newsrecommendation.Service.ArticleCategorizer;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;

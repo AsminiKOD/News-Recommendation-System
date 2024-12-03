@@ -1,4 +1,4 @@
-package org.example.newsrecommendation.NewsArticlesController;
+package org.example.newsrecommendation.Service;
 
 import java.util.HashMap;
 import java.util.List;

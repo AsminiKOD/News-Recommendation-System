@@ -1,4 +1,4 @@
-package org.example.newsrecommendation;
+package org.example.newsrecommendation.App;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
@@ -13,12 +13,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import org.bson.Document;
+import org.example.newsrecommendation.Article;
+import org.example.newsrecommendation.LoginHistory;
+import org.example.newsrecommendation.User;
+import org.example.newsrecommendation.DataBase.DatabaseHandler;
 
 import java.io.IOException;
 import java.net.URL;
@@ -56,7 +63,7 @@ public class Main implements Initializable {
     private Pane Main_SavePage;
 
     @FXML
-    private Button Main_button_About;
+    private Button Main_button_Saved;
 
     @FXML
     private Button Main_button_Home;
@@ -65,10 +72,13 @@ public class Main implements Initializable {
     private Button Main_button_Recomm;
 
     @FXML
-    private Button Main_button_Saved;
+    private Button Main_button_Articles;
 
     @FXML
     private Button Main_button_profile;
+
+    @FXML
+    private Button buttonView;
 
     @FXML
     private Pane Pane_change_pwd;
@@ -87,6 +97,30 @@ public class Main implements Initializable {
 
     @FXML
     private TableColumn<LoginHistory, String> Profile_login_time;
+
+    @FXML
+    private TableView<Article> tableArticles;
+
+    @FXML
+    private TableColumn<Article, String> tabColHeading;
+
+    @FXML
+    private TableColumn<Article, String> tabColCategory;
+
+    @FXML
+    private TableColumn<Article, String> tabColDate;
+
+    @FXML
+    private TableView<Article> table_Saved;
+
+    @FXML
+    private TableColumn<Article, String> tabCol_heading;
+
+    @FXML
+    private TableColumn<Article, String> tabCol_category;
+
+    @FXML
+    private TableColumn<Article, String> tabCol_date;
 
     @FXML
     private TextField Text_edit_age;
@@ -137,6 +171,9 @@ public class Main implements Initializable {
     private CheckBox check_edit_world;
 
     @FXML
+    private Pane Main_Save;
+
+    @FXML
     private Pane home_pane;
 
     @FXML
@@ -166,6 +203,9 @@ public class Main implements Initializable {
         // Clear TableView data on initialization
         Profile_login_histroy.setItems(FXCollections.observableArrayList());
         loadAndDisplayArticles(loggedInUsername);
+        loadArticlesIntoTable();
+        loadSavedArticles(loggedInUsername);
+
     }
 
     @FXML
@@ -176,11 +216,11 @@ public class Main implements Initializable {
         if (actionEvent.getSource() == Main_button_Recomm) {
             Main_RecommendPage.toFront();
         }
-        if (actionEvent.getSource() == Main_button_Saved) {
+        if (actionEvent.getSource() == Main_button_Articles) {
             Main_SavePage.toFront();
         }
-        if (actionEvent.getSource() == Main_button_About) {
-            Main_AboutPage.toFront();
+        if (actionEvent.getSource() == Main_button_Saved) {
+            Main_Save.toFront();
         }
         if (actionEvent.getSource() == Main_button_profile) {
             showUserProfile();
@@ -203,12 +243,10 @@ public class Main implements Initializable {
 
     private void showUserProfile() {
         if (loggedInUsername != null) {
-            try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-                MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-                MongoCollection<Document> userCollection = database.getCollection("User");
-                MongoCollection<Document> loginHistoryCollection = database.getCollection("User_Login");
+            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+                // Fetch user document
+                Document userDoc = dbHandler.findDocument("User", new Document("username", loggedInUsername));
 
-                Document userDoc = userCollection.find(new Document("username", loggedInUsername)).first();
                 if (userDoc != null) {
                     User user = new User(
                             userDoc.getString("name"),
@@ -227,7 +265,9 @@ public class Main implements Initializable {
 
                     // Fetch login history
                     List<LoginHistory> loginHistory = new ArrayList<>();
-                    FindIterable<Document> historyDocs = loginHistoryCollection.find(new Document("username", loggedInUsername));
+                    Document query = new Document("username", loggedInUsername);
+                    List<Document> historyDocs = dbHandler.findDocuments("User_Login", query);
+
                     for (Document doc : historyDocs) {
                         String loginTime = doc.getString("login_time");
 
@@ -252,6 +292,7 @@ public class Main implements Initializable {
         }
     }
 
+
     private void clearUserProfile() {
         Main_Profile_label_Name.setText("");
         Main_Profile_label_Email.setText("");
@@ -265,16 +306,16 @@ public class Main implements Initializable {
     @FXML
     public void handleEditProfile(ActionEvent actionEvent) {
         if (loggedInUsername != null) {
-            try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-                MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-                MongoCollection<Document> userCollection = database.getCollection("User");
+            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+                // Fetch user document
+                Document userDoc = dbHandler.findDocument("User", new Document("username", loggedInUsername));
 
-                Document userDoc = userCollection.find(new Document("username", loggedInUsername)).first();
                 if (userDoc != null) {
                     // Populate the edit fields with current user details
                     Text_edit_name.setText(userDoc.getString("name"));
                     Text_edit_email.setText(userDoc.getString("email"));
                     Text_edit_age.setText(String.valueOf(userDoc.getInteger("age")));
+
                     // Check the preferences checkboxes based on user data
                     List<String> preferences = userDoc.getList("preferences", String.class);
                     check_edit_tech.setSelected(preferences.contains("AI and Technology"));
@@ -293,6 +334,7 @@ public class Main implements Initializable {
         // Show the edit profile page
         Pane_edit_profil.toFront();
     }
+
 
     // This method handles the "Confirm" button click, saving the changes to the database.
     @FXML
@@ -314,18 +356,15 @@ public class Main implements Initializable {
 
         // Update the user document in MongoDB
         if (loggedInUsername != null) {
-            try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-                MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-                MongoCollection<Document> userCollection = database.getCollection("User");
-
+            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+                // Create the updated user document
                 Document updatedUser = new Document("name", newName)
                         .append("email", newEmail)
                         .append("age", newAge)
                         .append("preferences", updatedPreferences);
 
                 // Update the document in the database
-                userCollection.updateOne(new Document("username", loggedInUsername),
-                        new Document("$set", updatedUser));
+                dbHandler.updateDocument("User", new Document("username", loggedInUsername), updatedUser);
 
                 // Reflect the changes in the profile page
                 Main_Profile_label_Name.setText(newName);
@@ -342,11 +381,6 @@ public class Main implements Initializable {
     }
 
     @FXML
-    public void handleChangePassword(ActionEvent actionEvent) {
-        Pane_change_pwd.toFront();
-    }
-
-    @FXML
     public void handlePasswordChangeConfirm(ActionEvent actionEvent) {
         // Get the new password and confirm password from the input fields
         String newPassword = Text_new_pwd.getText();
@@ -358,20 +392,18 @@ public class Main implements Initializable {
             return;
         }
         if (newPassword.length() < 6) {
-            showAlert("Password Mismatch","Password must be at least 6 characters long.");
+            showAlert("Password Mismatch", "Password must be at least 6 characters long.");
             return;
         }
 
         // If valid, update the password in the database
         if (loggedInUsername != null) {
-            try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-                MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-                MongoCollection<Document> userCollection = database.getCollection("User");
-
-                // Update the password field in the database
+            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+                // Create the updated password document
                 Document updatedUser = new Document("password", newPassword);
-                userCollection.updateOne(new Document("username", loggedInUsername),
-                        new Document("$set", updatedUser));
+
+                // Update the password in the database
+                dbHandler.updateDocument("User", new Document("username", loggedInUsername), updatedUser);
 
                 // Show success message
                 showAlerts();
@@ -386,17 +418,43 @@ public class Main implements Initializable {
         }
     }
 
+    public List<Article> fetchAllArticles() {
+        List<Article> articles = new ArrayList<>();
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            // Fetch all articles from the Article collection
+            List<Document> articleDocs = dbHandler.findDocuments("Article", new Document());
+
+            for (Document doc : articleDocs) {
+                String heading = doc.getString("heading");
+                String date = doc.getString("date");
+                String category = doc.getString("category");
+
+                articles.add(new Article(heading, date, category));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return articles;
+    }
+
+    public void loadArticlesIntoTable() {
+        List<Article> articles = fetchAllArticles();
+
+        ObservableList<Article> articleList = FXCollections.observableArrayList(articles);
+
+        tabColHeading.setCellValueFactory(new PropertyValueFactory<>("heading"));
+        tabColCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
+        tabColDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        tableArticles.setItems(articleList);
+    }
+
+
     public List<Article> fetchArticlesBasedOnPoints(String username) {
         List<Article> articles = new ArrayList<>();
-        try {
-            // Connect to MongoDB
-            MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
-            MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-            MongoCollection<Document> articlesCollection = database.getCollection("Article");
-            MongoCollection<Document> userPointsCollection = database.getCollection("Preferences");
-
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
             // Retrieve the user's points document
-            Document userPointsDoc = userPointsCollection.find(Filters.eq("username", username)).first();
+            Document userPointsDoc = dbHandler.findDocument("Preferences", new Document("username", username));
             if (userPointsDoc == null) {
                 System.out.println("No points found for user: " + username);
                 return articles; // Return an empty list if no points are found
@@ -434,8 +492,7 @@ public class Main implements Initializable {
                 int quota = entry.getValue();
 
                 if (quota > 0) {
-                    List<Document> categoryArticles = articlesCollection.find(Filters.eq("category", category))
-                            .into(new ArrayList<>());
+                    List<Document> categoryArticles = dbHandler.findDocuments("Article", new Document("category", category));
 
                     // Shuffle and limit the articles to the quota
                     Collections.shuffle(categoryArticles);
@@ -464,7 +521,6 @@ public class Main implements Initializable {
     }
 
 
-
     public void loadAndDisplayArticles(String username) {
         List<Article> articles = fetchArticlesBasedOnPoints(username); // Fetch articles based on user points
         displayArticles(articles); // Populate the GridPane
@@ -479,7 +535,7 @@ public class Main implements Initializable {
         try {
             for (Article article : articles) {
                 // Load the article pane
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("Recommended.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/newsrecommendation/Recommended.fxml"));
                 AnchorPane articlePane = loader.load();
 
                 // Set the article data using the controller
@@ -502,6 +558,104 @@ public class Main implements Initializable {
                 GridPane.setMargin(articlePane, new Insets(40));
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onViewButtonClick() {
+        Article selectedArticle = tableArticles.getSelectionModel().getSelectedItem();
+        if (selectedArticle != null) {
+            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+                // Query the database for the full article based on the heading
+                String heading = selectedArticle.getHeading();
+                Document query = new Document("heading", heading);
+
+                // Fetch the article document using DatabaseHandler
+                Document result = dbHandler.findDocument("Article", query);
+
+                if (result != null) {
+                    String fullArticle = result.getString("article");
+
+                    // Load the new FXML and pass the article details
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/newsrecommendation/ArticleScene.fxml"));
+                    Parent root = loader.load();
+
+                    ArticleScene controller = loader.getController();
+                    controller.setArticleDetails(selectedArticle, fullArticle);
+
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Article Details");
+                    stage.show();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    private void loadSavedArticles(String username) {
+        List<Article> savedArticles = new ArrayList<>();
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            // Fetch saved article headings for the user
+            Document savedDoc = dbHandler.findDocument("Interaction", new Document("username", username));
+            if (savedDoc != null) {
+                List<String> savedHeadings = savedDoc.getList("save", String.class);
+
+                // Fetch full article details from the "Article" collection
+                for (String heading : savedHeadings) {
+                    Document articleDoc = dbHandler.findDocument("Article", new Document("heading", heading));
+                    if (articleDoc != null) {
+                        String articleHeading = articleDoc.getString("heading");
+                        String articleCategory = articleDoc.getString("category");
+                        String articleDate = articleDoc.getString("date");
+                        savedArticles.add(new Article(articleHeading, articleDate, articleCategory));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // Populate the TableView
+        ObservableList<Article> savedArticleList = FXCollections.observableArrayList(savedArticles);
+        tabCol_heading.setCellValueFactory(new PropertyValueFactory<>("heading"));
+        tabCol_category.setCellValueFactory(new PropertyValueFactory<>("category"));
+        tabCol_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        table_Saved.setItems(savedArticleList);
+    }
+
+
+    @FXML
+    private void handleOpenArticle() {
+        Article selectedArticle = table_Saved.getSelectionModel().getSelectedItem();
+        if (selectedArticle == null) {
+            return; // No article selected
+        }
+
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            // Fetch the full article content from the "Article" collection
+            Document articleDoc = dbHandler.findDocument("Article", new Document("heading", selectedArticle.getHeading()));
+            if (articleDoc != null) {
+                String fullArticle = articleDoc.getString("article");
+
+                // Load ArticleScene.fxml
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/newsrecommendation/ArticleScene.fxml"));
+                Parent root = loader.load();
+
+                // Pass the article details to ArticleScene
+                ArticleScene controller = loader.getController();
+                ArticleScene.setCurrentUsername(loggedInUsername); // Pass current username
+                controller.setArticleDetails(selectedArticle, fullArticle);
+
+                // Display the new scene
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

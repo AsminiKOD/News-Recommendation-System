@@ -8,13 +8,15 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #A6AEBF, #C5D3E8, #D0E8C5, #FFF8DE);" stylesheets="@CSS/Adminstrator.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.Administrator">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #A6AEBF, #C5D3E8, #D0E8C5, #FFF8DE);" stylesheets="@CSS/Adminstrator.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.App.Administrator">
    <children>
       <Button fx:id="Admin_button_Add" layoutX="131.0" layoutY="49.0" mnemonicParsing="false" onAction="#adminPaneNav" prefHeight="25.0" prefWidth="131.0" text="Add Content">
          <font>
@@ -216,6 +218,11 @@
                         <Label fx:id="wel" layoutX="192.0" layoutY="14.0" prefHeight="106.0" prefWidth="207.0" text="Your leadership and dedication are the driving forces behind our success. Your efforts make a real difference, and we're excited to have you at the helm." textAlignment="JUSTIFY" wrapText="true" />
                         <Label fx:id="wel" layoutX="189.0" layoutY="116.0" prefHeight="93.0" prefWidth="222.0" text=" Keep up the great work as you continue to inspire and guide us toward even greater achievements." wrapText="true" />
                         <Label fx:id="wel" layoutX="193.0" layoutY="215.0" text="Have Good Day ! 😀" />
+                        <ImageView fitHeight="166.0" fitWidth="175.0" layoutX="11.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/Wel.jpeg" />
+                           </image>
+                        </ImageView>
                      </children>
                   </Pane>
                </children></Pane>
