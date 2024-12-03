@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.bson.Document;
 import org.example.newsrecommendation.DataBase.DatabaseHandler;
+import org.example.newsrecommendation.Service.MainLogics;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -104,7 +105,7 @@ public class SignUp {
         List<String> errorMessages = validateInputs(name, email, ageText, username, password, confirmPassword, gender, preferences);
 
         if (!errorMessages.isEmpty()) {
-            showAlert("Error", String.join("\n", errorMessages));
+            MainLogics.Alert(Alert.AlertType.ERROR, "Error", String.join("\n", errorMessages));
             return;
         }
 
@@ -198,16 +199,8 @@ public class SignUp {
             resetFields();
         } catch (Exception e) {
             // Show an alert if there's an error
-            showAlert("Error", "Error saving user data: " + e.getMessage());
+            MainLogics.Alert(Alert.AlertType.ERROR, "Error", "Error saving user data: " + e.getMessage());
         }
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     private void resetFields() {

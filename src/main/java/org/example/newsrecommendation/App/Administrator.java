@@ -359,11 +359,11 @@ public class Administrator implements Initializable {
                     ObservableList<LoginHistory> historyData = FXCollections.observableArrayList(loginHistory);
                     tabView_LogHis.setItems(historyData);
                 } else {
-                    showAlert("User Not Found", "No user found with the username: " + loggedInAdminID);
+                    MainLogics.Alert(Alert.AlertType.ERROR, "User Not Found", "No user found with the username: " + loggedInAdminID);
                     clearUserProfile();
                 }
             } catch (Exception e) {
-                showAlert("Database Error", "Failed to fetch user details: " + e.getMessage());
+                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch user details: " + e.getMessage());
                 clearUserProfile();
             }
         }
@@ -393,7 +393,7 @@ public class Administrator implements Initializable {
                     text_adm_age.setText(String.valueOf(adminDoc.getInteger("age")));
                 }
             } catch (Exception e) {
-                showAlert("Database Error", "Failed to fetch user details: " + e.getMessage());
+                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch user details: "+ e.getMessage());
             }
         }
     }
@@ -406,7 +406,7 @@ public class Administrator implements Initializable {
         int newAge = Integer.parseInt(text_adm_age.getText());
 
         if (newName.isEmpty()) {
-            showAlert("Error","Name is required.");
+            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Name is required.");
             return false;
         } else {
             String[] nameParts = newName.split(" ");
@@ -417,12 +417,12 @@ public class Administrator implements Initializable {
         }
 
         if (!newEmail.matches("^[\\w.-]+@[\\w.-]+\\.\\w+$")) {
-            showAlert("Error","Please enter a valid email address.");
+            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Please enter a valid email address.");
             return false;
         }
 
         if (newAge > 120 || newAge < 0) {
-            showAlert("Error","Please enter a valid age.");
+            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Please enter a valid age.");
             return false;
         }
 
@@ -439,9 +439,9 @@ public class Administrator implements Initializable {
                 label_add_email.setText(newEmail);
                 label_add_age.setText(String.valueOf(newAge));
 
-                showAlerts("Success", "Profile updated successfully.");
+                MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "Profile updated successfully.");
             } catch (Exception e) {
-                showAlert("Database Error", "Failed to update user details: " + e.getMessage());
+                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to update user details: " + e.getMessage());
             }
         }
         return true;
@@ -453,11 +453,11 @@ public class Administrator implements Initializable {
         String confirmPassword = text_adm_cofirm_pwd.getText();
 
         if (!newPassword.equals(confirmPassword)) {
-            showAlert("Password Mismatch", "The new password and confirm password do not match.");
+            MainLogics.Alert(Alert.AlertType.ERROR, "Password Mismatch", "The new password and confirm password do not match.");
             return false;
         }
         if (newPassword.length() < 6) {
-            showAlert("Password Mismatch","Password must be at least 6 characters long.");
+            MainLogics.Alert(Alert.AlertType.ERROR, "Password Mismatch", "Password must be at least 6 characters long.");
             return false;
         }
 
@@ -467,13 +467,13 @@ public class Administrator implements Initializable {
                 Document query = new Document("adminId", loggedInAdminID);
                 dbHandler.updateDocument("Admin", query, new Document("$set", updatedUser));
 
-                showAlerts("Success", "Password changed successfully.");
+                MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "Password changed successfully.");
 
                 text_add_new_pwd.clear();
                 text_adm_cofirm_pwd.clear();
                 return true;
             } catch (Exception e) {
-                showAlert("Database Error", "Failed to update password: " + e.getMessage());
+                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to update password: " + e.getMessage());
             }
         }
         return false;
@@ -498,7 +498,7 @@ public class Administrator implements Initializable {
                 userData.add(user);
             }
         } catch (Exception e) {
-            showAlert("Database Error", "Failed to fetch user details: " + e.getMessage());
+            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error",  "Failed to fetch user details: " + e.getMessage());
         }
 
         Admin_table.setItems(userData);
@@ -510,13 +510,13 @@ public class Administrator implements Initializable {
         String usernameToSearch = text_ad_search_username.getText().trim();
 
         if (usernameToSearch.isEmpty()) {
-            showAlert("Error", "Please enter a username to search.");
+            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error",  "Please enter a username to search.");
             return false;
         }
 
         // Fetch user data from the database based on the entered username
         if (!searchUserByUsername(usernameToSearch)) {
-            showAlert("User Not Found", "No user found with the username: " + usernameToSearch);
+            MainLogics.Alert(Alert.AlertType.ERROR, "User Not Found", "No user found with the username: " + usernameToSearch);
             return false;
         }
         return true;
@@ -547,7 +547,7 @@ public class Administrator implements Initializable {
                 return false;
             }
         } catch (Exception e) {
-            showAlert("Database Error", "Failed to fetch user details: " + e.getMessage());
+            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch user details: " + e.getMessage());
             clearUserLabels();
             return false;
         }
@@ -567,14 +567,14 @@ public class Administrator implements Initializable {
         String usernameToRemove = label_user_username.getText().trim();  // Assuming the username is displayed on the label after search
 
         if (usernameToRemove.isEmpty()) {
-            showAlert("Error", "No user selected or username is empty.");
+            MainLogics.Alert(Alert.AlertType.ERROR, "Error", "No user selected or username is empty.");
             return;
         }
 
         // Remove the user from the database
         if (removeUserFromDatabase(usernameToRemove)) {
             // Update UI or provide success message
-            showAlert("Success", "User " + usernameToRemove + " has been removed successfully.");
+            MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "User " + usernameToRemove + " has been removed successfully.");
 
             // Optionally, refresh the table or reset fields
             clearUserLabels();
@@ -592,11 +592,11 @@ public class Administrator implements Initializable {
             if (result != null) {
                 return true;  // User successfully removed
             } else {
-                showAlert("Error", "No user found with username: " + username);
+                MainLogics.Alert(Alert.AlertType.ERROR, "Error", "No user found with username: " + username);
                 return false;  // User not found
             }
         } catch (Exception e) {
-            showAlert("Database Error", "Failed to remove user: " + e.getMessage());
+            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to remove user: " + e.getMessage());
             return false;
         }
     }
@@ -609,7 +609,7 @@ public class Administrator implements Initializable {
         String content = textArea_adm_AddContent.getText();
 
         if (heading.isEmpty() || date.isEmpty() || content.isEmpty()) {
-            showAlert("Input Error", "All fields must be filled out!");
+            MainLogics.Alert(Alert.AlertType.ERROR, "Input Error", "All fields must be filled out!");
             return;
         }
 
@@ -625,9 +625,9 @@ public class Administrator implements Initializable {
         // Insert into MongoDB
         try (DatabaseHandler dbHandler = new DatabaseHandler()) {
             dbHandler.insertDocument("Article", article);
-            showAlerts("Success", "Article added successfully!");
+            MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "Article added successfully!");
         } catch (Exception e) {
-            showAlert("Database Error", "Failed to add article to the database!");
+            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch articles: " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -655,7 +655,7 @@ public class Administrator implements Initializable {
                 articleData.add(article);
             }
         } catch (Exception e) {
-            showAlert("Database Error", "Failed to fetch articles: " + e.getMessage());
+            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch articles: " + e.getMessage());
         }
 
         // Set the data into the TableView
@@ -712,7 +712,7 @@ public class Administrator implements Initializable {
                 articleData.add(new Article(heading, date, category));
             }
         } catch (Exception e) {
-            showAlert("Database Error", "Failed to fetch articles: " + e.getMessage());
+            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch articles: " + e.getMessage());
         }
 
         // Return as ObservableList for TableView
@@ -725,7 +725,7 @@ public class Administrator implements Initializable {
         Article selectedArticle = table_delete.getSelectionModel().getSelectedItem();
 
         if (selectedArticle == null) {
-            showAlert("Error", "Please select an article to delete.");
+            MainLogics.Alert(Alert.AlertType.ERROR, "Error", "Please select an article to delete.");
             return;
         }
 
@@ -739,12 +739,12 @@ public class Administrator implements Initializable {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             // If confirmed, delete the article from the database
             if (deleteArticleFromDatabase(selectedArticle)) {
-                showAlerts("Success", "Article deleted successfully.");
+                MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "Article deleted successfully.");
 
                 // Reload the articles in the table after deletion
                 loadArticles();
             } else {
-                showAlert("Error", "Failed to delete the article.");
+                MainLogics.Alert(Alert.AlertType.ERROR, "Error", "Failed to delete the article.");
             }
         }
     }
@@ -761,28 +761,12 @@ public class Administrator implements Initializable {
                 dbHandler.getDatabase().getCollection("Article").deleteOne(query); // Delete the article
                 return true;  // Article successfully deleted
             } else {
-                showAlert("Error", "No article found with heading: " + article.getHeading());
+                MainLogics.Alert(Alert.AlertType.ERROR, "Error", "No article found with heading: " + article.getHeading());
                 return false;  // Article not found
             }
         } catch (Exception e) {
-            showAlert("Database Error", "Failed to delete article: " + e.getMessage());
+            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to delete article: " + e.getMessage());
             return false;
         }
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void showAlerts(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

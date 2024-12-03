@@ -26,6 +26,7 @@ import org.example.newsrecommendation.Article;
 import org.example.newsrecommendation.LoginHistory;
 import org.example.newsrecommendation.User;
 import org.example.newsrecommendation.DataBase.DatabaseHandler;
+import org.example.newsrecommendation.Service.MainLogics;
 
 import java.io.IOException;
 import java.net.URL;
@@ -282,11 +283,11 @@ public class Main implements Initializable {
                     ObservableList<LoginHistory> historyData = FXCollections.observableArrayList(loginHistory);
                     Profile_login_histroy.setItems(historyData);
                 } else {
-                    showAlert("User Not Found", "No user found with the username: " + loggedInUsername);
+                    MainLogics.Alert(Alert.AlertType.ERROR, "User Not Found", "No user found with the username: " + loggedInUsername);
                     clearUserProfile();
                 }
             } catch (Exception e) {
-                showAlert("Database Error", "Failed to fetch user details: " + e.getMessage());
+                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch user details: " + e.getMessage());
                 clearUserProfile();
             }
         }
@@ -328,7 +329,7 @@ public class Main implements Initializable {
                     check_edit_science.setSelected(preferences.contains("Science"));
                 }
             } catch (Exception e) {
-                showAlert("Database Error", "Failed to fetch user details: " + e.getMessage());
+                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch user details: " + e.getMessage());
             }
         }
         // Show the edit profile page
@@ -373,9 +374,9 @@ public class Main implements Initializable {
                 Main_Profile_label_prefere.setText(String.join(", ", updatedPreferences));
 
                 // Show success message
-                showAlerts();
+                MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "Successfully updated");
             } catch (Exception e) {
-                showAlert("Database Error", "Failed to update user details: " + e.getMessage());
+                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to update user details: " + e.getMessage());
             }
         }
     }
@@ -388,11 +389,11 @@ public class Main implements Initializable {
 
         // Validate that the passwords match
         if (!newPassword.equals(confirmPassword)) {
-            showAlert("Password Mismatch", "The new password and confirm password do not match.");
+            MainLogics.Alert(Alert.AlertType.ERROR, "Password Mismatch", "The new password and confirm password do not match.");
             return;
         }
         if (newPassword.length() < 6) {
-            showAlert("Password Mismatch", "Password must be at least 6 characters long.");
+            MainLogics.Alert(Alert.AlertType.ERROR, "Password Mismatch", "Password must be at least 6 characters long.");
             return;
         }
 
@@ -406,14 +407,14 @@ public class Main implements Initializable {
                 dbHandler.updateDocument("User", new Document("username", loggedInUsername), updatedUser);
 
                 // Show success message
-                showAlerts();
+                MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "Successfully updated ");
 
                 // Optionally, reset the fields or navigate back to profile page
                 Text_new_pwd.clear();
                 Text_new_confirm_pwd.clear();
                 Main_ProfilePage.toFront();  // Navigate back to Profile Page (Optional)
             } catch (Exception e) {
-                showAlert("Database Error", "Failed to update password: " + e.getMessage());
+                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to update password: " + e.getMessage());
             }
         }
     }
@@ -658,21 +659,5 @@ public class Main implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void showAlerts() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText("Profile updated successfully.");
-        alert.showAndWait();
     }
 }
