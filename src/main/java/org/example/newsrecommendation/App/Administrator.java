@@ -1,6 +1,5 @@
 package org.example.newsrecommendation.App;
 
-import com.mongodb.client.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,10 +11,9 @@ import javafx.scene.layout.Pane;
 import org.bson.Document;
 import org.example.newsrecommendation.Model.Admin;
 import org.example.newsrecommendation.Model.Article;
-import org.example.newsrecommendation.DataBase.DatabaseHandler;
 import org.example.newsrecommendation.Model.LoginHistory;
-import org.example.newsrecommendation.Service.ArticleCategorizer;
 import org.example.newsrecommendation.Service.MainLogics;
+import org.example.newsrecommendation.Service.AdminLogics;
 import org.example.newsrecommendation.Model.User;
 
 import java.net.URL;
@@ -313,48 +311,24 @@ public class Administrator implements Initializable {
         tabCol_heading.setCellValueFactory(new PropertyValueFactory<>("heading"));
         tabCol_delete_date.setCellValueFactory(new PropertyValueFactory<>("date"));
         tabCol_delete_cate.setCellValueFactory(new PropertyValueFactory<>("category"));
-
-
     }
 
     private void showUserProfile() {
         if (loggedInAdminID != null) {
-            try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-                MongoDatabase database = mongoClient.getDatabase("NewsRecommendations");
-                MongoCollection<Document> userCollection = database.getCollection("Admin");
-                MongoCollection<Document> loginHistoryCollection = database.getCollection("Admin_Login");
+            AdminLogics adminLogics = new AdminLogics();
+            try {
+                Document adminDoc = adminLogics.findDocument("Admin", new Document("adminId", loggedInAdminID));
+                Admin admin = adminLogics.convertToAdmin(adminDoc);
 
-                Document adminDoc = userCollection.find(new Document("adminId", loggedInAdminID)).first();
-                if (adminDoc != null) {
-                    Admin admin = new Admin(
-                            adminDoc.getString("name"),
-                            adminDoc.getString("email"),
-                            adminDoc.getInteger("age"),
-                            adminDoc.getString("gender"),
-                            adminDoc.getString("password"),
-                            adminDoc.getString("adminId")
-                    );
-
+                if (admin != null) {
                     label_add_name.setText(admin.getName());
                     label_add_email.setText(admin.getEmail());
                     label_add_age.setText(String.valueOf(admin.getAge()));
                     label_add_gender.setText(admin.getGender());
                     label_add_ID.setText(admin.getAdmin_ID());
 
-                    // Fetch login history
-                    List<LoginHistory> loginHistory = new ArrayList<>();
-                    FindIterable<Document> historyDocs = loginHistoryCollection.find(new Document("adminId", loggedInAdminID));
-                    for (Document doc : historyDocs) {
-                        String loginTime = doc.getString("login_time");
-
-                        // Parse login_time into date and time
-                        String date = loginTime.split("T")[0]; // Extract date
-                        String time = loginTime.split("T")[1].split("\\.")[0]; // Extract time
-
-                        loginHistory.add(new LoginHistory(date, time));
-                    }
-
-                    // Populate login history in table
+                    List<Document> historyDocs = adminLogics.findDocuments("Admin_Login", new Document("adminId", loggedInAdminID));
+                    List<LoginHistory> loginHistory = adminLogics.convertToLoginHistory(historyDocs);
                     ObservableList<LoginHistory> historyData = FXCollections.observableArrayList(loginHistory);
                     tabView_LogHis.setItems(historyData);
                 } else {
@@ -367,6 +341,7 @@ public class Administrator implements Initializable {
             }
         }
     }
+
 
     private void clearUserProfile() {
         label_add_name.setText("");
@@ -381,18 +356,16 @@ public class Administrator implements Initializable {
     @FXML
     public void handleEditProfile() {
         if (loggedInAdminID != null) {
-            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-                MongoCollection<Document> userCollection = dbHandler.getDatabase().getCollection("Admin");
-
-                Document adminDoc = userCollection.find(new Document("adminId", loggedInAdminID)).first();
+            AdminLogics adminLogics = new AdminLogics();
+            try {
+                Document adminDoc = adminLogics.getAdminDetails(loggedInAdminID);
                 if (adminDoc != null) {
-                    // Populate the edit fields with current user details
                     text_adm_name.setText(adminDoc.getString("name"));
                     text_adm_email.setText(adminDoc.getString("email"));
                     text_adm_age.setText(String.valueOf(adminDoc.getInteger("age")));
                 }
             } catch (Exception e) {
-                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch user details: "+ e.getMessage());
+                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch user details: " + e.getMessage());
             }
         }
     }
@@ -426,14 +399,12 @@ public class Administrator implements Initializable {
         }
 
         if (loggedInAdminID != null) {
-            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-                Document updatedUser = new Document("name", newName)
-                        .append("email", newEmail)
-                        .append("age", newAge);
+            AdminLogics adminLogics = new AdminLogics();
+            try {
+                // Update the admin details in the database
+                adminLogics.updateAdminDetails(loggedInAdminID, newName, newEmail, newAge);
 
-                Document query = new Document("adminId", loggedInAdminID);
-                dbHandler.updateDocument("Admin", query, new Document("$set", updatedUser));
-
+                // Update the UI with new information
                 label_add_name.setText(newName);
                 label_add_email.setText(newEmail);
                 label_add_age.setText(String.valueOf(newAge));
@@ -461,10 +432,10 @@ public class Administrator implements Initializable {
         }
 
         if (loggedInAdminID != null) {
-            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-                Document updatedUser = new Document("password", newPassword);
-                Document query = new Document("adminId", loggedInAdminID);
-                dbHandler.updateDocument("Admin", query, new Document("$set", updatedUser));
+            AdminLogics adminLogics = new AdminLogics();
+            try {
+                // Update the password in the database
+                adminLogics.changePassword(loggedInAdminID, newPassword);
 
                 MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "Password changed successfully.");
 
@@ -478,31 +449,20 @@ public class Administrator implements Initializable {
         return false;
     }
 
+    @FXML
     private void loadUserDetails() {
         ObservableList<User> userData = FXCollections.observableArrayList();
 
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            List<Document> users = dbHandler.findDocuments("User", new Document());
-
-            for (Document userDoc : users) {
-                String name = userDoc.getString("name");
-                String username = userDoc.getString("username");
-                String email = userDoc.getString("email");
-                int age = userDoc.getInteger("age", 0);
-                String gender = userDoc.getString("gender");
-                String password = userDoc.getString("password");
-                List<String> preferences = userDoc.getList("preference", String.class);
-
-                User user = new User(name, username, email, age, gender, password, preferences);
-                userData.add(user);
-            }
+        AdminLogics adminLogics = new AdminLogics();
+        try {
+            List<User> users = adminLogics.loadUserDetails();
+            userData.addAll(users);
         } catch (Exception e) {
-            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error",  "Failed to fetch user details: " + e.getMessage());
+            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch user details: " + e.getMessage());
         }
 
         Admin_table.setItems(userData);
     }
-
 
     @FXML
     public boolean handleUserSearch() {
@@ -513,41 +473,26 @@ public class Administrator implements Initializable {
             return false;
         }
 
-        // Fetch user data from the database based on the entered username
-        if (!searchUserByUsername(usernameToSearch)) {
-            MainLogics.Alert(Alert.AlertType.ERROR, "User Not Found", "No user found with the username: " + usernameToSearch);
-            return false;
-        }
-        return true;
-    }
+        AdminLogics adminLogics = new AdminLogics();
+        Document userDoc = adminLogics.searchUserByUsername(usernameToSearch);
 
-    private boolean searchUserByUsername(String username) {
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            Document query = new Document("username", username);
-            Document userDoc = dbHandler.findDocument("User", query);
+        if (userDoc != null) {
+            label_user_name.setText(userDoc.getString("name"));
+            label_user_email.setText(userDoc.getString("email"));
+            label_user_age.setText(String.valueOf(userDoc.getInteger("age", 0)));
+            label_user_gender.setText(userDoc.getString("gender"));
+            label_user_username.setText(userDoc.getString("username"));
 
-            if (userDoc != null) {
-                label_user_name.setText(userDoc.getString("name"));
-                label_user_email.setText(userDoc.getString("email"));
-                label_user_age.setText(String.valueOf(userDoc.getInteger("age", 0)));
-                label_user_gender.setText(userDoc.getString("gender"));
-                label_user_username.setText(userDoc.getString("username"));
-
-                List<String> preferences = userDoc.getList("preferences", String.class);
-                if (preferences != null && !preferences.isEmpty()) {
-                    label_user_preference.setText(String.join(", ", preferences));
-                } else {
-                    label_user_preference.setText("No preferences set.");
-                }
-
-                return true;
+            List<String> preferences = userDoc.getList("preferences", String.class);
+            if (preferences != null && !preferences.isEmpty()) {
+                label_user_preference.setText(String.join(", ", preferences));
             } else {
-                clearUserLabels();
-                return false;
+                label_user_preference.setText("No preferences set.");
             }
-        } catch (Exception e) {
-            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch user details: " + e.getMessage());
+            return true;
+        } else {
             clearUserLabels();
+            MainLogics.Alert(Alert.AlertType.ERROR, "User Not Found", "No user found with the username: " + usernameToSearch);
             return false;
         }
     }
@@ -561,6 +506,7 @@ public class Administrator implements Initializable {
         label_user_preference.setText("");
     }
 
+
     @FXML
     public void handleRemoveUser() {
         String usernameToRemove = label_user_username.getText().trim();  // Assuming the username is displayed on the label after search
@@ -571,7 +517,7 @@ public class Administrator implements Initializable {
         }
 
         // Remove the user from the database
-        if (removeUserFromDatabase(usernameToRemove)) {
+        if (AdminLogics.removeUserFromDatabase(usernameToRemove)) {
             // Update UI or provide success message
             MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "User " + usernameToRemove + " has been removed successfully.");
 
@@ -580,26 +526,6 @@ public class Administrator implements Initializable {
             loadUserDetails(); // Reload user details into the table view
         }
     }
-
-    private boolean removeUserFromDatabase(String username) {
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            MongoCollection<Document> userCollection = dbHandler.getDatabase().getCollection("User");
-
-            // Find and delete the user by username
-            Document result = userCollection.findOneAndDelete(new Document("username", username));
-
-            if (result != null) {
-                return true;  // User successfully removed
-            } else {
-                MainLogics.Alert(Alert.AlertType.ERROR, "Error", "No user found with username: " + username);
-                return false;  // User not found
-            }
-        } catch (Exception e) {
-            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to remove user: " + e.getMessage());
-            return false;
-        }
-    }
-
 
     @FXML
     void addArticle(ActionEvent event) {
@@ -612,22 +538,13 @@ public class Administrator implements Initializable {
             return;
         }
 
-        // Categorize the article
-        String category = ArticleCategorizer.categorizeArticle(content);
-
-        // Create the article document
-        Document article = new Document("heading", heading)
-                .append("date", date)
-                .append("content", content)
-                .append("category", category);
-
-        // Insert into MongoDB
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            dbHandler.insertDocument("Article", article);
+        // Call AdminLogics to add the article
+        AdminLogics adminLogics = new AdminLogics();
+        try {
+            adminLogics.addArticle(heading, date, content);
             MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "Article added successfully!");
         } catch (Exception e) {
-            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch articles: " + e.getMessage());
-            e.printStackTrace();
+            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to add article: " + e.getMessage());
         }
 
         // Clear fields after adding
@@ -640,19 +557,13 @@ public class Administrator implements Initializable {
     private void loadArticles() {
         ObservableList<Article> articleData = FXCollections.observableArrayList();
 
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            // Fetch all articles from the database
-            List<Document> articles = dbHandler.findDocuments("Article", new Document());
+        AdminLogics adminLogics = new AdminLogics();
+        try {
+            // Fetch all articles using AdminLogics
+            List<Article> articles = adminLogics.loadArticles();
 
-            for (Document articleDoc : articles) {
-                String heading = articleDoc.getString("heading");
-                String date = articleDoc.getString("date");
-                String category = articleDoc.getString("category");
-
-                // Create an Article object (you can define the Article class with appropriate fields)
-                Article article = new Article(heading, date, category);
-                articleData.add(article);
-            }
+            // Add the articles to the ObservableList
+            articleData.addAll(articles);
         } catch (Exception e) {
             MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch articles: " + e.getMessage());
         }
@@ -665,6 +576,7 @@ public class Administrator implements Initializable {
         // Populate the TableView
         table_delete.setItems(articleData);
     }
+
 
     // Method to handle the sort button click
     @FXML
@@ -681,41 +593,10 @@ public class Administrator implements Initializable {
         if (Admin_Cat_world.isSelected()) selectedCategories.add("World");
 
         // Fetch filtered data from MongoDB based on selected categories
-        ObservableList<Article> filteredArticles = fetchArticlesFromDatabase(selectedCategories);
+        ObservableList<Article> filteredArticles = AdminLogics.fetchArticlesFromDatabase(selectedCategories);
 
         // Display the filtered articles in the table
         table_delete.setItems(filteredArticles);
-    }
-
-    private ObservableList<Article> fetchArticlesFromDatabase(List<String> categories) {
-        ObservableList<Article> articleData = FXCollections.observableArrayList();
-
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            // Build MongoDB query
-            Document query = new Document();
-
-            // If categories are selected, add to the query
-            if (!categories.isEmpty()) {
-                query.append("category", new Document("$in", categories));
-            }
-
-            // Fetch articles from MongoDB
-            List<Document> articles = dbHandler.findDocuments("Article", query);
-
-            for (Document doc : articles) {
-                String heading = doc.getString("heading");
-                String date = doc.getString("date"); // MongoDB stores date as a String in "MM/dd/yyyy" format
-                String category = doc.getString("category");
-
-                // Create Article object and add to the list
-                articleData.add(new Article(heading, date, category));
-            }
-        } catch (Exception e) {
-            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch articles: " + e.getMessage());
-        }
-
-        // Return as ObservableList for TableView
-        return articleData;
     }
 
     @FXML
@@ -737,7 +618,7 @@ public class Administrator implements Initializable {
         Optional<ButtonType> result = confirmDeleteAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             // If confirmed, delete the article from the database
-            if (deleteArticleFromDatabase(selectedArticle)) {
+            if (AdminLogics.deleteArticleFromDatabase(selectedArticle)) {
                 MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "Article deleted successfully.");
 
                 // Reload the articles in the table after deletion
@@ -745,27 +626,6 @@ public class Administrator implements Initializable {
             } else {
                 MainLogics.Alert(Alert.AlertType.ERROR, "Error", "Failed to delete the article.");
             }
-        }
-    }
-
-    private boolean deleteArticleFromDatabase(Article article) {
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            // Create query to match the article by heading
-            Document query = new Document("heading", article.getHeading());
-
-            // Delete the article from the collection
-            Document result = dbHandler.findDocument("Article", query);
-
-            if (result != null) {
-                dbHandler.getDatabase().getCollection("Article").deleteOne(query); // Delete the article
-                return true;  // Article successfully deleted
-            } else {
-                MainLogics.Alert(Alert.AlertType.ERROR, "Error", "No article found with heading: " + article.getHeading());
-                return false;  // Article not found
-            }
-        } catch (Exception e) {
-            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to delete article: " + e.getMessage());
-            return false;
         }
     }
 }

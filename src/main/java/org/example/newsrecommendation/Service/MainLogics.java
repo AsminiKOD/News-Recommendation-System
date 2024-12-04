@@ -1,5 +1,7 @@
 package org.example.newsrecommendation.Service;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -112,11 +114,13 @@ public class MainLogics {
         try (DatabaseHandler dbHandler = new DatabaseHandler()) {
             Document query = new Document("username", loggedInUsername);
 
-            Document updates = new Document("$set", new Document("name", newName)
+            // Create the update document directly, without using $set here, since updateDocument already adds it
+            Document updates = new Document("name", newName)
                     .append("email", newEmail)
                     .append("age", newAge)
-                    .append("preferences", updatedPreferences));
+                    .append("preferences", updatedPreferences);
 
+            // Call updateDocument from DatabaseHandler to update the User document
             dbHandler.updateDocument("User", query, updates);
             return true;
         } catch (Exception e) {
@@ -124,6 +128,7 @@ public class MainLogics {
             return false;
         }
     }
+
 
     public static boolean validateAndUpdatePassword(String loggedInUsername, String newPassword, String confirmPassword) {
         // Validate that the passwords match
@@ -163,5 +168,86 @@ public class MainLogics {
             e.printStackTrace();
         }
         return articles;
+    }
+
+    public static void viewArticleDetails(Article selectedArticle) {
+        if (selectedArticle != null) {
+            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+                // Query the database for the full article based on the heading
+                String heading = selectedArticle.getHeading();
+                Document query = new Document("heading", heading);
+
+                // Fetch the article document using DatabaseHandler
+                Document result = dbHandler.findDocument("Article", query);
+
+                if (result != null) {
+                    String fullArticle = result.getString("article");
+
+                    // Load the new FXML and pass the article details
+                    FXMLLoader loader = new FXMLLoader(MainLogics.class.getResource("/org/example/newsrecommendation/ArticleScene.fxml"));
+                    Parent root = loader.load();
+
+                    ArticleScene controller = loader.getController();
+                    controller.setArticleDetails(selectedArticle, fullArticle);
+
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Article Details");
+                    stage.show();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static ObservableList<Article> loadSavedArticles(String username) {
+        List<Article> savedArticles = new ArrayList<>();
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            // Fetch saved article headings for the user
+            Document savedDoc = dbHandler.findDocument("Interaction", new Document("username", username));
+            if (savedDoc != null) {
+                List<String> savedHeadings = savedDoc.getList("save", String.class);
+
+                // Fetch full article details from the "Article" collection
+                for (String heading : savedHeadings) {
+                    Document articleDoc = dbHandler.findDocument("Article", new Document("heading", heading));
+                    if (articleDoc != null) {
+                        String articleHeading = articleDoc.getString("heading");
+                        String articleCategory = articleDoc.getString("category");
+                        String articleDate = articleDoc.getString("date");
+                        savedArticles.add(new Article(articleHeading, articleDate, articleCategory));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // Return the list of saved articles
+        return FXCollections.observableArrayList(savedArticles);
+    }
+
+    public static void removeArticle(String username, String headingToRemove) {
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            Document query = new Document("username", username);
+            Document update = new Document("$pull", new Document("save", headingToRemove));
+
+            dbHandler.updateDocument("Interaction", query, update);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String getFullArticle(String heading) {
+        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            Document articleDoc = dbHandler.findDocument("Article", new Document("heading", heading));
+            if (articleDoc != null) {
+                return articleDoc.getString("article");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

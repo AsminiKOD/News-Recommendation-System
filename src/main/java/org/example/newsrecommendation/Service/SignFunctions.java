@@ -118,7 +118,7 @@ public class SignFunctions {
                     .append("Healthcare", preferences.contains("Healthcare") ? 5 : 0)
                     .append("Politics", preferences.contains("Politics") ? 5 : 0)
                     .append("Finance", preferences.contains("Finance") ? 5 : 0)
-                    .append("Technology", preferences.contains("Technology") ? 5 : 0)
+                    .append("AI and Technology", preferences.contains("AI and Technology") ? 5 : 0)
                     .append("Science", preferences.contains("Science") ? 5 : 0)
                     .append("Sports", preferences.contains("Sports") ? 5 : 0)
                     .append("World", preferences.contains("World") ? 5 : 0);

@@ -34,7 +34,7 @@ public class RecommendationAlgorithm {
             }
 
             Map<String, Integer> categoryArticleQuota = new HashMap<>();
-            int totalQuota = 40;
+            int totalQuota = 20;
             for (Map.Entry<String, Integer> entry : categoryPoints.entrySet()) {
                 int quota = Math.round((float) entry.getValue() / totalPoints * totalQuota);
                 categoryArticleQuota.put(entry.getKey(), quota);
@@ -72,6 +72,7 @@ public class RecommendationAlgorithm {
 
     public void updateUserPreference(String username, String articleHeading, String category, boolean isLike) {
         try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            // Find or create user interaction document
             Document userDoc = dbHandler.findDocument("Interaction", new Document("username", username));
             if (userDoc == null) {
                 userDoc = new Document("username", username)
@@ -81,6 +82,7 @@ public class RecommendationAlgorithm {
                 dbHandler.insertDocument("Interaction", userDoc);
             }
 
+            // Determine which list to modify (liked or disliked)
             String addToList = isLike ? "liked" : "disliked";
             String removeFromList = isLike ? "disliked" : "liked";
 
@@ -91,32 +93,39 @@ public class RecommendationAlgorithm {
                 addList.add(articleHeading);
                 removeList.remove(articleHeading);
 
+                // Update the user interaction document
                 dbHandler.updateDocument(
                         "Interaction",
                         new Document("username", username),
-                        new Document("$set", new Document(addToList, addList).append(removeFromList, removeList))
+                        new Document(addToList, addList).append(removeFromList, removeList)
                 );
 
+                // Find or create category preferences document
                 Document categoryDoc = dbHandler.findDocument("Preferences", new Document("username", username));
                 if (categoryDoc == null) {
                     categoryDoc = new Document("username", username);
-                    for (String cat : new String[]{"Entertainment", "Healthcare", "Politics", "Finance", "Technology", "Science", "Sports", "World"}) {
+                    for (String cat : new String[]{"Entertainment", "Healthcare", "Politics", "Finance", "AI and Technology", "Science", "Sports", "World"}) {
                         categoryDoc.append(cat, 0);
                     }
                     dbHandler.insertDocument("Preferences", categoryDoc);
                 }
 
+                // Update category points
                 int currentPoints = categoryDoc.getInteger(category, 0);
                 int updatedPoints = isLike ? currentPoints + 3 : Math.max(currentPoints - 3, 0);
 
+                // Update the category points
                 dbHandler.updateDocument(
                         "Preferences",
                         new Document("username", username),
-                        new Document("$set", new Document(category, updatedPoints))
+                        new Document(category, updatedPoints)
                 );
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
 
     public void saveArticle(String username, String articleHeading) {
         try (DatabaseHandler dbHandler = new DatabaseHandler()) {

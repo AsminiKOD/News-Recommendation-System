@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import org.bson.Document;
 import org.example.newsrecommendation.Model.Article;
@@ -212,6 +213,7 @@ public class Main implements Initializable {
             Main_HomePage.toFront();
         }
         if (actionEvent.getSource() == Main_button_Recomm) {
+            loadAndDisplayArticles(loggedInUsername);
             Main_RecommendPage.toFront();
         }
         if (actionEvent.getSource() == Main_button_Articles) {
@@ -388,12 +390,15 @@ public class Main implements Initializable {
 
     public void displayArticles(List<Article> articles) {
         main_rec_grid.getChildren().clear(); // Clear existing articles
+        main_rec_grid.getRowConstraints().clear(); // Clear any old row constraints
 
-        int columns = 2; // Set the number of articles per row
-        int row = 0, col = 1;
+        int row = 0; // Start with the first row
 
         try {
-            for (Article article : articles) {
+            // Limit the loop to 20 articles
+            for (int i = 0; i < Math.min(articles.size(), 20); i++) {
+                Article article = articles.get(i);
+
                 // Load the article pane
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/newsrecommendation/Recommended.fxml"));
                 AnchorPane articlePane = loader.load();
@@ -402,85 +407,40 @@ public class Main implements Initializable {
                 Recommended controller = loader.getController();
                 controller.setArticleData(article.getHeading(), article.getDate(), article.getCategory());
 
-                // Add the article pane to the GridPane at the correct column and row
-                main_rec_grid.add(articlePane, col, row);
+                // Add the article pane to the GridPane
+                main_rec_grid.add(articlePane, 0, row);
 
-                // Move to the next column
-                col++;
+                // Add row constraints dynamically
+                RowConstraints rowConstraints = new RowConstraints();
+                rowConstraints.setPrefHeight(AnchorPane.USE_COMPUTED_SIZE); // Set height to fit the content
+                main_rec_grid.getRowConstraints().add(rowConstraints);
 
-                // If 5 articles are added in a row, move to the next row
-                if (col == columns) {
-                    col = 1; // Reset column to 1
-                    row++;   // Increment the row
-                }
+                // Move to the next row
+                row++;
 
-                // Optionally add margins for better spacing
-                GridPane.setMargin(articlePane, new Insets(40));
+                // Add margins for better spacing
+                GridPane.setMargin(articlePane, new Insets(10));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+
+
     @FXML
     private void onViewButtonClick() {
         Article selectedArticle = tableArticles.getSelectionModel().getSelectedItem();
         if (selectedArticle != null) {
-            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-                // Query the database for the full article based on the heading
-                String heading = selectedArticle.getHeading();
-                Document query = new Document("heading", heading);
-
-                // Fetch the article document using DatabaseHandler
-                Document result = dbHandler.findDocument("Article", query);
-
-                if (result != null) {
-                    String fullArticle = result.getString("article");
-
-                    // Load the new FXML and pass the article details
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/newsrecommendation/ArticleScene.fxml"));
-                    Parent root = loader.load();
-
-                    ArticleScene controller = loader.getController();
-                    controller.setArticleDetails(selectedArticle, fullArticle);
-
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(root));
-                    stage.setTitle("Article Details");
-                    stage.show();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            MainLogics.viewArticleDetails(selectedArticle);
         }
     }
 
     @FXML
     private void loadSavedArticles(String username) {
-        List<Article> savedArticles = new ArrayList<>();
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            // Fetch saved article headings for the user
-            Document savedDoc = dbHandler.findDocument("Interaction", new Document("username", username));
-            if (savedDoc != null) {
-                List<String> savedHeadings = savedDoc.getList("save", String.class);
+        ObservableList<Article> savedArticleList = MainLogics.loadSavedArticles(username);
 
-                // Fetch full article details from the "Article" collection
-                for (String heading : savedHeadings) {
-                    Document articleDoc = dbHandler.findDocument("Article", new Document("heading", heading));
-                    if (articleDoc != null) {
-                        String articleHeading = articleDoc.getString("heading");
-                        String articleCategory = articleDoc.getString("category");
-                        String articleDate = articleDoc.getString("date");
-                        savedArticles.add(new Article(articleHeading, articleDate, articleCategory));
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         // Populate the TableView
-        ObservableList<Article> savedArticleList = FXCollections.observableArrayList(savedArticles);
         tabCol_heading.setCellValueFactory(new PropertyValueFactory<>("heading"));
         tabCol_category.setCellValueFactory(new PropertyValueFactory<>("category"));
         tabCol_date.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -493,15 +453,10 @@ public class Main implements Initializable {
         if (selectedArticle != null) {
             String headingToRemove = selectedArticle.getHeading();
 
-            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-                Document query = new Document("username", loggedInUsername); // Replace "q" with dynamic username if needed
-                Document update = new Document("$pull", new Document("save", headingToRemove));
+            // Call the method in MainLogics to remove the article from the database
+            MainLogics.removeArticle(loggedInUsername, headingToRemove);
 
-                dbHandler.updateDocument("Interaction", query, update);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            // Remove the article from the TableView
             table_Saved.getItems().remove(selectedArticle);
         }
     }
@@ -513,12 +468,10 @@ public class Main implements Initializable {
             return; // No article selected
         }
 
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            // Fetch the full article content from the "Article" collection
-            Document articleDoc = dbHandler.findDocument("Article", new Document("heading", selectedArticle.getHeading()));
-            if (articleDoc != null) {
-                String fullArticle = articleDoc.getString("article");
-
+        // Fetch the full article content from the MainLogics class
+        String fullArticle = MainLogics.getFullArticle(selectedArticle.getHeading());
+        if (fullArticle != null) {
+            try {
                 // Load ArticleScene.fxml
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/newsrecommendation/ArticleScene.fxml"));
                 Parent root = loader.load();
@@ -532,9 +485,9 @@ public class Main implements Initializable {
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));
                 stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }
