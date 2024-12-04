@@ -5,28 +5,33 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="406.0" prefWidth="411.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.App.ArticleScene">
+<AnchorPane prefHeight="406.0" prefWidth="411.0" style="-fx-background-radius: 20;" stylesheets="@CSS/ArticleScene.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.App.ArticleScene">
    <children>
-      <HBox layoutX="19.0" layoutY="39.0" prefHeight="39.0" prefWidth="355.0">
+      <Pane prefHeight="406.0" prefWidth="411.0" style="-fx-background-radius: 20;" stylesheets="@CSS/ArticleScene.css">
          <children>
-            <Label fx:id="label_Heading" prefHeight="43.0" prefWidth="355.0" text="Heading" wrapText="true">
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font>
-            </Label>
+            <HBox layoutX="14.0" layoutY="46.0" prefHeight="39.0" prefWidth="355.0">
+               <children>
+                  <Label fx:id="label_Heading" prefHeight="43.0" prefWidth="355.0" text="Heading" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <ScrollPane layoutX="13.0" layoutY="127.0" prefHeight="239.0" prefWidth="384.0">
+               <content>
+                  <Label fx:id="label_Article" alignment="TOP_LEFT" prefHeight="238.0" prefWidth="381.0" text="Content" wrapText="true" />
+               </content>
+            </ScrollPane>
+            <Label fx:id="label_Category" layoutX="14.0" layoutY="85.0" text="Category" />
+            <Label fx:id="label_Date" layoutX="356.0" layoutY="85.0" text="date" />
+            <Button fx:id="button_Like" layoutX="11.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleLike" text="Like" />
+            <Button fx:id="button_Dislike" layoutX="324.0" layoutY="372.0" mnemonicParsing="false" onAction="#handleDislike" text="Dislike" />
+            <Button fx:id="button_Save" layoutX="335.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleSave" text="Save" />
          </children>
-      </HBox>
-      <ScrollPane layoutX="14.0" layoutY="108.0" prefHeight="239.0" prefWidth="384.0">
-         <content>
-            <Label fx:id="label_Article" alignment="TOP_LEFT" prefHeight="238.0" prefWidth="381.0" text="Content" wrapText="true" />
-         </content>
-      </ScrollPane>
-      <Label fx:id="label_Category" layoutX="20.0" layoutY="81.0" text="Category" />
-      <Label fx:id="label_Date" layoutX="361.0" layoutY="78.0" text="date" />
-      <Button fx:id="button_Like" layoutX="21.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleLike" text="Like" />
-      <Button fx:id="button_Dislike" layoutX="347.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleDislike" text="Dislike" />
-      <Button fx:id="button_Save" layoutX="348.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleSave" text="Save" />
+      </Pane>
    </children>
 </AnchorPane>

@@ -1,0 +1,56 @@
+/* General AnchorPane Styling */
+.pane{
+    -fx-border-radius: 10px;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, #8a8c89, 5, 0.3, 0, 0);
+}
+
+/* Heading Label Styling */
+#label_Heading {
+    -fx-text-fill: Black;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-font-family: Algerian;
+}
+
+/* Category Label Styling */
+#label_Category {
+    -fx-text-fill: #555555;
+    -fx-font-size: 14px;
+    -fx-font-style: italic;
+}
+
+/* Date Label Styling */
+#label_Date {
+    -fx-text-fill: #555555;
+    -fx-font-size: 14px;
+    -fx-alignment: center-right;
+    -fx-font-style: italic;
+}
+
+/* Article Content Label Styling */
+#label_Article {
+    -fx-background-color: white;
+    -fx-text-fill: #313330;
+    -fx-font-size: 12px;
+    -fx-font-family: "Times New Roman";
+}
+
+/* Button Styling */
+.button {
+    -fx-background-color: #0078d7;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 15px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.button:hover {
+    -fx-background-color: #005bb5;
+}
+
+.button:pressed {
+    -fx-background-color: #003f88;
+}

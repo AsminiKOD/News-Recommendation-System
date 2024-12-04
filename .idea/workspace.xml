@@ -5,17 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d69130ca-d560-41c0-857d-8ef2f1671203" name="Changes" comment="enhance the code">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Service/AdminLogics.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/ArticleScene.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/App/Administrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/App/Administrator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/App/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/App/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Service/MainLogics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Service/MainLogics.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Service/RecommendationAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Service/RecommendationAlgorithm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Service/SignFunctions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Service/SignFunctions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/ArticleScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/ArticleScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Recommended.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Recommended.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,9 +17,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="CSS File" />
         <option value="FxmlFile" />
         <option value="Class" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -114,7 +106,7 @@
       <workItem from="1733172201030" duration="490000" />
       <workItem from="1733194848606" duration="27122000" />
       <workItem from="1733279972900" duration="17131000" />
-      <workItem from="1733304541343" duration="7616000" />
+      <workItem from="1733304541343" duration="10033000" />
     </task>
     <task id="LOCAL-00001" summary="new">
       <option name="closed" value="true" />
@@ -268,7 +260,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733289936495</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="enhance the code">
+      <option name="closed" value="true" />
+      <created>1733313567493</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1733313567493</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
