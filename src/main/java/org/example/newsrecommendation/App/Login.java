@@ -11,12 +11,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.bson.Document;
-import org.example.newsrecommendation.DataBase.DatabaseHandler;
 import org.example.newsrecommendation.Service.MainLogics;
+import org.example.newsrecommendation.Service.SignFunctions;
+
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class Login implements Initializable {
@@ -45,60 +44,11 @@ public class Login implements Initializable {
     @FXML
     private TextField Login_pwd;
 
-    private DatabaseHandler dbHandler;
+    private SignFunctions signFunctions;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            dbHandler = new DatabaseHandler();
-        } catch (Exception e) {
-            e.printStackTrace();
-            MainLogics.Alert(Alert.AlertType.ERROR, "Database Connection Error", "Could not connect to MongoDB.");
-        }
-    }
-
-    private boolean checkCredentials(String username, String password) {
-        try {
-            Document query = new Document("username", username).append("password", password);
-            Document user = dbHandler.findDocument("User", query);
-            return user != null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            MainLogics.Alert(Alert.AlertType.ERROR, "Login Error", "An error occurred while checking credentials.");
-            return false;
-        }
-    }
-
-    private boolean checkCredentialsAdmin(String username, String password, String adminID) {
-        try {
-            Document query = new Document("username", username).append("password", password).append("adminId", adminID);
-            Document admin = dbHandler.findDocument("Admin", query);
-            return admin != null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            MainLogics.Alert(Alert.AlertType.ERROR, "Login Error", "An error occurred while checking credentials.");
-            return false;
-        }
-    }
-
-    private void saveLoginDetails(String username) {
-        try {
-            Document loginRecord = new Document("username", username).append("login_time", LocalDateTime.now().toString());
-            dbHandler.insertDocument("User_Login", loginRecord);
-        } catch (Exception e) {
-            e.printStackTrace();
-            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Could not save login details.");
-        }
-    }
-
-    private void saveLoginDetailsAdmin(String adminID) {
-        try {
-            Document loginRecord = new Document("adminId", adminID).append("login_time", LocalDateTime.now().toString());
-            dbHandler.insertDocument("Admin_Login", loginRecord);
-        } catch (Exception e) {
-            e.printStackTrace();
-            MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Could not save login details.");
-        }
+        signFunctions = new SignFunctions();
     }
 
     @FXML
@@ -106,8 +56,8 @@ public class Login implements Initializable {
         String username = Login_user.getText();
         String password = Login_pwd.getText();
 
-        if (checkCredentials(username, password)) {
-            saveLoginDetails(username);
+        if (signFunctions.checkCredentials(username, password)) {
+            signFunctions.saveLoginDetails(username);
             MainLogics.Alert(Alert.AlertType.INFORMATION, "Login", "Welcome " + username);
             Main.setLoggedInUsername(username);
             ArticleScene.setCurrentUsername(username);
@@ -128,8 +78,8 @@ public class Login implements Initializable {
         String password = Login_pwd_ad.getText();
         String adminID = Login_Admin_Id.getText();
 
-        if (checkCredentialsAdmin(username, password, adminID)) {
-            saveLoginDetailsAdmin(adminID);
+        if (signFunctions.checkCredentialsAdmin(username, password, adminID)) {
+            signFunctions.saveLoginDetailsAdmin(adminID);
             MainLogics.Alert(Alert.AlertType.INFORMATION, "Login", "Welcome Admin " + username);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/newsrecommendation/Administrator.fxml"));
             Parent root = loader.load();

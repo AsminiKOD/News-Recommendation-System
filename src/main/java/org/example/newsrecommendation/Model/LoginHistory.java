@@ -1,4 +1,4 @@
-package org.example.newsrecommendation;
+package org.example.newsrecommendation.Model;
 
 public class LoginHistory {
     private String date;

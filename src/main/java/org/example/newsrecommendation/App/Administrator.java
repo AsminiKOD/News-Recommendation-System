@@ -1,7 +1,6 @@
 package org.example.newsrecommendation.App;
 
 import com.mongodb.client.*;
-import com.mongodb.client.model.Sorts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,13 +10,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import org.bson.Document;
-import org.example.newsrecommendation.Admin;
-import org.example.newsrecommendation.Article;
+import org.example.newsrecommendation.Model.Admin;
+import org.example.newsrecommendation.Model.Article;
 import org.example.newsrecommendation.DataBase.DatabaseHandler;
-import org.example.newsrecommendation.LoginHistory;
+import org.example.newsrecommendation.Model.LoginHistory;
 import org.example.newsrecommendation.Service.ArticleCategorizer;
 import org.example.newsrecommendation.Service.MainLogics;
-import org.example.newsrecommendation.User;
+import org.example.newsrecommendation.Model.User;
 
 import java.net.URL;
 import java.util.ArrayList;

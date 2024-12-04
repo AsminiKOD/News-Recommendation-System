@@ -1,4 +1,4 @@
-package org.example.newsrecommendation;
+package org.example.newsrecommendation.Model;
 
 public class Admin extends Common{
     private String admin_ID;

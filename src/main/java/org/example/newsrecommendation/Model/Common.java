@@ -1,4 +1,4 @@
-package org.example.newsrecommendation;
+package org.example.newsrecommendation.Model;
 
 public class Common {
     private String name;
@@ -23,6 +23,12 @@ public class Common {
         this.age = age;
         this.gender = gender;
         this.password = password;
+    }
+
+    public Common(String name, String email, int age) {
+        this.name = name;
+        this.email = email;
+        this.age = age;
     }
 
     public String getName() {

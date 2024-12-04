@@ -59,11 +59,17 @@ public class DatabaseHandler implements AutoCloseable {
     public void updateDocument(String collectionName, Document query, Document update) {
         try {
             MongoCollection<Document> collection = database.getCollection(collectionName);
-            collection.updateOne(query, update);
+
+            // Wrap the update document with $set operator
+            Document updateDoc = new Document("$set", update);
+
+            // Perform the update operation
+            collection.updateOne(query, updateDoc);
         } catch (Exception e) {
             throw new RuntimeException("Failed to update document in collection: " + collectionName, e);
         }
     }
+
 
     @Override
     public void close() {

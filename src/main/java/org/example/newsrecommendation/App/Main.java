@@ -1,11 +1,5 @@
 package org.example.newsrecommendation.App;
 
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,11 +16,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.bson.Document;
-import org.example.newsrecommendation.Article;
-import org.example.newsrecommendation.LoginHistory;
-import org.example.newsrecommendation.User;
+import org.example.newsrecommendation.Model.Article;
+import org.example.newsrecommendation.Model.LoginHistory;
+import org.example.newsrecommendation.Model.User;
 import org.example.newsrecommendation.DataBase.DatabaseHandler;
 import org.example.newsrecommendation.Service.MainLogics;
+import org.example.newsrecommendation.Service.RecommendationAlgorithm;
 
 import java.io.IOException;
 import java.net.URL;
@@ -195,6 +190,8 @@ public class Main implements Initializable {
         loggedInUsername = username;
     }
 
+    RecommendationAlgorithm recommendationService = new RecommendationAlgorithm();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Initialize the TableView columns
@@ -242,105 +239,75 @@ public class Main implements Initializable {
 
     }
 
+    @FXML
     private void showUserProfile() {
         if (loggedInUsername != null) {
-            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-                // Fetch user document
-                Document userDoc = dbHandler.findDocument("User", new Document("username", loggedInUsername));
+            // Fetch user profile and login history using MainLogic
+            User user = MainLogics.fetchUserProfile(loggedInUsername);
+            List<LoginHistory> loginHistory = MainLogics.fetchLoginHistory(loggedInUsername);
 
-                if (userDoc != null) {
-                    User user = new User(
-                            userDoc.getString("name"),
-                            userDoc.getString("email"),
-                            userDoc.getInteger("age"),
-                            userDoc.getString("gender"),
-                            userDoc.getString("password"),
-                            userDoc.getList("preferences", String.class)
-                    );
+            if (user != null) {
+                // Update the UI with user details
+                Main_Profile_label_Name.setText(user.getName());
+                Main_Profile_label_Email.setText(user.getEmail());
+                Main_Profile_label_Age.setText(String.valueOf(user.getAge()));
+                Main_Profile_label_gender.setText(user.getGender());
+                Main_Profile_label_prefere.setText(user.getPreference() != null ? String.join(", ", user.getPreference()) : "No preferences set");
 
-                    Main_Profile_label_Name.setText(user.getName());
-                    Main_Profile_label_Email.setText(user.getEmail());
-                    Main_Profile_label_Age.setText(String.valueOf(user.getAge()));
-                    Main_Profile_label_gender.setText(user.getGender());
-                    Main_Profile_label_prefere.setText(user.getPreference() != null ? String.join(", ", user.getPreference()) : "No preferences set");
-
-                    // Fetch login history
-                    List<LoginHistory> loginHistory = new ArrayList<>();
-                    Document query = new Document("username", loggedInUsername);
-                    List<Document> historyDocs = dbHandler.findDocuments("User_Login", query);
-
-                    for (Document doc : historyDocs) {
-                        String loginTime = doc.getString("login_time");
-
-                        // Parse login_time into date and time
-                        String date = loginTime.split("T")[0]; // Extract date
-                        String time = loginTime.split("T")[1].split("\\.")[0]; // Extract time
-
-                        loginHistory.add(new LoginHistory(date, time));
-                    }
-
-                    // Populate login history in table
-                    ObservableList<LoginHistory> historyData = FXCollections.observableArrayList(loginHistory);
-                    Profile_login_histroy.setItems(historyData);
-                } else {
-                    MainLogics.Alert(Alert.AlertType.ERROR, "User Not Found", "No user found with the username: " + loggedInUsername);
-                    clearUserProfile();
-                }
-            } catch (Exception e) {
-                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch user details: " + e.getMessage());
+                // Update login history table
+                ObservableList<LoginHistory> historyData = FXCollections.observableArrayList(loginHistory);
+                Profile_login_histroy.setItems(historyData);
+            } else {
+                MainLogics.Alert(Alert.AlertType.ERROR, "User Not Found", "No user found with the username: " + loggedInUsername);
                 clearUserProfile();
             }
         }
     }
 
-
+    // Utility method to clear the user profile UI elements
     private void clearUserProfile() {
         Main_Profile_label_Name.setText("");
         Main_Profile_label_Email.setText("");
         Main_Profile_label_Age.setText("");
         Main_Profile_label_gender.setText("");
-        Main_Profile_label_prefere.setText("");
-        Profile_login_histroy.setItems(FXCollections.observableArrayList());
+        Main_Profile_label_prefere.setText("No preferences set");
+        Profile_login_histroy.getItems().clear();
     }
 
     // This method handles navigation to edit profile page and pre-filling user data.
     @FXML
     public void handleEditProfile(ActionEvent actionEvent) {
         if (loggedInUsername != null) {
-            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-                // Fetch user document
-                Document userDoc = dbHandler.findDocument("User", new Document("username", loggedInUsername));
+            // Fetch user details for editing using MainLogic
+            User user = MainLogics.fetchUserForEdit(loggedInUsername);
 
-                if (userDoc != null) {
-                    // Populate the edit fields with current user details
-                    Text_edit_name.setText(userDoc.getString("name"));
-                    Text_edit_email.setText(userDoc.getString("email"));
-                    Text_edit_age.setText(String.valueOf(userDoc.getInteger("age")));
+            if (user != null) {
+                // Populate the edit fields with current user details
+                Text_edit_name.setText(user.getName());
+                Text_edit_email.setText(user.getEmail());
+                Text_edit_age.setText(String.valueOf(user.getAge()));
 
-                    // Check the preferences checkboxes based on user data
-                    List<String> preferences = userDoc.getList("preferences", String.class);
-                    check_edit_tech.setSelected(preferences.contains("AI and Technology"));
-                    check_edit_prefer.setSelected(preferences.contains("Entertainment"));
-                    check_edit_finance.setSelected(preferences.contains("Finance"));
-                    check_edit_health.setSelected(preferences.contains("Healthcare"));
-                    check_edit_politics.setSelected(preferences.contains("Politics"));
-                    check_edit_world.setSelected(preferences.contains("World"));
-                    check_edit_sport.setSelected(preferences.contains("Sport"));
-                    check_edit_science.setSelected(preferences.contains("Science"));
-                }
-            } catch (Exception e) {
-                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch user details: " + e.getMessage());
+                // Check the preferences checkboxes based on user data
+                List<String> preferences = user.getPreference();
+                check_edit_tech.setSelected(preferences.contains("AI and Technology"));
+                check_edit_prefer.setSelected(preferences.contains("Entertainment"));
+                check_edit_finance.setSelected(preferences.contains("Finance"));
+                check_edit_health.setSelected(preferences.contains("Healthcare"));
+                check_edit_politics.setSelected(preferences.contains("Politics"));
+                check_edit_world.setSelected(preferences.contains("World"));
+                check_edit_sport.setSelected(preferences.contains("Sport"));
+                check_edit_science.setSelected(preferences.contains("Science"));
+            } else {
+                MainLogics.Alert(Alert.AlertType.ERROR, "User Not Found", "Failed to fetch user details.");
             }
         }
         // Show the edit profile page
         Pane_edit_profil.toFront();
     }
 
-
     // This method handles the "Confirm" button click, saving the changes to the database.
     @FXML
     public void handleEditConfirm(ActionEvent actionEvent) {
-        // Get the updated user details from the form
         String newName = Text_edit_name.getText();
         String newEmail = Text_edit_email.getText();
         int newAge = Integer.parseInt(Text_edit_age.getText());
@@ -355,28 +322,20 @@ public class Main implements Initializable {
         if (check_edit_sport.isSelected()) updatedPreferences.add("Sport");
         if (check_edit_science.isSelected()) updatedPreferences.add("Science");
 
-        // Update the user document in MongoDB
         if (loggedInUsername != null) {
-            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-                // Create the updated user document
-                Document updatedUser = new Document("name", newName)
-                        .append("email", newEmail)
-                        .append("age", newAge)
-                        .append("preferences", updatedPreferences);
+            // Call MainLogic to update user details
+            boolean updateSuccess = MainLogics.updateUserDetails(loggedInUsername, newName, newEmail, newAge, updatedPreferences);
 
-                // Update the document in the database
-                dbHandler.updateDocument("User", new Document("username", loggedInUsername), updatedUser);
-
-                // Reflect the changes in the profile page
+            if (updateSuccess) {
+                // Update the profile UI after the successful update
                 Main_Profile_label_Name.setText(newName);
                 Main_Profile_label_Email.setText(newEmail);
                 Main_Profile_label_Age.setText(String.valueOf(newAge));
                 Main_Profile_label_prefere.setText(String.join(", ", updatedPreferences));
 
-                // Show success message
                 MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "Successfully updated");
-            } catch (Exception e) {
-                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to update user details: " + e.getMessage());
+            } else {
+                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to update user details.");
             }
         }
     }
@@ -387,59 +346,31 @@ public class Main implements Initializable {
         String newPassword = Text_new_pwd.getText();
         String confirmPassword = Text_new_confirm_pwd.getText();
 
-        // Validate that the passwords match
-        if (!newPassword.equals(confirmPassword)) {
-            MainLogics.Alert(Alert.AlertType.ERROR, "Password Mismatch", "The new password and confirm password do not match.");
-            return;
-        }
-        if (newPassword.length() < 6) {
-            MainLogics.Alert(Alert.AlertType.ERROR, "Password Mismatch", "Password must be at least 6 characters long.");
-            return;
-        }
+        // Call MainLogic to validate and update password
+        boolean updateSuccess = MainLogics.validateAndUpdatePassword(loggedInUsername, newPassword, confirmPassword);
 
-        // If valid, update the password in the database
-        if (loggedInUsername != null) {
-            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-                // Create the updated password document
-                Document updatedUser = new Document("password", newPassword);
+        if (updateSuccess) {
+            // Show success message
+            MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "Successfully updated password.");
 
-                // Update the password in the database
-                dbHandler.updateDocument("User", new Document("username", loggedInUsername), updatedUser);
-
-                // Show success message
-                MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "Successfully updated ");
-
-                // Optionally, reset the fields or navigate back to profile page
-                Text_new_pwd.clear();
-                Text_new_confirm_pwd.clear();
-                Main_ProfilePage.toFront();  // Navigate back to Profile Page (Optional)
-            } catch (Exception e) {
-                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to update password: " + e.getMessage());
+            // Optionally, reset the fields or navigate back to profile page
+            Text_new_pwd.clear();
+            Text_new_confirm_pwd.clear();
+            Main_ProfilePage.toFront();  // Navigate back to Profile Page (Optional)
+        } else {
+            // Show error message based on validation failure
+            if (!newPassword.equals(confirmPassword)) {
+                MainLogics.Alert(Alert.AlertType.ERROR, "Password Mismatch", "The new password and confirm password do not match.");
+            } else if (newPassword.length() < 6) {
+                MainLogics.Alert(Alert.AlertType.ERROR, "Password Mismatch", "Password must be at least 6 characters long.");
+            } else {
+                MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to update password.");
             }
         }
-    }
-
-    public List<Article> fetchAllArticles() {
-        List<Article> articles = new ArrayList<>();
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            // Fetch all articles from the Article collection
-            List<Document> articleDocs = dbHandler.findDocuments("Article", new Document());
-
-            for (Document doc : articleDocs) {
-                String heading = doc.getString("heading");
-                String date = doc.getString("date");
-                String category = doc.getString("category");
-
-                articles.add(new Article(heading, date, category));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return articles;
     }
 
     public void loadArticlesIntoTable() {
-        List<Article> articles = fetchAllArticles();
+        List<Article> articles = MainLogics.fetchAllArticles();
 
         ObservableList<Article> articleList = FXCollections.observableArrayList(articles);
 
@@ -450,80 +381,8 @@ public class Main implements Initializable {
         tableArticles.setItems(articleList);
     }
 
-
-    public List<Article> fetchArticlesBasedOnPoints(String username) {
-        List<Article> articles = new ArrayList<>();
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            // Retrieve the user's points document
-            Document userPointsDoc = dbHandler.findDocument("Preferences", new Document("username", username));
-            if (userPointsDoc == null) {
-                System.out.println("No points found for user: " + username);
-                return articles; // Return an empty list if no points are found
-            }
-
-            // Calculate the total points across all categories
-            Map<String, Integer> categoryPoints = new HashMap<>();
-            int totalPoints = 0;
-
-            for (String key : userPointsDoc.keySet()) {
-                if (!key.equals("_id") && !key.equals("username")) {
-                    int points = userPointsDoc.getInteger(key, 0);
-                    categoryPoints.put(key, points);
-                    totalPoints += points;
-                }
-            }
-
-            // If total points are zero, return empty list
-            if (totalPoints == 0) {
-                System.out.println("No points assigned to any category for user: " + username);
-                return articles;
-            }
-
-            // Calculate the proportional distribution of articles per category
-            Map<String, Integer> categoryArticleQuota = new HashMap<>();
-            int totalQuota = 40; // Total number of articles to display (you want 20, adjust accordingly)
-            for (Map.Entry<String, Integer> entry : categoryPoints.entrySet()) {
-                int quota = Math.round((float) entry.getValue() / totalPoints * totalQuota);
-                categoryArticleQuota.put(entry.getKey(), quota);
-            }
-
-            // Retrieve and shuffle articles for each category
-            for (Map.Entry<String, Integer> entry : categoryArticleQuota.entrySet()) {
-                String category = entry.getKey();
-                int quota = entry.getValue();
-
-                if (quota > 0) {
-                    List<Document> categoryArticles = dbHandler.findDocuments("Article", new Document("category", category));
-
-                    // Shuffle and limit the articles to the quota
-                    Collections.shuffle(categoryArticles);
-                    for (int i = 0; i < Math.min(quota, categoryArticles.size()); i++) {
-                        Document doc = categoryArticles.get(i);
-                        String heading = doc.getString("heading");
-                        String date = doc.getString("date");
-                        Article article = new Article(heading, date, category, categoryPoints.get(category));
-                        articles.add(article);
-                    }
-                }
-            }
-
-            // Shuffle the final list to mix categories
-            Collections.shuffle(articles);
-
-            // Limit the final list to 20 articles
-            if (articles.size() > 20) {
-                articles = articles.subList(0, 20);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return articles;
-    }
-
-
     public void loadAndDisplayArticles(String username) {
-        List<Article> articles = fetchArticlesBasedOnPoints(username); // Fetch articles based on user points
+        List<Article> articles = recommendationService.fetchArticlesBasedOnPoints(username); // Fetch articles based on user points
         displayArticles(articles); // Populate the GridPane
     }
 
@@ -628,6 +487,24 @@ public class Main implements Initializable {
         table_Saved.setItems(savedArticleList);
     }
 
+    @FXML
+    private void handleRemoveArticle(ActionEvent event) {
+        Article selectedArticle = table_Saved.getSelectionModel().getSelectedItem();
+        if (selectedArticle != null) {
+            String headingToRemove = selectedArticle.getHeading();
+
+            try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+                Document query = new Document("username", loggedInUsername); // Replace "q" with dynamic username if needed
+                Document update = new Document("$pull", new Document("save", headingToRemove));
+
+                dbHandler.updateDocument("Interaction", query, update);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            table_Saved.getItems().remove(selectedArticle);
+        }
+    }
 
     @FXML
     private void handleOpenArticle() {

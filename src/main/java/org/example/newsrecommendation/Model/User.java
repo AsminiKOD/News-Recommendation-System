@@ -1,4 +1,4 @@
-package org.example.newsrecommendation;
+package org.example.newsrecommendation.Model;
 
 import java.util.List;
 
@@ -12,6 +12,11 @@ public class User extends Common {
 
     public User(String name, String email, int age, String gender, String password, List<String> preference) {
         super(name, email, age, gender, password);
+        this.preference = preference;
+    }
+
+    public User(String name, String email, int age, List<String> preference) {
+        super(name, email, age);
         this.preference = preference;
     }
 

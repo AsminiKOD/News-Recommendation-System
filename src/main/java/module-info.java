@@ -8,7 +8,8 @@ module org.example.newsrecommendation {
 
 
     opens org.example.newsrecommendation to javafx.fxml;
-    exports org.example.newsrecommendation;
     exports org.example.newsrecommendation.App;
     opens org.example.newsrecommendation.App to javafx.fxml;
+    exports org.example.newsrecommendation.Model;
+    opens org.example.newsrecommendation.Model to javafx.fxml;
 }
