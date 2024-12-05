@@ -171,9 +171,6 @@ public class Main implements Initializable {
     private Pane Main_Save;
 
     @FXML
-    private Pane home_pane;
-
-    @FXML
     private TextField Text_new_pwd;
 
     @FXML

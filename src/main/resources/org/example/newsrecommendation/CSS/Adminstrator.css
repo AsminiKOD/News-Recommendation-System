@@ -168,6 +168,7 @@
     -fx-background-color: #A6D1E6;
     -fx-text-fill: black;
 }
+
 #lab_adm, #lab_Uses, #lab_add, #lab_del{
     -fx-font-family: "Berlin Sans FB";
     -fx-font-size: 18px;

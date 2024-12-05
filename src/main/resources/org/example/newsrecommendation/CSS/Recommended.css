@@ -16,8 +16,8 @@
 
 /* Styling for the Label with Heading */
 #label_heading {
-    -fx-font-family: "Perpetua Titling MT";
-    -fx-font-size: 16px;
+    -fx-font-family: Centaur;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
 }

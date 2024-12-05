@@ -1,6 +1,6 @@
 package org.example.newsrecommendation.Model;
 
-public class Common {
+abstract class Common {
     private String name;
     private String username;
     private String email;

@@ -13,6 +13,9 @@ import org.example.newsrecommendation.Service.ArticleCategorizer;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ArticleFetcher {
 
@@ -20,56 +23,65 @@ public class ArticleFetcher {
     private static final String DATABASE_URL = "mongodb://localhost:27017";
     private static final String DATABASE_NAME = "NewsRecommendations";
     private static final String COLLECTION_NAME = "Article";
+    private static final int THREAD_COUNT = 4;
 
     public static void main(String[] args) {
         try {
-            // Step 1: Read articles from CSV
             List<CSVRecord> records = readCSV(CSV_FILE_PATH);
-
-            // Step 2: Categorize and store articles
             categorizeAndStoreArticles(records);
-
             System.out.println("Articles fetched and stored successfully!");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // Method to read articles from CSV file
     private static List<CSVRecord> readCSV(String filePath) throws IOException {
         FileReader fileReader = new FileReader(filePath);
         CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader("Article", "Date", "Heading").withIgnoreHeaderCase().withTrim());
         return csvParser.getRecords();
     }
 
-    // Method to categorize and store articles in MongoDB
     private static void categorizeAndStoreArticles(List<CSVRecord> records) {
         MongoClient mongoClient = MongoClients.create(DATABASE_URL);
         MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
         MongoCollection<Document> collection = database.getCollection(COLLECTION_NAME);
 
-        // Initialize the categorizer
+        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_COUNT);
         ArticleCategorizer categorizer = new ArticleCategorizer();
 
         for (CSVRecord record : records) {
-            String heading = record.get("Heading");
-            String article = record.get("Article");
-            String date = record.get("Date");
+            executorService.submit(() -> {
+                try {
+                    String heading = record.get("Heading");
+                    String article = record.get("Article");
+                    String date = record.get("Date");
 
+                    String category = categorizer.categorizeArticle(article);
 
-            // Categorize the article
-            String category = categorizer.categorizeArticle(article);
+                    if (!category.equals("Uncategorized")) {
+                        Document document = new Document("heading", heading)
+                                .append("article", article)
+                                .append("category", category)
+                                .append("date", date);
 
-            // Only store the article if it has a valid category (not Uncategorized)
-            if (!category.equals("Uncategorized")) {
-                // Create a document to store in MongoDB
-                Document document = new Document("heading", heading)
-                        .append("article", article)
-                        .append("category", category)
-                        .append("date", date);
+                        synchronized (collection) {
+                            collection.insertOne(document);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
 
-                collection.insertOne(document);
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
             }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+            Thread.currentThread().interrupt();
         }
 
         mongoClient.close();

@@ -7,68 +7,71 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="429.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.App.Main">
+<AnchorPane prefHeight="429.0" prefWidth="600.0" stylesheets="@CSS/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.App.Main">
    <children>
-      <Button fx:id="Main_button_Home" layoutX="-1.0" layoutY="73.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="25.0" prefWidth="111.0" text="Home" />
-      <Button fx:id="Main_button_Recomm" layoutX="110.0" layoutY="72.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="29.0" prefWidth="111.0" text="Recommedations" />
-      <Button fx:id="Main_button_Articles" layoutX="221.0" layoutY="72.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="29.0" prefWidth="111.0" text="Articles" />
-      <Button fx:id="Main_button_profile" layoutX="487.0" layoutY="72.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="29.0" prefWidth="111.0" text="Profile" />
-      <Button fx:id="Main_button_Saved" layoutX="332.0" layoutY="72.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="29.0" prefWidth="111.0" text="Saved" />
-      <Label layoutX="221.0" prefHeight="60.0" prefWidth="206.0" text="DailyDive">
+      <Button fx:id="Main_button_Home" layoutX="-1.0" layoutY="70.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="26.0" prefWidth="114.0" text="Home" />
+      <Button fx:id="Main_button_Recomm" layoutX="114.0" layoutY="69.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="29.0" prefWidth="121.0" text="Recommedations" />
+      <Button fx:id="Main_button_Articles" layoutX="237.0" layoutY="69.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="29.0" prefWidth="120.0" text="Articles" />
+      <Button fx:id="Main_button_profile" layoutX="478.0" layoutY="69.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="29.0" prefWidth="120.0" text="Profile" />
+      <Button fx:id="Main_button_Saved" layoutX="358.0" layoutY="69.0" mnemonicParsing="false" onAction="#userPaneNav" prefHeight="29.0" prefWidth="120.0" text="Saved" />
+      <Label fx:id="daily" layoutX="216.0" prefHeight="60.0" prefWidth="206.0" stylesheets="@CSS/Main.css" text="DailyDive">
          <font>
             <Font name="Brush Script MT Italic" size="45.0" />
          </font>
       </Label>
-      <Label layoutX="305.0" layoutY="41.0" prefHeight="29.0" prefWidth="176.0" text="(News Recommendation System)">
+      <Label fx:id="news" layoutX="305.0" layoutY="41.0" prefHeight="29.0" prefWidth="176.0" text="(News Recommendation System)">
          <font>
             <Font name="Centaur" size="12.0" />
          </font>
       </Label>
-      <StackPane layoutX="-1.0" layoutY="99.0" prefHeight="331.0" prefWidth="600.0">
+      <StackPane layoutX="-1.0" layoutY="99.0" prefHeight="331.0" prefWidth="600.0" stylesheets="@CSS/Main.css">
          <children>
-            <Pane fx:id="Main_HomePage" prefHeight="200.0" prefWidth="200.0" />
-            <Pane fx:id="Pane_edit_profil" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+            <Pane fx:id="Main_Save" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
                <children>
-                  <TextField fx:id="Text_edit_name" layoutX="218.0" layoutY="70.0" promptText="Name" />
-                  <TextField fx:id="Text_edit_age" layoutX="218.0" layoutY="141.0" promptText="Age" />
-                  <TextField fx:id="Text_edit_email" layoutX="218.0" layoutY="103.0" promptText="Email" />
-                  <Label layoutX="59.0" layoutY="174.0" text="Preferences" />
-                  <CheckBox fx:id="check_edit_tech" layoutX="103.0" layoutY="228.0" mnemonicParsing="false" text="AI and Technology" />
-                  <CheckBox fx:id="check_edit_prefer" layoutX="103.0" layoutY="200.0" mnemonicParsing="false" text="Entertainment" />
-                  <CheckBox fx:id="check_edit_finance" layoutX="450.0" layoutY="200.0" mnemonicParsing="false" text="Finance" />
-                  <CheckBox fx:id="check_edit_politics" layoutX="361.0" layoutY="200.0" mnemonicParsing="false" text="Politics" />
-                  <CheckBox fx:id="check_edit_health" layoutX="254.0" layoutY="200.0" mnemonicParsing="false" text="Healthcare" />
-                  <CheckBox fx:id="check_edit_world" layoutX="450.0" layoutY="228.0" mnemonicParsing="false" text="World" />
-                  <CheckBox fx:id="check_edit_sport" layoutX="361.0" layoutY="228.0" mnemonicParsing="false" text="Sport" />
-                  <CheckBox fx:id="check_edit_science" layoutX="254.0" layoutY="228.0" mnemonicParsing="false" text="Science" />
-                  <Button fx:id="button_edit_back" layoutX="26.0" layoutY="21.0" mnemonicParsing="false" onAction="#userPaneNav" text="Back" />
-                  <Button fx:id="button_adit_confirm" layoutX="276.0" layoutY="275.0" mnemonicParsing="false" onAction="#handleEditConfirm" text="Confirm" />
-                  <Label layoutX="271.0" layoutY="25.0" text="Edit Profile" />
-               </children>
-            </Pane>
-            <Pane fx:id="Pane_change_pwd" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+                  <TableView fx:id="table_Saved" layoutX="45.0" layoutY="66.0" prefHeight="200.0" prefWidth="509.0">
+                    <columns>
+                      <TableColumn fx:id="tabCol_heading" prefWidth="282.0000114440918" text="Heading" />
+                      <TableColumn fx:id="tabCol_category" prefWidth="107.33331298828125" text="Category" />
+                        <TableColumn fx:id="tabCol_date" prefWidth="118.66667175292969" text="Date" />
+                    </columns>
+                  </TableView>
+                  <Button fx:id="button_save_view" layoutX="512.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleOpenArticle" text="View" />
+                  <Button fx:id="button_unsave" layoutX="498.0" layoutY="278.0" mnemonicParsing="false" onAction="#handleRemoveArticle" text="Unsave" />
+               </children></Pane>
+            <Pane fx:id="Main_RecommendPage" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
                <children>
-                  <Pane fx:id="Pane_enter_pwd" layoutX="147.0" layoutY="73.0" prefHeight="163.0" prefWidth="319.0" style="-fx-background-color: cyan;">
-                     <children>
-                        <Label layoutX="14.0" layoutY="42.0" text="Enter New Password" />
-                        <Label layoutX="15.0" layoutY="83.0" text="Confirm Password" />
-                        <TextField fx:id="Text_new_pwd" layoutX="141.0" layoutY="38.0" promptText="Password" />
-                        <TextField fx:id="Text_new_confirm_pwd" layoutX="140.0" layoutY="79.0" promptText="Confirm Password" />
-                        <Button fx:id="button_confirm_pwd" layoutX="122.0" layoutY="114.0" mnemonicParsing="false" onAction="#handlePasswordChangeConfirm" text="Confirm" />
-                     </children>
-                  </Pane>
-                  <Label layoutX="253.0" layoutY="23.0" text="Change Password" />
-                  <Button fx:id="button_change_back" layoutX="14.0" layoutY="19.0" mnemonicParsing="false" onAction="#userPaneNav" text="Back" />
-               </children>
-            </Pane>
-            <Pane fx:id="home_pane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" />
+                  <ScrollPane fx:id="scrol_pane_main_rec" fitToWidth="true" layoutX="50.0" layoutY="17.0" pannable="true" prefHeight="298.0" prefWidth="509.0" style="-fx-background-color: white;">
+                     <content>
+                        <GridPane fx:id="main_rec_grid" gridLinesVisible="false">
+                           <rowConstraints>
+                              <RowConstraints vgrow="ALWAYS" />
+                           </rowConstraints>
+                        </GridPane>
+                     </content>
+                  </ScrollPane>
+
+               </children></Pane>
+            <Pane fx:id="Main_SavePage" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+               <children>
+                  <TableView fx:id="tableArticles" layoutX="53.0" layoutY="51.0" prefHeight="200.0" prefWidth="499.0">
+                    <columns>
+                      <TableColumn fx:id="tabColHeading" prefWidth="261.33332443237305" text="Heading" />
+                      <TableColumn fx:id="tabColCategory" prefWidth="129.3333740234375" text="Category" />
+                        <TableColumn fx:id="tabColDate" prefWidth="107.99990844726562" text="Date" />
+                    </columns>
+                  </TableView>
+                  <Button fx:id="buttonView" layoutX="454.0" layoutY="273.0" mnemonicParsing="false" onAction="#onViewButtonClick" text="View" />
+               </children></Pane>
             <Pane fx:id="Main_ProfilePage" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
                <children>
                   <Label layoutX="283.0" layoutY="26.0" text="Profile" />
@@ -84,12 +87,12 @@
                     </columns>
                   </TableView>
                   <Button fx:id="button_change_pwd" layoutX="476.0" layoutY="295.0" mnemonicParsing="false" onAction="#userPaneNav" text="Change Password" />
-                  <Pane layoutX="104.0" layoutY="58.0" prefHeight="140.0" prefWidth="391.0" style="-fx-background-color: pink;">
+                  <Pane fx:id="pro" layoutX="104.0" layoutY="58.0" prefHeight="140.0" prefWidth="391.0">
                      <children>
                         <Label layoutX="8.0" layoutY="11.0" text="Name" />
                         <Label layoutX="8.0" layoutY="38.0" text="Email" />
                         <Label layoutX="9.0" layoutY="61.0" text="Age" />
-                        <Label layoutX="8.0" layoutY="87.0" prefWidth="39.0" text="Gender" />
+                        <Label layoutX="8.0" layoutY="87.0" prefHeight="16.0" prefWidth="54.0" text="Gender" />
                         <Label layoutX="7.0" layoutY="109.0" text="Preferance" />
                         <Label fx:id="Main_Profile_label_Name" layoutX="77.0" layoutY="11.0" prefHeight="17.0" prefWidth="206.0" />
                         <Label fx:id="Main_Profile_label_Email" layoutX="77.0" layoutY="38.0" prefHeight="17.0" prefWidth="206.0" />
@@ -101,41 +104,57 @@
                   </Pane>
                </children>
             </Pane>
-            <Pane fx:id="Main_SavePage" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: cyan;">
+            <Pane fx:id="Pane_change_pwd" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
                <children>
-                  <TableView fx:id="tableArticles" layoutX="53.0" layoutY="51.0" prefHeight="200.0" prefWidth="499.0">
-                    <columns>
-                      <TableColumn fx:id="tabColHeading" prefWidth="261.33332443237305" text="Heading" />
-                      <TableColumn fx:id="tabColCategory" prefWidth="129.3333740234375" text="Category" />
-                        <TableColumn fx:id="tabColDate" prefWidth="107.99990844726562" text="Date" />
-                    </columns>
-                  </TableView>
-                  <Button fx:id="buttonView" layoutX="454.0" layoutY="273.0" mnemonicParsing="false" onAction="#onViewButtonClick" text="View" />
-               </children></Pane>
-            <Pane fx:id="Main_Save" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+                  <Pane fx:id="Pane_enter_pwd" layoutX="147.0" layoutY="73.0" prefHeight="163.0" prefWidth="319.0">
+                     <children>
+                        <Label layoutX="14.0" layoutY="42.0" text="Enter New Password" />
+                        <Label layoutX="15.0" layoutY="83.0" text="Confirm Password" />
+                        <TextField fx:id="Text_new_pwd" layoutX="141.0" layoutY="38.0" promptText="Password" />
+                        <TextField fx:id="Text_new_confirm_pwd" layoutX="140.0" layoutY="79.0" promptText="Confirm Password" />
+                        <Button fx:id="button_confirm_pwd" layoutX="122.0" layoutY="114.0" mnemonicParsing="false" onAction="#handlePasswordChangeConfirm" text="Confirm" />
+                     </children>
+                  </Pane>
+                  <Label layoutX="253.0" layoutY="23.0" text="Change Password" />
+                  <Button fx:id="button_change_back" layoutX="14.0" layoutY="19.0" mnemonicParsing="false" onAction="#userPaneNav" text="Back" />
+               </children>
+            </Pane>
+            <Pane fx:id="Pane_edit_profil" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
                <children>
-                  <TableView fx:id="table_Saved" layoutX="45.0" layoutY="66.0" prefHeight="200.0" prefWidth="509.0">
-                    <columns>
-                      <TableColumn fx:id="tabCol_heading" prefWidth="282.0000114440918" text="Heading" />
-                      <TableColumn fx:id="tabCol_category" prefWidth="107.33331298828125" text="Category" />
-                        <TableColumn fx:id="tabCol_date" prefWidth="118.66667175292969" text="Date" />
-                    </columns>
-                  </TableView>
-                  <Button fx:id="button_save_view" layoutX="512.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleOpenArticle" text="View" />
-                  <Button fx:id="button_unsave" layoutX="498.0" layoutY="278.0" mnemonicParsing="false" onAction="#handleRemoveArticle" text="Unsave" />
-               </children></Pane>
-            <Pane fx:id="Main_RecommendPage" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+                  <TextField fx:id="Text_edit_name" layoutX="218.0" layoutY="70.0" promptText="Name" />
+                  <TextField fx:id="Text_edit_age" layoutX="218.0" layoutY="141.0" promptText="Age" />
+                  <TextField fx:id="Text_edit_email" layoutX="218.0" layoutY="103.0" promptText="Email" />
+                  <Label layoutX="59.0" layoutY="174.0" text="Preferences" />
+                  <CheckBox fx:id="check_edit_tech" layoutX="103.0" layoutY="242.0" mnemonicParsing="false" text="AI and Technology" />
+                  <CheckBox fx:id="check_edit_prefer" layoutX="103.0" layoutY="200.0" mnemonicParsing="false" text="Entertainment" />
+                  <CheckBox fx:id="check_edit_finance" layoutX="450.0" layoutY="200.0" mnemonicParsing="false" text="Finance" />
+                  <CheckBox fx:id="check_edit_politics" layoutX="361.0" layoutY="200.0" mnemonicParsing="false" text="Politics" />
+                  <CheckBox fx:id="check_edit_health" layoutX="254.0" layoutY="200.0" mnemonicParsing="false" text="Healthcare" />
+                  <CheckBox fx:id="check_edit_world" layoutX="450.0" layoutY="240.0" mnemonicParsing="false" text="World" />
+                  <CheckBox fx:id="check_edit_sport" layoutX="361.0" layoutY="239.0" mnemonicParsing="false" text="Sport" />
+                  <CheckBox fx:id="check_edit_science" layoutX="254.0" layoutY="241.0" mnemonicParsing="false" text="Science" />
+                  <Button fx:id="button_edit_back" layoutX="26.0" layoutY="21.0" mnemonicParsing="false" onAction="#userPaneNav" text="Back" />
+                  <Button fx:id="button_adit_confirm" layoutX="276.0" layoutY="280.0" mnemonicParsing="false" onAction="#handleEditConfirm" text="Confirm" />
+                  <Label layoutX="271.0" layoutY="25.0" text="Edit Profile" textFill="#152e69" />
+               </children>
+            </Pane>
+            <Pane id="Main_HomePage" fx:id="Main_HomePage" prefHeight="261.0" prefWidth="600.0">
                <children>
-                  <ScrollPane fx:id="scrol_pane_main_rec" fitToWidth="true" layoutX="50.0" layoutY="17.0" pannable="true" prefHeight="298.0" prefWidth="509.0">
-                     <content>
-                        <GridPane fx:id="main_rec_grid" gridLinesVisible="false">
-                           <rowConstraints>
-                              <RowConstraints vgrow="ALWAYS" />
-                           </rowConstraints>
-                        </GridPane>
-                     </content>
-                  </ScrollPane>
-
+                  <Pane fx:id="Homehome" layoutX="109.0" layoutY="48.0" prefHeight="232.0" prefWidth="371.0">
+                     <children>
+                        <Pane prefHeight="239.0" prefWidth="371.0">
+                           <children>
+                              <Label layoutX="26.0" prefHeight="179.0" prefWidth="303.0" text="Welcome to DailyDive!  Your gateway to a world of knowledge, tailored just for you. DailyDive brings you the news that matters most, all in one place. Stay informed, inspired, and ahead with personalized updates, real-time insights, and diverse perspectives.  Whether it's the latest trends, breaking stories, or in-depth analyses, DailyDive is here to ensure you're always in the know. Dive into the news that moves you—welcome aboard!  " textAlignment="CENTER" wrapText="true" />
+                              <Line endX="109.0" layoutX="185.0" layoutY="194.0" startX="-125.0" strokeWidth="2.0" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </Pane>
+                  <ImageView fitHeight="114.0" fitWidth="192.0" layoutX="404.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/world.jpg" />
+                     </image>
+                  </ImageView>
                </children></Pane>
          </children>
       </StackPane>

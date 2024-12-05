@@ -1,6 +1,41 @@
 /* Root Pane Styling */
 .root {
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #A6AEBF, #C5D3E8, #D0E8C5, #FFF8DE);
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #6F61C0, #A084E8, #8BE8E5, #D5FFE4);
+}
+
+.pane{
+    -fx-background-color: white;
+}
+#daily {
+    -fx-font-family: "Brush Script MT";
+    -fx-font-size: 45px;
+    -fx-font-weight: Italic;
+    -fx-text-fill: linear-gradient(from 0% 0% to 0% 100%,#000000,#17153B, #2E236C, #433D8B, #C8ACD6, #8062D6);;
+    -fx-effect: dropshadow(gaussian, white, 3, 0.5, 0, 0);
+}
+
+#news {
+    -fx-font-family: Centaur;
+    -fx-font-size: 13px;
+    -fx-font-weight: Regular;
+    -fx-text-fill: Black;
+}
+
+#Main_HomePage{
+    -fx-background-image: url("../Images/home.jpg");
+    -fx-background-size: 750px auto;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-border-color: #02496e;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0.3, 0, 2);
+}
+
+#Homehome{
+    -fx-background-color: white;
+    -fx-opacity: 50%;
+    -fx-border-radius: 20px;
+    -fx-border-color: #07076b;
 }
 
 /* Button Styling */
@@ -17,10 +52,16 @@
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #C6E7FF, #C6E7FF, #FBFBFB, #FFDDAE);
+    -fx-background-color: #AD49E1;
+    -fx-text-fill: Black;
+    -fx-effect: dropshadow(gaussian, #EB3678, 5, 0.4, 0, 0);
+}
+
+.button:pressed {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #1A1A1D, #3B1C32, #6A1E55, #A64D79);
     -fx-border-color: #FFAF4F;
-    -fx-text-fill: black;
-    -fx-effect: dropshadow(gaussian, rgba(255, 175, 79, 0.8), 5, 0.4, 0, 0);
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, #EB3678, 5, 0.4, 0, 0);
 }
 
 /* Label Styling */
@@ -31,7 +72,8 @@
 }
 
 /* TextField Styling */
-.text-field {
+.text-field, .check-box{
+    -fx-font-family: "Berlin Sans FB";
     -fx-border-color: #5F6F94;
     -fx-border-radius: 5px;
     -fx-padding: 5px;
@@ -40,4 +82,48 @@
 .text-field:focused {
     -fx-border-color: #0078d7;
     -fx-effect: dropshadow(gaussian, rgba(0, 120, 215, 0.5), 5, 0.3, 0, 0);
+}
+
+.scroll-pane{
+    -fx-background-color: white;
+}
+
+/* TableView Styling */
+.table-view {
+    -fx-font-family: "MV Boli";
+    -fx-background-color: white;
+    -fx-border-color: #222831;
+    -fx-border-radius: 5px;
+}
+
+.table-view .column-header .label {
+    -fx-background-color: linear-gradient(to bottom, #F7418F, #FC819E, #FFC6C6, #FFEBD4);
+    -fx-font-family: "Berlin Sans FB";
+    -fx-font-size: 13px;
+    -fx-text-fill: Black;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, #F4538A, 2, 0.5, 0, 1);
+}
+
+/* Table Rows Styling */
+.table-view .table-row-cell {
+    -fx-background-color: white;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: white;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #A6D1E6;
+    -fx-text-fill: black;
+}
+
+#pro{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #D9EDBF, #FFB996, #FFCF81, #FDFFAB);
+}
+
+#Pane_enter_pwd{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #7BD3EA, #A1EEBD, #F6F7C4, #F6D6D6);
 }
