@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="406.0" prefWidth="411.0" style="-fx-background-radius: 20;" stylesheets="@CSS/ArticleScene.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.newsrecommendation.App.ArticleScene">
    <children>
-      <Pane prefHeight="406.0" prefWidth="411.0" style="-fx-background-radius: 20;" stylesheets="@CSS/ArticleScene.css">
+      <Pane prefHeight="406.0" prefWidth="411.0" style="-fx-background-color: white;" stylesheets="@CSS/ArticleScene.css">
          <children>
             <HBox layoutX="14.0" layoutY="46.0" prefHeight="39.0" prefWidth="355.0">
                <children>
@@ -23,7 +23,7 @@
             </HBox>
             <ScrollPane layoutX="13.0" layoutY="127.0" prefHeight="239.0" prefWidth="384.0">
                <content>
-                  <Label fx:id="label_Article" alignment="TOP_LEFT" prefHeight="238.0" prefWidth="381.0" text="Content" wrapText="true" />
+                  <Label fx:id="label_Article" alignment="TOP_LEFT" prefHeight="238.0" prefWidth="381.0" style="-fx-background-color: white;" text="Content" wrapText="true" />
                </content>
             </ScrollPane>
             <Label fx:id="label_Category" layoutX="14.0" layoutY="85.0" text="Category" />

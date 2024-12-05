@@ -1,0 +1,61 @@
+/* Styling for AnchorPane */
+.anchor-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 10px;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-padding: 10px;
+}
+
+/* Styling for VBox */
+.vbox {
+    -fx-spacing: 10px;
+    -fx-alignment: center-left;
+}
+
+/* Styling for the Label with Heading */
+#label_heading {
+    -fx-font-family: "Perpetua Titling MT";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* Styling for the Label with Date */
+#label_date {
+    -fx-font-family: PMingLiU-ExtB;
+    -fx-font-size: 12px;
+    -fx-text-fill: gray;
+    -fx-font-style: italic;
+    -fx-background-color: transparent;
+}
+
+/* Styling for the Label with Preferences */
+#label_preferences {
+    -fx-font-family: PMingLiU-ExtB;
+    -fx-font-size: 12px;
+    -fx-text-fill: gray;
+    -fx-font-style: italic;
+    -fx-background-color: transparent;
+}
+
+/* Styling for the Button */
+#button_article {
+    -fx-background-color: transparent;
+    -fx-border-radius: 8px;
+    -fx-border-width: 2px;
+    -fx-pref-width: 490px;
+    -fx-pref-height: 58px;
+    -fx-cursor: hand;
+}
+
+#button_article:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #0056a0;
+}
+
+#button_article:pressed {
+    -fx-background-color: #d9d9d9;
+    -fx-border-color: #004080;
+}

@@ -8,13 +8,14 @@
 /* Heading Label Styling */
 #label_Heading {
     -fx-text-fill: Black;
-    -fx-font-size: 20px;
+    -fx-font-size: 19px;
     -fx-font-weight: bold;
     -fx-font-family: Algerian;
 }
 
 /* Category Label Styling */
 #label_Category {
+    -fx-font-family: PMingLiU-ExtB;
     -fx-text-fill: #555555;
     -fx-font-size: 14px;
     -fx-font-style: italic;
@@ -22,6 +23,7 @@
 
 /* Date Label Styling */
 #label_Date {
+    -fx-font-family: PMingLiU-ExtB;
     -fx-text-fill: #555555;
     -fx-font-size: 14px;
     -fx-alignment: center-right;
@@ -32,25 +34,62 @@
 #label_Article {
     -fx-background-color: white;
     -fx-text-fill: #313330;
-    -fx-font-size: 12px;
+    -fx-font-size: 14px;
     -fx-font-family: "Times New Roman";
 }
 
 /* Button Styling */
 .button {
-    -fx-background-color: #0078d7;
+    -fx-font-family: "Berlin Sans FB";
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-padding: 5px 15px;
     -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 15px;
 }
 
-.button:hover {
-    -fx-background-color: #005bb5;
+#button_Save{
+    -fx-background-color: black;
+    -fx-effect: dropshadow(gaussian, #9dc9d4, 5, 0.5, 0.1, 0);
 }
 
-.button:pressed {
-    -fx-background-color: #003f88;
+#button_Like{
+    -fx-background-color: #5cbf76;
+    -fx-effect: dropshadow(gaussian, #2f613c, 5, 0.5, 0.1, 0);
+}
+
+#button_Dislike{
+    -fx-background-color: #c71447;
+    -fx-effect: dropshadow(gaussian, #db7492, 5, 0.5, 0.1, 0);
+}
+
+#button_Save:hover {
+    -fx-background-color: #cacdcf;
+    -fx-text-fill: black;
+}
+
+#button_Save:pressed {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #E4E0E1, #D6C0B3, #AB886D, #493628);
+    -fx-text-fill: white;
+}
+
+#button_Like:hover {
+    -fx-background-color: #34734d;
+    -fx-text-fill: white;
+}
+
+#button_Like:pressed {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #D3F1DF, #85A98F, #5A6C57, #525B44);
+    -fx-text-fill: white;
+}
+
+#button_Dislike:hover {
+    -fx-background-color: #82041d;
+    -fx-text-fill: white;
+}
+
+#button_Dislike:pressed {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #FFF3C7, #FEC7B4, #FC819E, #F7418F);
+    -fx-text-fill: white;
 }
