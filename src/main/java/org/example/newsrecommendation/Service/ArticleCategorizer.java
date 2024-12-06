@@ -112,30 +112,25 @@ public class ArticleCategorizer {
         int maxMatchCount = 0;
         String bestCategory = "Uncategorized";
 
-        // Convert article text to lowercase for case-insensitive comparison
         String lowerCaseArticleText = articleText.toLowerCase();
 
-        // Loop through each category and count keyword matches
         for (Map.Entry<String, List<String>> entry : categoryKeywordsMap.entrySet()) {
             String category = entry.getKey();
             List<String> keywords = entry.getValue();
             int matchCount = 0;
 
-            // Count matches for each keyword in the article text
             for (String keyword : keywords) {
                 if (lowerCaseArticleText.contains(keyword.toLowerCase())) {
                     matchCount++;
                 }
             }
 
-            // Update the best category if it has more matches
             if (matchCount > maxMatchCount) {
                 maxMatchCount = matchCount;
                 bestCategory = category;
             }
         }
 
-        // Return the best matched category
         return bestCategory;
     }
 }

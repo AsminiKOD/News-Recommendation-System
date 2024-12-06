@@ -131,23 +131,21 @@ public class MainLogics {
 
 
     public static boolean validateAndUpdatePassword(String loggedInUsername, String newPassword, String confirmPassword) {
-        // Validate that the passwords match
         if (!newPassword.equals(confirmPassword)) {
-            return false; // Passwords don't match
+            return false;
         }
-        // Validate that the password is at least 6 characters long
         if (newPassword.length() < 6) {
-            return false; // Password is too short
+            return false;
         }
 
         // If validation passes, update the password in the database
         try (DatabaseHandler dbHandler = new DatabaseHandler()) {
             Document updatedUser = new Document("password", newPassword);
             dbHandler.updateDocument("User", new Document("username", loggedInUsername), updatedUser);
-            return true; // Update successful
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false; // Update failed
+            return false;
         }
     }
 
@@ -173,17 +171,15 @@ public class MainLogics {
     public static void viewArticleDetails(Article selectedArticle) {
         if (selectedArticle != null) {
             try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-                // Query the database for the full article based on the heading
+
                 String heading = selectedArticle.getHeading();
                 Document query = new Document("heading", heading);
 
-                // Fetch the article document using DatabaseHandler
                 Document result = dbHandler.findDocument("Article", query);
 
                 if (result != null) {
                     String fullArticle = result.getString("article");
 
-                    // Load the new FXML and pass the article details
                     FXMLLoader loader = new FXMLLoader(MainLogics.class.getResource("/org/example/newsrecommendation/ArticleScene.fxml"));
                     Parent root = loader.load();
 
@@ -224,19 +220,15 @@ public class MainLogics {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // Return the list of saved articles
         return FXCollections.observableArrayList(savedArticles);
     }
 
     public static void removeArticle(String username, String headingToRemove) {
         try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            // Prepare the query to find the document by username
             Document query = new Document("username", username);
 
-            // Prepare the update document with $pull operator to remove the article from the "save" array
             Document update = new Document("save", new Document("$pull", headingToRemove));
 
-            // Call the updateDocument method from DatabaseHandler
             dbHandler.updateDocument("Interaction", query, update);
         } catch (Exception e) {
             e.printStackTrace();

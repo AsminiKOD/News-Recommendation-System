@@ -21,9 +21,6 @@ import java.util.concurrent.Future;
 
 public class AdminLogics {
 
-    private static final String DATABASE_NAME = "NewsRecommendations";
-
-    // Using DatabaseHandler for connection pooling
     private static DatabaseHandler dbHandler;
 
     public AdminLogics() {
@@ -235,15 +232,12 @@ public class AdminLogics {
             MongoDatabase database = dbHandler.getDatabase();
             MongoCollection<Document> articleCollection = database.getCollection("Article");
 
-            // Build MongoDB query
             Document query = new Document();
 
-            // If categories are selected, add to the query
             if (!categories.isEmpty()) {
                 query.append("category", new Document("$in", categories));
             }
 
-            // Fetch articles from MongoDB
             List<Document> articles = dbHandler.findDocuments("Article", query);
 
             for (Document doc : articles) {
@@ -251,14 +245,12 @@ public class AdminLogics {
                 String date = doc.getString("date"); // MongoDB stores date as a String in "MM/dd/yyyy" format
                 String category = doc.getString("category");
 
-                // Create Article object and add to the list
                 articleData.add(new Article(heading, date, category));
             }
         } catch (Exception e) {
             MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to fetch articles: " + e.getMessage());
         }
 
-        // Return as ObservableList for TableView
         return articleData;
     }
 
@@ -272,7 +264,7 @@ public class AdminLogics {
             Document result = articleCollection.findOneAndDelete(query);
 
             if (result != null) {
-                return true;  // Successfully deleted
+                return true;
             } else {
                 MainLogics.Alert(Alert.AlertType.ERROR, "Error", "Article not found or could not be deleted.");
                 return false;

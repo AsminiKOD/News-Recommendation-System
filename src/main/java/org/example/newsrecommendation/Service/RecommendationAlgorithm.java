@@ -129,24 +129,19 @@ public class RecommendationAlgorithm {
 
     public void saveArticle(String username, String articleHeading) {
         try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            // Find the user document by the username
             Document userDoc = dbHandler.findDocument("Interaction", new Document("username", username));
 
             if (userDoc == null) {
-                // If no document exists, create a new one
                 userDoc = new Document("username", username)
                         .append("liked", List.of())  // Initialize liked list as empty
                         .append("disliked", List.of())  // Initialize disliked list as empty
                         .append("save", List.of(articleHeading));  // Initialize saved articles list with the article
                 dbHandler.insertDocument("Interaction", userDoc);  // Insert the new document into the collection
             } else {
-                // If the document exists, update the "save" field
                 List<String> savedList = userDoc.getList("save", String.class);
 
-                // Add the article heading to the list if it's not already present
                 if (savedList != null && !savedList.contains(articleHeading)) {
                     savedList.add(articleHeading);
-                    // Update the document with the new list of saved articles
                     dbHandler.updateDocument(
                             "Interaction",
                             new Document("username", username),

@@ -263,7 +263,6 @@ public class Main implements Initializable {
         }
     }
 
-    // Utility method to clear the user profile UI elements
     private void clearUserProfile() {
         Main_Profile_label_Name.setText("");
         Main_Profile_label_Email.setText("");
@@ -273,7 +272,7 @@ public class Main implements Initializable {
         Profile_login_histroy.getItems().clear();
     }
 
-    // This method handles navigation to edit profile page and pre-filling user data.
+    // This method handles navigation to edit profile.
     @FXML
     public void handleEditProfile(ActionEvent actionEvent) {
         if (loggedInUsername != null) {
@@ -369,6 +368,7 @@ public class Main implements Initializable {
         }
     }
 
+    //for articles table
     public void loadArticlesIntoTable() {
         List<Article> articles = MainLogics.fetchAllArticles();
 
@@ -387,44 +387,35 @@ public class Main implements Initializable {
     }
 
     public void displayArticles(List<Article> articles) {
-        main_rec_grid.getChildren().clear(); // Clear existing articles
-        main_rec_grid.getRowConstraints().clear(); // Clear any old row constraints
+        main_rec_grid.getChildren().clear();
+        main_rec_grid.getRowConstraints().clear();
 
-        int row = 0; // Start with the first row
+        int row = 0;
 
         try {
-            // Limit the loop to 20 articles
             for (int i = 0; i < Math.min(articles.size(), 20); i++) {
                 Article article = articles.get(i);
 
-                // Load the article pane
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/newsrecommendation/Recommended.fxml"));
                 AnchorPane articlePane = loader.load();
 
-                // Set the article data using the controller
                 Recommended controller = loader.getController();
                 controller.setArticleData(article.getHeading(), article.getDate(), article.getCategory());
 
-                // Add the article pane to the GridPane
                 main_rec_grid.add(articlePane, 0, row);
 
-                // Add row constraints dynamically
                 RowConstraints rowConstraints = new RowConstraints();
                 rowConstraints.setPrefHeight(AnchorPane.USE_COMPUTED_SIZE); // Set height to fit the content
                 main_rec_grid.getRowConstraints().add(rowConstraints);
 
-                // Move to the next row
                 row++;
 
-                // Add margins for better spacing
                 GridPane.setMargin(articlePane, new Insets(10));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
 
     @FXML
     private void onViewButtonClick() {
@@ -438,7 +429,6 @@ public class Main implements Initializable {
     private void loadSavedArticles(String username) {
         ObservableList<Article> savedArticleList = MainLogics.loadSavedArticles(username);
 
-        // Populate the TableView
         tabCol_heading.setCellValueFactory(new PropertyValueFactory<>("heading"));
         tabCol_category.setCellValueFactory(new PropertyValueFactory<>("category"));
         tabCol_date.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -451,10 +441,8 @@ public class Main implements Initializable {
         if (selectedArticle != null) {
             String headingToRemove = selectedArticle.getHeading();
 
-            // Call the method in MainLogics to remove the article from the database
             MainLogics.removeArticle(loggedInUsername, headingToRemove);
 
-            // Remove the article from the TableView
             table_Saved.getItems().remove(selectedArticle);
         }
     }

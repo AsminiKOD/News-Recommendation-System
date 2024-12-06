@@ -220,6 +220,7 @@ public class Administrator implements Initializable {
         loggedInAdminID = username;
     }
 
+    // navigate between pane
     @FXML
     public void adminPaneNav(ActionEvent actionEvent){
         if (actionEvent.getSource() == Admin_button_Add){
@@ -291,7 +292,7 @@ public class Administrator implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialize the TableView columns
+        // Initialize the TableView columns of Login history
         tabCol_date.setCellValueFactory(new PropertyValueFactory<>("date"));
         tabCol_time.setCellValueFactory(new PropertyValueFactory<>("time"));
 
@@ -312,6 +313,7 @@ public class Administrator implements Initializable {
         tabCol_delete_cate.setCellValueFactory(new PropertyValueFactory<>("category"));
     }
 
+    //to check admin profile
     private void showUserProfile() {
         if (loggedInAdminID != null) {
             AdminLogics adminLogics = new AdminLogics();
@@ -351,7 +353,7 @@ public class Administrator implements Initializable {
         tabView_LogHis.setItems(FXCollections.observableArrayList());
     }
 
-    // This method handles navigation to edit profile page and pre-filling user data.
+    // This method to navigate edit profile page.
     @FXML
     public void handleEditProfile() {
         if (loggedInAdminID != null) {
@@ -369,7 +371,7 @@ public class Administrator implements Initializable {
         }
     }
 
-    // This method handles the "Confirm" button click, saving the changes to the database.
+    // handles the "Confirm" button clicks and save the changes to database.
     @FXML
     public boolean handleEditConfirm() {
         String newName = text_adm_name.getText();
@@ -416,6 +418,7 @@ public class Administrator implements Initializable {
         return true;
     }
 
+    //handle the password change and save details to database
     @FXML
     public boolean handlePasswordChangeConfirm() {
         String newPassword = text_add_new_pwd.getText();
@@ -448,6 +451,7 @@ public class Administrator implements Initializable {
         return false;
     }
 
+    //user table
     @FXML
     private void loadUserDetails() {
         ObservableList<User> userData = FXCollections.observableArrayList();
@@ -463,6 +467,7 @@ public class Administrator implements Initializable {
         Admin_table.setItems(userData);
     }
 
+    //handle username search
     @FXML
     public boolean handleUserSearch() {
         String usernameToSearch = text_ad_search_username.getText().trim();
@@ -515,14 +520,12 @@ public class Administrator implements Initializable {
             return;
         }
 
-        // Remove the user from the database
         if (AdminLogics.removeUserFromDatabase(usernameToRemove)) {
-            // Update UI or provide success message
             MainLogics.Alert(Alert.AlertType.INFORMATION, "Success", "User " + usernameToRemove + " has been removed successfully.");
 
-            // Optionally, refresh the table or reset fields
+
             clearUserLabels();
-            loadUserDetails(); // Reload user details into the table view
+            loadUserDetails();
         }
     }
 
@@ -546,7 +549,6 @@ public class Administrator implements Initializable {
             MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to add article: " + e.getMessage());
         }
 
-        // Clear fields after adding
         text_adm_AddHeading.clear();
         DatePicker_adm_date.setValue(null);
         textArea_adm_AddContent.clear();
@@ -558,7 +560,6 @@ public class Administrator implements Initializable {
 
         AdminLogics adminLogics = new AdminLogics();
         try {
-            // Fetch all articles using AdminLogics
             List<Article> articles = adminLogics.loadArticles();
 
             // Add the articles to the ObservableList
