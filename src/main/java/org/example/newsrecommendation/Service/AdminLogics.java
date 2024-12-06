@@ -14,6 +14,10 @@ import org.example.newsrecommendation.Model.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class AdminLogics {
 
@@ -172,22 +176,31 @@ public class AdminLogics {
     }
 
     public void addArticle(String heading, String date, String content) {
-        // Categorize the article
-        String category = ArticleCategorizer.categorizeArticle(content);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        // Create the article document
-        Document article = new Document("heading", heading)
-                .append("date", date)
-                .append("content", content)
-                .append("category", category);
+        // Task for categorizing the article
+        Callable<String> categorizeTask = () -> ArticleCategorizer.categorizeArticle(content);
 
-        // Insert into MongoDB
+        Future<String> futureCategory = executorService.submit(categorizeTask);
+
         try {
+            // Wait for the categorization to complete
+            String category = futureCategory.get();
+
+            // Create the article document
+            Document article = new Document("heading", heading)
+                    .append("date", date)
+                    .append("content", content)
+                    .append("category", category);
+
+            // Insert into MongoDB
             MongoDatabase database = dbHandler.getDatabase();
             MongoCollection<Document> articleCollection = database.getCollection("Article");
             articleCollection.insertOne(article);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to insert article: " + e.getMessage(), e);
+            throw new RuntimeException("Failed to process article: " + e.getMessage(), e);
+        } finally {
+            executorService.shutdown();
         }
     }
 
