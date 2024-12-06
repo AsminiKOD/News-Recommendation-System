@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class ArticleFetcher {
 
     private static final String CSV_FILE_PATH = "src/main/resources/org/example/newsrecommendation/Datasets/Articles.csv";
-    private static final String DATABASE_URL = "mongodb://localhost:27017";
+    private static final String DATABASE_URL = "mongodb+srv://Vinethma:2003Asmi15@cluster0.xrhve.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
     private static final String DATABASE_NAME = "NewsRecommendations";
     private static final String COLLECTION_NAME = "Article";
     private static final int THREAD_COUNT = 4;

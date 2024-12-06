@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminLogics {
-    private static final String CONNECTION_STRING = "mongodb://localhost:27017";
+    private static final String CONNECTION_STRING = "mongodb+srv://Vinethma:2003Asmi15@cluster0.xrhve.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
     private static final String DATABASE_NAME = "NewsRecommendations";
 
     public Document findDocument(String collectionName, Document query) {

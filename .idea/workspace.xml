@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d69130ca-d560-41c0-857d-8ef2f1671203" name="Changes" comment="enhance css">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Images/home.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Images/world.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/App/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/App/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/DataBase/DatabaseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/DataBase/DatabaseHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Model/Common.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Model/Common.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/NewsArticlesController/ArticleFetcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/NewsArticlesController/ArticleFetcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/Adminstrator.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/Adminstrator.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/Main.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/CSS/Main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Main.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Service/AdminLogics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/newsrecommendation/Service/AdminLogics.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Administrator.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/example/newsrecommendation/Administrator.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +109,7 @@
       <workItem from="1733172201030" duration="490000" />
       <workItem from="1733194848606" duration="27122000" />
       <workItem from="1733279972900" duration="17131000" />
-      <workItem from="1733304541343" duration="32290000" />
+      <workItem from="1733304541343" duration="39357000" />
     </task>
     <task id="LOCAL-00001" summary="new">
       <option name="closed" value="true" />
@@ -290,7 +287,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733382574523</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="enhance css">
+      <option name="closed" value="true" />
+      <created>1733392796955</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1733392796955</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

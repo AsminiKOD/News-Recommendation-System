@@ -51,23 +51,6 @@
       </Label>
       <StackPane layoutY="78.0" prefHeight="323.0" prefWidth="600.0">
          <children>
-            <Pane fx:id="Admin_Pane_User_records" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
-               <children>
-                  <Label fx:id="lab_Uses" layoutX="251.0" layoutY="20.0" text="User Records">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <TableView fx:id="Admin_table" layoutX="147.0" layoutY="62.0" prefHeight="200.0" prefWidth="305.0">
-                    <columns>
-                      <TableColumn fx:id="tabCol_user" prefWidth="75.0" text="Username" />
-                      <TableColumn fx:id="tabCol_name" prefWidth="107.99993896484375" text="Name" />
-                        <TableColumn fx:id="tabCol_email" prefWidth="121.3333740234375" text="Email" />
-                    </columns>
-                  </TableView>
-                  <Button fx:id="button_view" layoutX="510.0" layoutY="262.0" mnemonicParsing="false" onAction="#adminPaneNav" text="View details" />
-               </children>
-            </Pane>
             <Pane fx:id="Pane_admin_profile" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
                <children>
                   <Label fx:id="lab_adm" layoutX="272.0" layoutY="22.0" text="Admin Profile" />
@@ -208,6 +191,23 @@
                   <Button fx:id="button_admin_sort" layoutX="516.0" layoutY="92.0" mnemonicParsing="false" onAction="#handleSortButton" text="Sort " />
                   <Line endX="7.33331298828125" endY="79.0" layoutX="14.0" layoutY="41.0" startX="7.33331298828125" startY="13.0" strokeWidth="2.0" />
                   <Line endX="7.33331298828125" endY="79.0" layoutX="572.0" layoutY="41.0" startX="7.33331298828125" startY="13.0" strokeWidth="2.0" />
+               </children>
+            </Pane>
+            <Pane fx:id="Admin_Pane_User_records" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+               <children>
+                  <Label fx:id="lab_Uses" layoutX="251.0" layoutY="20.0" text="User Records">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="Admin_table" layoutX="147.0" layoutY="62.0" prefHeight="200.0" prefWidth="305.0">
+                    <columns>
+                      <TableColumn fx:id="tabCol_user" prefWidth="75.0" text="Username" />
+                      <TableColumn fx:id="tabCol_name" prefWidth="107.99993896484375" text="Name" />
+                        <TableColumn fx:id="tabCol_email" prefWidth="121.3333740234375" text="Email" />
+                    </columns>
+                  </TableView>
+                  <Button fx:id="button_view" layoutX="510.0" layoutY="262.0" mnemonicParsing="false" onAction="#adminPaneNav" text="View details" />
                </children>
             </Pane>
             <Pane fx:id="Front_Pane" prefHeight="200.0" prefWidth="200.0">
