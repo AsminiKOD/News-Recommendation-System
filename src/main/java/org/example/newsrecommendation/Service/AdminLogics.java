@@ -1,7 +1,5 @@
 package org.example.newsrecommendation.Service;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import javafx.collections.FXCollections;
@@ -18,12 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminLogics {
-    private static final String CONNECTION_STRING = "mongodb+srv://Vinethma:2003Asmi15@cluster0.xrhve.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
     private static final String DATABASE_NAME = "NewsRecommendations";
 
+    // Using DatabaseHandler for connection pooling
+    private static DatabaseHandler dbHandler;
+
+    public AdminLogics() {
+        this.dbHandler = new DatabaseHandler();
+    }
+
     public Document findDocument(String collectionName, Document query) {
-        try (MongoClient mongoClient = MongoClients.create(CONNECTION_STRING)) {
-            MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
+        try {
+            MongoDatabase database = dbHandler.getDatabase();
             MongoCollection<Document> collection = database.getCollection(collectionName);
             return collection.find(query).first();
         } catch (Exception e) {
@@ -33,8 +38,8 @@ public class AdminLogics {
 
     public List<Document> findDocuments(String collectionName, Document query) {
         List<Document> documents = new ArrayList<>();
-        try (MongoClient mongoClient = MongoClients.create(CONNECTION_STRING)) {
-            MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
+        try {
+            MongoDatabase database = dbHandler.getDatabase();
             MongoCollection<Document> collection = database.getCollection(collectionName);
             collection.find(query).into(documents);
         } catch (Exception e) {
@@ -67,8 +72,8 @@ public class AdminLogics {
     }
 
     public Document getAdminDetails(String adminId) {
-        try (MongoClient mongoClient = MongoClients.create(CONNECTION_STRING)) {
-            MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
+        try {
+            MongoDatabase database = dbHandler.getDatabase();
             MongoCollection<Document> collection = database.getCollection("Admin");
             return collection.find(new Document("adminId", adminId)).first();
         } catch (Exception e) {
@@ -77,8 +82,8 @@ public class AdminLogics {
     }
 
     public void updateAdminDetails(String adminId, String newName, String newEmail, int newAge) {
-        try (MongoClient mongoClient = MongoClients.create(CONNECTION_STRING)) {
-            MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
+        try {
+            MongoDatabase database = dbHandler.getDatabase();
             MongoCollection<Document> collection = database.getCollection("Admin");
 
             Document updatedUser = new Document("name", newName)
@@ -94,8 +99,8 @@ public class AdminLogics {
     }
 
     public void changePassword(String adminId, String newPassword) {
-        try (MongoClient mongoClient = MongoClients.create(CONNECTION_STRING)) {
-            MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
+        try {
+            MongoDatabase database = dbHandler.getDatabase();
             MongoCollection<Document> collection = database.getCollection("Admin");
 
             Document updatedUser = new Document("password", newPassword);
@@ -111,8 +116,8 @@ public class AdminLogics {
     public List<User> loadUserDetails() {
         List<User> userData = new ArrayList<>();
 
-        try (MongoClient mongoClient = MongoClients.create(CONNECTION_STRING)) {
-            MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
+        try {
+            MongoDatabase database = dbHandler.getDatabase();
             MongoCollection<Document> userCollection = database.getCollection("User");
 
             List<Document> users = userCollection.find(new Document()).into(new ArrayList<>());
@@ -136,8 +141,8 @@ public class AdminLogics {
     }
 
     public Document searchUserByUsername(String username) {
-        try (MongoClient mongoClient = MongoClients.create(CONNECTION_STRING)) {
-            MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
+        try {
+            MongoDatabase database = dbHandler.getDatabase();
             MongoCollection<Document> userCollection = database.getCollection("User");
 
             Document query = new Document("username", username);
@@ -148,10 +153,10 @@ public class AdminLogics {
     }
 
     public static boolean removeUserFromDatabase(String username) {
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            MongoCollection<Document> userCollection = dbHandler.getDatabase().getCollection("User");
+        try {
+            MongoDatabase database = dbHandler.getDatabase();
+            MongoCollection<Document> userCollection = database.getCollection("User");
 
-            // Find and delete the user by username
             Document result = userCollection.findOneAndDelete(new Document("username", username));
 
             if (result != null) {
@@ -177,8 +182,8 @@ public class AdminLogics {
                 .append("category", category);
 
         // Insert into MongoDB
-        try (MongoClient mongoClient = MongoClients.create(CONNECTION_STRING)) {
-            MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
+        try {
+            MongoDatabase database = dbHandler.getDatabase();
             MongoCollection<Document> articleCollection = database.getCollection("Article");
             articleCollection.insertOne(article);
         } catch (Exception e) {
@@ -189,8 +194,8 @@ public class AdminLogics {
     public List<Article> loadArticles() {
         List<Article> articles = new ArrayList<>();
 
-        try (MongoClient mongoClient = MongoClients.create(CONNECTION_STRING)) {
-            MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
+        try {
+            MongoDatabase database = dbHandler.getDatabase();
             MongoCollection<Document> articleCollection = database.getCollection("Article");
 
             // Fetch all articles from the collection
@@ -213,7 +218,10 @@ public class AdminLogics {
     public static ObservableList<Article> fetchArticlesFromDatabase(List<String> categories) {
         ObservableList<Article> articleData = FXCollections.observableArrayList();
 
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+        try {
+            MongoDatabase database = dbHandler.getDatabase();
+            MongoCollection<Document> articleCollection = database.getCollection("Article");
+
             // Build MongoDB query
             Document query = new Document();
 
@@ -242,23 +250,24 @@ public class AdminLogics {
     }
 
     public static boolean deleteArticleFromDatabase(Article article) {
-        try (DatabaseHandler dbHandler = new DatabaseHandler()) {
-            // Create query to match the article by heading
-            Document query = new Document("heading", article.getHeading());
+        try {
+            MongoDatabase database = dbHandler.getDatabase();
+            MongoCollection<Document> articleCollection = database.getCollection("Article");
 
-            // Delete the article from the collection
-            Document result = dbHandler.findDocument("Article", query);
+            // Delete article by heading and date
+            Document query = new Document("heading", article.getHeading()).append("date", article.getDate());
+            Document result = articleCollection.findOneAndDelete(query);
 
             if (result != null) {
-                dbHandler.getDatabase().getCollection("Article").deleteOne(query); // Delete the article
-                return true;  // Article successfully deleted
+                return true;  // Successfully deleted
             } else {
-                MainLogics.Alert(Alert.AlertType.ERROR, "Error", "No article found with heading: " + article.getHeading());
-                return false;  // Article not found
+                MainLogics.Alert(Alert.AlertType.ERROR, "Error", "Article not found or could not be deleted.");
+                return false;
             }
         } catch (Exception e) {
             MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to delete article: " + e.getMessage());
             return false;
         }
     }
+
 }
