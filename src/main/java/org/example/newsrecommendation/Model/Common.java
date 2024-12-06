@@ -17,6 +17,14 @@ abstract class Common {
         this.password = password;
     }
 
+    public Common(String name, String username, String email, int age, String gender) {
+        this.name = name;
+        this.username =username;
+        this.email = email;
+        this.age = age;
+        this.gender = gender;
+    }
+
     public Common(String name, String email, int age, String gender, String password) {
         this.name = name;
         this.email = email;
@@ -24,6 +32,7 @@ abstract class Common {
         this.gender = gender;
         this.password = password;
     }
+
 
     public Common(String name, String email, int age) {
         this.name = name;

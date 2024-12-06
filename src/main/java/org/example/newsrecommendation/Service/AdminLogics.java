@@ -123,10 +123,9 @@ public class AdminLogics {
                 String email = userDoc.getString("email");
                 int age = userDoc.getInteger("age", 0);
                 String gender = userDoc.getString("gender");
-                String password = userDoc.getString("password");
                 List<String> preferences = userDoc.getList("preference", String.class);
 
-                User user = new User(name, username, email, age, gender, password, preferences);
+                User user = new User(name, username, email, age, gender, preferences);
                 userData.add(user);
             }
         } catch (Exception e) {

@@ -15,7 +15,6 @@ import org.example.newsrecommendation.Model.LoginHistory;
 import org.example.newsrecommendation.Service.MainLogics;
 import org.example.newsrecommendation.Service.AdminLogics;
 import org.example.newsrecommendation.Model.User;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
