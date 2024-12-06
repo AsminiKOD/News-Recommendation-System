@@ -70,7 +70,6 @@ public class DatabaseHandler implements AutoCloseable {
         }
     }
 
-
     @Override
     public void close() {
         if (mongoClient != null) {

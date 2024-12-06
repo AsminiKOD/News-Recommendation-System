@@ -230,14 +230,20 @@ public class MainLogics {
 
     public static void removeArticle(String username, String headingToRemove) {
         try (DatabaseHandler dbHandler = new DatabaseHandler()) {
+            // Prepare the query to find the document by username
             Document query = new Document("username", username);
-            Document update = new Document("$pull", new Document("save", headingToRemove));
 
+            // Prepare the update document with $pull operator to remove the article from the "save" array
+            Document update = new Document("save", new Document("$pull", headingToRemove));
+
+            // Call the updateDocument method from DatabaseHandler
             dbHandler.updateDocument("Interaction", query, update);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
 
     public static String getFullArticle(String heading) {
         try (DatabaseHandler dbHandler = new DatabaseHandler()) {

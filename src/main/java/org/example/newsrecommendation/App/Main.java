@@ -200,7 +200,6 @@ public class Main implements Initializable {
         Profile_login_histroy.setItems(FXCollections.observableArrayList());
         loadAndDisplayArticles(loggedInUsername);
         loadArticlesIntoTable();
-        loadSavedArticles(loggedInUsername);
 
     }
 
@@ -217,6 +216,7 @@ public class Main implements Initializable {
             Main_SavePage.toFront();
         }
         if (actionEvent.getSource() == Main_button_Saved) {
+            loadSavedArticles(loggedInUsername);
             Main_Save.toFront();
         }
         if (actionEvent.getSource() == Main_button_profile) {
@@ -337,6 +337,7 @@ public class Main implements Initializable {
                 MainLogics.Alert(Alert.AlertType.ERROR, "Database Error", "Failed to update user details.");
             }
         }
+        Main_ProfilePage.toFront();
     }
 
     @FXML
